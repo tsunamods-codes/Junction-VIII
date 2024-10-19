@@ -1,0 +1,6 @@
+CurrentDay=Sys:Day
+CurrentMonth=Sys:Month
+CurrentYear=Sys:Year
+CurrentHour=Sys:Hour
+CurrentMinute=Sys:Minute
+CurrentSecond=Sys:Second
