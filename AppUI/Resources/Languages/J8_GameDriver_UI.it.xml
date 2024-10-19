@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ConfigSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- GRAPHICS TAB -->
+  <Setting xsi:type="DropDown">
+    <Group>Grafica</Group>
+    <Name>API grafica</Name>
+    <Description>Imposta il software di rendering. 'Auto' determina la scelta migliore in base alla tua GPU. Possono verificarsi arresti anomali utilizzando 'OpenGL' con schede AMD.</Description>
+    <DefaultValue>renderer_backend = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>renderer_backend = 0</Settings>
+    </Option>
+    <Option>
+      <Text>OpenGL</Text>
+      <Settings>renderer_backend = 1</Settings>
+    </Option>
+    <Option>
+      <Text>DirectX 11</Text>
+      <Settings>renderer_backend = 3</Settings>
+    </Option>
+    <Option>
+      <Text>DirectX 12</Text>
+      <Settings>renderer_backend = 4</Settings>
+    </Option>
+    <Option>
+      <Text>Vulkan</Text>
+      <Settings>renderer_backend = 5</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Grafica</Group>
+    <Name>Risoluzione</Name>
+    <Description>Imposta le dimensioni della finestra (o dello schermo intero) di FF8. 'Auto' utilizza la risoluzione originale del gioco in modalità finestra e quella del desktop in modalità schermo intero.</Description>
+    <DefaultValue>window_size_x = 0,window_size_y = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>window_size_x = 0,window_size_y = 0</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Grafica</Group>
+    <Name>Modalità Finestra</Name>
+    <Description>Visualizza il gioco in una finestra o a schermo intero senza bordi.</Description>
+    <DefaultValue>fullscreen = false,borderless = false</DefaultValue>
+    <Option>
+      <Text>Windowed</Text>
+      <Settings>fullscreen = false,borderless = false</Settings>
+    </Option>
+    <Option>
+      <Text>Fullscreen</Text>
+      <Settings>fullscreen = true,borderless = false</Settings>
+    </Option>
+    <Option>
+      <Text>Borderless</Text>
+      <Settings>fullscreen = false,borderless = true</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Grafica</Group>
+    <Name>Rateo d'Aspetto</Name>
+    <Description>Mantiene il rateo d'aspetto in 4:3 aggiungendo dei bordi neri ai lati.</Description>
+    <DefaultValue>aspect_ratio = 0</DefaultValue>
+    <Option>
+      <Text>Mantieni Aspetto</Text>
+      <Settings>aspect_ratio = 0</Settings>
+    </Option>
+    <Option>
+      <Text>Estendi a Schermo Intero</Text>
+      <Settings>aspect_ratio = 1</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Grafica</Group>
+    <Name>Antialiasing</Name>
+    <Description>Applica il filtro MSAA 2x / 4x / 8x / 16x. Riduce i bordi frastagliati e migliora la qualità dell'immagine. Può influire negativamente sulle prestazioni.</Description>
+    <DefaultValue>enable_antialiasing = 0</DefaultValue>
+    <Option>
+      <Text>No</Text>
+      <Settings>enable_antialiasing = 0</Settings>
+    </Option>
+    <Option>
+      <Text>2x MSAA</Text>
+      <Settings>enable_antialiasing = 2</Settings>
+    </Option>
+    <Option>
+      <Text>4x MSAA</Text>
+      <Settings>enable_antialiasing = 4</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Grafica</Group>
+    <Name>Filtro Antisotropico</Name>
+    <Description>Usa mipmaps per le texture in alta qualità. Può migliorare le prestazioni e la qualità dell'immagine, ma utilizza più Memoria Texture.</Description>
+    <DefaultValue>enable_anisotropic = true</DefaultValue>
+    <TrueSetting>enable_anisotropic = true</TrueSetting>
+    <FalseSetting>enable_anisotropic = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Grafica</Group>
+    <Name>V-Sync</Name>
+    <Description>Sincronizza il framerate del gioco con la frequenza d'aggiornamento dello schermo. Potrebbe influire negativamente sulle performance di gioco o rendere le mod che fanno uso di 60 fps inutilizzabili. Attivare solo se si percepisce dello screen tearing. *Limita la Velocità dei Trucchi!*</Description>
+    <DefaultValue>enable_vsync = true</DefaultValue>
+    <TrueSetting>enable_vsync = true</TrueSetting>
+    <FalseSetting>enable_vsync = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Grafica</Group>
+    <Name>NTSC-J Gamut Mode</Name>
+    <Description>Simulate the color gamut of the 1990s Japanese television sets that FF8 was originally designed for.</Description>
+    <DefaultValue>enable_ntscj_gamut_mode = false</DefaultValue>
+    <TrueSetting>enable_ntscj_gamut_mode = true</TrueSetting>
+    <FalseSetting>enable_ntscj_gamut_mode = false</FalseSetting>
+  </Setting>
+
+  <!-- CONTROLS TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Use Gamepad Icons</Name>
+    <Description>Use icon textures for gamepad buttons instead of "B1", "B2", etc. By default the PS1 icons are used from the game data.</Description>
+    <DefaultValue>ff8_use_gamepad_icons = false</DefaultValue>
+    <TrueSetting>ff8_use_gamepad_icons = true</TrueSetting>
+    <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
+  </Setting>
+
+  <!-- CHEATS TAB -->
+  <Setting xsi:type="DropDown">
+    <Group>Trucchi</Group>
+    <Name>Battaglie Casuali</Name>
+    <Description>Non configurabile. Attiva/disattiva le battaglie casuali durante il gioco.{0}Utilizzo: CTRL+B o L3+R3</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>Vedi la descrizione</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Trucchi</Group>
+    <Name>Salta i Filmati</Name>
+    <Description>Non configurabile. Salta immediatamente alla fine di un filmato.{0}Utilizzo: CTRL+S o SELECT+START</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>Vedi la descrizione</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+  
+  <Setting xsi:type="DropDown">
+    <Group>Trucchi</Group>
+    <Name>Soft Reset</Name>
+    <Description>Non configurabile. Causa un immediato Game Over per tornare al menù principale.{0}Utilizzo: CTRL+R o L1+L2+R1+R2+SELECT+START</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>Vedi la descrizione</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Trucchi</Group>
+    <Name>Speed Hack Graduale</Name>
+    <Description>Aumenta o diminuisce del valore selezionato la velocità richiesta per l'interazione con certi eventi.{0}Utilizzo: CTRL+Su/Giù o L2+R2+Su/Giù per cambiare velocità, CTRL+Sinistra/Destra o L2+R2+Sinistra/Destra per attivare/disattivare.</Description>
+    <DefaultValue>speedhack_step = 0.5</DefaultValue>
+    <Option>
+      <Text>0.5</Text>
+      <Settings>speedhack_step = 0.5</Settings>
+    </Option>
+    <Option>
+      <Text>1.0</Text>
+      <Settings>speedhack_step = 1.0</Settings>
+    </Option>
+    <Option>
+      <Text>2.0</Text>
+      <Settings>speedhack_step = 2.0</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Trucchi</Group>
+    <Name>Speed Hack Massimo</Name>
+    <Description>La velocità massima impostabile prima di tornare a quella normale.</Description>
+    <DefaultValue>speedhack_max = 8.0</DefaultValue>
+    <Option>
+      <Text>2x</Text>
+      <Settings>speedhack_max = 2.0</Settings>
+    </Option>
+    <Option>
+      <Text>4x</Text>
+      <Settings>speedhack_max = 4.0</Settings>
+    </Option>
+    <Option>
+      <Text>6x</Text>
+      <Settings>speedhack_max = 6.0</Settings>
+    </Option>
+    <Option>
+      <Text>8x</Text>
+      <Settings>speedhack_max = 8.0</Settings>
+    </Option>
+    <Option>
+      <Text>10x</Text>
+      <Settings>speedhack_max = 10.0</Settings>
+    </Option>
+    <Option>
+      <Text>12x</Text>
+      <Settings>speedhack_max = 12.0</Settings>
+    </Option>
+  </Setting>
+
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzate</Group>
+    <Name>Mostra Statistiche</Name>
+    <Description>Mostra alcune informazioni di debug in tempo reale in sovraimpressione.</Description>
+    <DefaultValue>show_stats = false</DefaultValue>
+    <TrueSetting>show_stats = true</TrueSetting>
+    <FalseSetting>show_stats = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzate</Group>
+    <Name>Mostra Versione Driver</Name>
+    <Description>Mostra la versione del driver attualmente utilizzata in sovraimpressione o nella barra del titolo.</Description>
+    <DefaultValue>show_version = false</DefaultValue>
+    <TrueSetting>show_version = true</TrueSetting>
+    <FalseSetting>show_version = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzate</Group>
+    <Name>Mostra FPS</Name>
+    <Description>Mostra un resoconto trasparente dei frame al secondo nell'angolo in alto a destra dello schermo.</Description>
+    <DefaultValue>show_fps = false</DefaultValue>
+    <TrueSetting>show_fps = true</TrueSetting>
+    <FalseSetting>show_fps = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzate</Group>
+    <Name>Mostra API Grafica</Name>
+    <Description>Mostra l'API grafica attualmente utilizzata (OpenGL / DirectX11) in sovraimpressione o nella barra del titolo.</Description>
+    <DefaultValue>show_renderer_backend = false</DefaultValue>
+    <TrueSetting>show_renderer_backend = true</TrueSetting>
+    <FalseSetting>show_renderer_backend = false</FalseSetting>
+  </Setting>
+	
+  <Setting xsi:type="DropDown">
+    <Group>Avanzate</Group>
+    <Name>Scala di Risoluzione Interna</Name>
+    <Description>Moltiplica la risoluzione interna 640x480 per il valore selezionato. Valori più alti richiedono una GPU più potente. Valori più alti possono rimuovere artefatti visivi, Valori con * sono ottimi valori tradeoff tra performance e qualità.</Description>
+    <DefaultValue>internal_resolution_scale = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>internal_resolution_scale = 0</Settings>
+    </Option>
+    <Option>
+      <Text>1x (Possono causare artefatti)</Text>
+      <Settings>internal_resolution_scale = 1</Settings>
+    </Option>
+    <Option>
+      <Text>2x</Text>
+      <Settings>internal_resolution_scale = 2</Settings>
+    </Option>
+    <Option>
+      <Text>*4x</Text>
+      <Settings>internal_resolution_scale = 4</Settings>
+    </Option>
+    <Option>
+      <Text>*6x</Text>
+      <Settings>internal_resolution_scale = 6</Settings>
+    </Option>
+    <Option>
+      <Text>8x</Text>
+      <Settings>internal_resolution_scale = 8</Settings>
+    </Option>
+  </Setting>
+
+</ConfigSpec>

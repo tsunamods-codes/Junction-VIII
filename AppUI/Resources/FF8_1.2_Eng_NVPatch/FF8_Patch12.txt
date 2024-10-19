@@ -1,0 +1,58 @@
+Final Fantasy VIII (PC) Patch v1.2
+----------------------------------
+
+Fixes:
+
+1. There was a crash on Disc 2, after the player defeats "Balamb Garden
+Master NORG", if they then go to the library and talk to the girl with
+pigtails, the game would crash to desktop. --Addressed and Fixed.
+
+2. There were complaints about an error message popping up after the
+players installed FF8. On the patch there is a new EAX file.
+
+3. There was a menu bug in which Square QA found while testing the patch.
+When the player receives the "Pet Pals Vol. 1", on the train to Timber, at
+this point the player has not yet met Rinoa nor her dog Angelo. In the
+magazine there is a reference to "Angelo Strike". The bug was due to the
+fact that the player had not met Rinoa yet and so instead of the magazine
+reading "Angelo Strike" it read "No MEM CA". --Addressed and fixed.
+
+4. There was a crash issue when the player had Direct X 7.0 installed and
+tried to play the game with the Yamaha Software Synth. Whenever the player
+would finish a battle the game would crash to desktop. --Addressed and Fixed.
+
+*Note* The file needed to correct this issue is available in a separate download.
+
+5. There were multiple complaints about the Nvidia GeForce having texel problems.
+--Addressed and Fixed.
+
+*NOTE* GeForce users should make sure the downloaded the correct patch.  It is named "FF8SqeaNVPatch.zip".  Non-GeForce owners should download the patch named "FF8SqeaPatch.zip".
+
+6. The player's cards for the card game, in some instances, would disappear. --Addressed and Fixed on patch v1.2 
+
+7. In some cases after a battle, where all the player's party members are killed, the game will crash at the 'Game Over' screen. --Addressed and Fixed on latest patch v1.2
+
+
+Patch Installation:
+-------------------
+
+The patch is in .zip format*, extract all files directly into the Final Fantasy VIII directory (default: "C:\Program Files\Square Soft, Inc\FINAL FANTASY VIII").  Be sure that ALL files are copied over, otherwise the patch will not work properly.  The files are:
+
+binkw32.dll
+EAXUnified.exe
+FF8.exe
+
+When asked if you want to overwrite existing files, click on "YES" or "YES TO ALL".  After the old files are overwritten the patch is finished installing.
+
+After extracting all files to the game directory, double-click on the file named "EAXUnified.exe" to install the EAX.dll file to your C:\Windows\System folder.  This will fix the error message regarding the missing EAX.dll file.  This step is not necessary unless you are encountering the "Missing EAX.dll Error".
+
+* In order to extract a .zip file, a zip extraction utility must be used.  There are many such programs available on the Internet to download.
+
+
+
+
+
+
+
+
+	

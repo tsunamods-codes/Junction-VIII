@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ConfigSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- GRAPHICS TAB -->
+  <Setting xsi:type="DropDown">
+    <Group>Γραφικά</Group>
+    <Name>API γραφικών</Name>
+    <Description>Ορίζει το λογισμικό απόδοσης. Το Auto καθορίζει την καλύτερη επιλογή βάσει της κάρτας γραφικών σας. Ενδέχεται να προκύψουν σφάλματα χρησιμοποιώντας το OpenGL με κάρτες AMD.</Description>
+    <DefaultValue>renderer_backend = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>renderer_backend = 0</Settings>
+    </Option>
+    <Option>
+      <Text>OpenGL</Text>
+      <Settings>renderer_backend = 1</Settings>
+    </Option>
+    <Option>
+      <Text>DirectX 11</Text>
+      <Settings>renderer_backend = 3</Settings>
+    </Option>
+    <Option>
+      <Text>DirectX 12</Text>
+      <Settings>renderer_backend = 4</Settings>
+    </Option>
+    <Option>
+      <Text>Vulkan</Text>
+      <Settings>renderer_backend = 5</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Γραφικά</Group>
+    <Name>Ανάλυση</Name>
+    <Description>Ορίζει το μέγεθος του παραθύρου για το παιχνίδι. Το Auto χρησιμοποιεί την ανάλυση παιχνιδιού σε λειτουργία παραθύρου ή την τρέχουσα ανάλυση της επιφάνειας εργασίας σε λειτουργία πλήρους οθόνης.</Description>
+    <DefaultValue>window_size_x = 0,window_size_y = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>window_size_x = 0,window_size_y = 0</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Γραφικά</Group>
+    <Name>Λειτουργία παραθύρου</Name>
+    <Description>Εμφάνιση του παιχνιδιού είτε σε ένα τυπικό παράθυρο είτε σε πλήρη οθόνη χωρίς περίγραμμα.</Description>
+    <DefaultValue>fullscreen = false,borderless = false</DefaultValue>
+    <Option>
+      <Text>Windowed</Text>
+      <Settings>fullscreen = false,borderless = false</Settings>
+    </Option>
+    <Option>
+      <Text>Fullscreen</Text>
+      <Settings>fullscreen = true,borderless = false</Settings>
+    </Option>
+    <Option>
+      <Text>Borderless</Text>
+      <Settings>fullscreen = false,borderless = true</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Γραφικά</Group>
+    <Name>Αναλογία διαστάσεων</Name>
+    <Description>Η διατήρηση της αναλογίας διαστάσεων προσθέτει μαύρες μπάρες όπως απαιτείται για τη διατήρηση της αναλογίας διαστάσεων 4:3.</Description>
+    <DefaultValue>aspect_ratio = 0</DefaultValue>
+    <Option>
+      <Text>Πηγαία (4:3)</Text>
+      <Settings>aspect_ratio = 0</Settings>
+    </Option>
+    <Option>
+      <Text>Τέντωμα για συμπλήρωση</Text>
+      <Settings>aspect_ratio = 1</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Γραφικά</Group>
+    <Name>Αντιαλίνωση</Name>
+    <Description>Εφαρμόζει φιλτράρισμα 2x/4x/8x/16x MSAA. Μειώνει τα ακανόνιστα άκρα και βελτιώνει την ποιότητα της εικόνας. Μπορεί να επηρεάσει σοβαρά την απόδοση.</Description>
+    <DefaultValue>enable_antialiasing = 0</DefaultValue>
+    <Option>
+      <Text>Οχι</Text>
+      <Settings>enable_antialiasing = 0</Settings>
+    </Option>
+    <Option>
+      <Text>2x MSAA</Text>
+      <Settings>enable_antialiasing = 2</Settings>
+    </Option>
+    <Option>
+      <Text>4x MSAA</Text>
+      <Settings>enable_antialiasing = 4</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Γραφικά</Group>
+    <Name>Ανισοτροπικό φιλτράρισμα</Name>
+    <Description>Εφαρμόζει ένα φίλτρο σε υφές υψηλής ανάλυσης που παράγουν πιο ευκρινή εικόνα. Μπορεί να επηρεάσει την απόδοση λόγω της αυξημένης χρήσης μνήμης.</Description>
+    <DefaultValue>enable_anisotropic = true</DefaultValue>
+    <TrueSetting>enable_anisotropic = true</TrueSetting>
+    <FalseSetting>enable_anisotropic = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Γραφικά</Group>
+    <Name>Κατακόρυφος συγχρονισμός</Name>
+    <Description>Συγχρονίζει το ρυθμό καρέ του παιχνιδιού με το ρυθμό ανανέωσης της οθόνης. Μπορεί να μειώσει την απόδοση ή να σπάσει τις λειτουργίες 60 fps. Ενεργοποιήστε εάν έχετε δάκρυ στην οθόνη. *Όρια ταχύτητας εξαπάτησης!*</Description>
+    <DefaultValue>enable_vsync = true</DefaultValue>
+    <TrueSetting>enable_vsync = true</TrueSetting>
+    <FalseSetting>enable_vsync = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Γραφικά</Group>
+    <Name>NTSC-J Gamut Mode</Name>
+    <Description>Simulate the color gamut of the 1990s Japanese television sets that FF8 was originally designed for.</Description>
+    <DefaultValue>enable_ntscj_gamut_mode = false</DefaultValue>
+    <TrueSetting>enable_ntscj_gamut_mode = true</TrueSetting>
+    <FalseSetting>enable_ntscj_gamut_mode = false</FalseSetting>
+  </Setting>
+
+  <!-- CONTROLS TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Use Gamepad Icons</Name>
+    <Description>Use icon textures for gamepad buttons instead of "B1", "B2", etc. By default the PS1 icons are used from the game data.</Description>
+    <DefaultValue>ff8_use_gamepad_icons = false</DefaultValue>
+    <TrueSetting>ff8_use_gamepad_icons = true</TrueSetting>
+    <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
+  </Setting>
+
+  <!-- CHEATS TAB -->
+  <Setting xsi:type="DropDown">
+    <Group>Απατώ</Group>
+    <Name>Τυχαίες μάχες</Name>
+    <Description>Μη διαμορφώσιμο. Ενεργοποιήστε / απενεργοποιήστε τυχαίες συναντήσεις μάχης ενώ παίζετε το παιχνίδι.{0}Χρήση: CTRL+B ή L3+R3</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>Δείτε την περιγραφή</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Απατώ</Group>
+    <Name>Παράλειψη ταινιών</Name>
+    <Description>Μη διαμορφώσιμο. Μετάβαση στο τέλος μιας ταινίας.{0}Χρήση: CTRL+S ή Επιλέξτε+Έναρξη</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>Δείτε την περιγραφή</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+  
+  <Setting xsi:type="DropDown">
+    <Group>Απατώ</Group>
+    <Name>Γρήγορη επαναφορά</Name>
+    <Description>Μη διαμορφώσιμο. Επαναφέρετε γρήγορα το παιχνίδι με ένα παιχνίδι τελείωσε.{0}Χρήση: CTRL+R ή L1+L2+R1+R2+Επιλέξτε+Έναρξη</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>Δείτε την περιγραφή</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Απατώ</Group>
+    <Name>Αύξηση ταχύτητας</Name>
+    <Description>Ποσό για αύξηση ή μείωση της ταχύτητας σε κάθε συμβάν.{0}Χρήση: CTRL+Πάνω/Κάτω ή L2+R2+Πάνω/Κάτω για αλλαγή ταχύτητας, CTRL+Αριστερά/Δεξιά ή L2+R2+Αριστερά/Δεξιά για ενεργοποίηση/απενεργοποίηση.</Description>
+    <DefaultValue>speedhack_step = 0.5</DefaultValue>
+    <Option>
+      <Text>0.5</Text>
+      <Settings>speedhack_step = 0.5</Settings>
+    </Option>
+    <Option>
+      <Text>1.0</Text>
+      <Settings>speedhack_step = 1.0</Settings>
+    </Option>
+    <Option>
+      <Text>2.0</Text>
+      <Settings>speedhack_step = 2.0</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>Απατώ</Group>
+    <Name>Μέγιστη ταχύτητα</Name>
+    <Description>Η μέγιστη ταχύτητα που πρέπει να ορίσετε πριν επιστρέψετε στην κανονική ταχύτητα.</Description>
+    <DefaultValue>speedhack_max = 8.0</DefaultValue>
+    <Option>
+      <Text>2x</Text>
+      <Settings>speedhack_max = 2.0</Settings>
+    </Option>
+    <Option>
+      <Text>4x</Text>
+      <Settings>speedhack_max = 4.0</Settings>
+    </Option>
+    <Option>
+      <Text>6x</Text>
+      <Settings>speedhack_max = 6.0</Settings>
+    </Option>
+    <Option>
+      <Text>8x</Text>
+      <Settings>speedhack_max = 8.0</Settings>
+    </Option>
+    <Option>
+      <Text>10x</Text>
+      <Settings>speedhack_max = 10.0</Settings>
+    </Option>
+    <Option>
+      <Text>12x</Text>
+      <Settings>speedhack_max = 12.0</Settings>
+    </Option>
+  </Setting>
+
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Για προχωρημένους</Group>
+    <Name>Εμφάνιση πληροφοριών εντοπισμού σφαλμάτων</Name>
+    <Description>Εμφανίζει πληροφορίες σε πραγματικό χρόνο σχετικά με τη διαδικασία απόδοσης/απόδοση σε μια επικάλυψη ή στη γραμμή τίτλων.</Description>
+    <DefaultValue>show_stats = false</DefaultValue>
+    <TrueSetting>show_stats = true</TrueSetting>
+    <FalseSetting>show_stats = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Για προχωρημένους</Group>
+    <Name>Εμφάνιση έκδοσης προγράμματος οδήγησης</Name>
+    <Description>Εμφανίζει την τρέχουσα χρησιμοποιούμενη έκδοση προγράμματος οδήγησης σε μια επικάλυψη ή στη γραμμή τίτλων.</Description>
+    <DefaultValue>show_version = false</DefaultValue>
+    <TrueSetting>show_version = true</TrueSetting>
+    <FalseSetting>show_version = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Για προχωρημένους</Group>
+    <Name>Εμφάνιση FPS</Name>
+    <Description>Εμφανίζει τα τρέχοντα καρέ ανά δευτερόλεπτο σε μια επικάλυψη ή στη γραμμή τίτλων.</Description>
+    <DefaultValue>show_fps = false</DefaultValue>
+    <TrueSetting>show_fps = true</TrueSetting>
+    <FalseSetting>show_fps = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Για προχωρημένους</Group>
+    <Name>Εμφάνιση API γραφικών</Name>
+    <Description>Εμφανίζει το τρέχον χρησιμοποιούμενο API γραφικών (OpenGL/DirectX11) σε μια επικάλυψη ή στη γραμμή τίτλων.</Description>
+    <DefaultValue>show_renderer_backend = false</DefaultValue>
+    <TrueSetting>show_renderer_backend = true</TrueSetting>
+    <FalseSetting>show_renderer_backend = false</FalseSetting>
+  </Setting>
+	
+  <Setting xsi:type="DropDown">
+    <Group>Για προχωρημένους</Group>
+    <Name>Internal Resolution Scaler</Name>
+    <Description>Multiply 640x480 internal resolution by following amount. Higher values need more powerful GPU.  Higher values can remove scaling artefacts, * Values are optimal performance quality tradeoff.</Description>
+    <DefaultValue>internal_resolution_scale = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>internal_resolution_scale = 0</Settings>
+    </Option>
+    <Option>
+      <Text>1x (May cause artefacts)</Text>
+      <Settings>internal_resolution_scale = 1</Settings>
+    </Option>
+    <Option>
+      <Text>2x</Text>
+      <Settings>internal_resolution_scale = 2</Settings>
+    </Option>
+    <Option>
+      <Text>*4x</Text>
+      <Settings>internal_resolution_scale = 4</Settings>
+    </Option>
+    <Option>
+      <Text>*6x</Text>
+      <Settings>internal_resolution_scale = 6</Settings>
+    </Option>
+    <Option>
+      <Text>8x</Text>
+      <Settings>internal_resolution_scale = 8</Settings>
+    </Option>
+  </Setting>
+
+</ConfigSpec>
