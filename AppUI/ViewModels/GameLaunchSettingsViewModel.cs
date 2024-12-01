@@ -502,8 +502,14 @@ namespace AppUI.ViewModels
                 {
                     try
                     {
-                        _directMusic.EnumPort((uint)ret, ref caps);
+                        HRESULT res = _directMusic.EnumPort((uint)ret, ref caps);
                         if (caps.guidPort == deviceID) break;
+                        if (res.Value != 0)
+                        {
+                            // Something went wrong while trying to detect the MIDI port, fallback to default card
+                            ret = 0;
+                            break;
+                        }
                         ret++;
                     }
                     catch
