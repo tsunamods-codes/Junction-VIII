@@ -208,20 +208,20 @@ namespace AppUI.Classes
 
         public static Dictionary<GameControl, string> ControlMapping = new Dictionary<GameControl, string>()
         {
-            { GameControl.Menu, "1." },
-            { GameControl.OK, "2." },
+            { GameControl.OK, "1." },
+            { GameControl.Exit, "2." },
             { GameControl.Misc, "3." },
-            { GameControl.Exit, "4." },
-            { GameControl.RotLt, "5." },
-            { GameControl.RotRt, "6." },
-            { GameControl.Toggle, "7." },
-            { GameControl.Trigger, "8." },
+            { GameControl.Menu, "4." },
+            { GameControl.Toggle, "5." },
+            { GameControl.Trigger, "6." },
+            { GameControl.RotLt, "7." },
+            { GameControl.RotRt, "8." },
             { GameControl.Start, "9." },
             { GameControl.Select, "10." },
             { GameControl.Up, "11." },
-            { GameControl.Right, "12." },
-            { GameControl.Down, "13." },
-            { GameControl.Left, "14." }
+            { GameControl.Down, "12." },
+            { GameControl.Left, "13." },
+            { GameControl.Right, "14." },
         };
 
         public static ControlConfiguration LoadConfigurationFromFile(string pathToFile)

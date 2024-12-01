@@ -47,7 +47,7 @@
 
         <DataTemplate x:Key="keyboardItemTemplate">
             <Grid x:Name="gd" DataContext="{Binding ElementName=windowControls, Path=DataContext}" Background="Transparent">
-                <TextBlock Text="{Binding ElementName=gd, Path=DataContext.SelectedGameConfigOption, FallbackValue='[Default-Alt] Steam KB+PlayStation (Swap AB-XO)'}" 
+                <TextBlock Text="{Binding ElementName=gd, Path=DataContext.SelectedGameConfigOption, FallbackValue='[Default] Steam KB+PlayStation (Stock)'}" 
                            Margin="0,0,15,0" 
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="NoWrap"/>
