@@ -208,10 +208,10 @@ namespace AppUI.Classes
 
         public static Dictionary<GameControl, string> ControlMapping = new Dictionary<GameControl, string>()
         {
-            { GameControl.OK, "1." },
-            { GameControl.Exit, "2." },
+            { GameControl.Menu, "1." },
+            { GameControl.OK, "2." },
             { GameControl.Misc, "3." },
-            { GameControl.Menu, "4." },
+            { GameControl.Exit, "4." },
             { GameControl.Toggle, "5." },
             { GameControl.Trigger, "6." },
             { GameControl.RotLt, "7." },
@@ -241,9 +241,9 @@ namespace AppUI.Classes
             loaded.KeyboardInputs.Add(GameControl.Start, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Start]));
             loaded.KeyboardInputs.Add(GameControl.Select, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Select]));
             loaded.KeyboardInputs.Add(GameControl.Up, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Up]));
-            loaded.KeyboardInputs.Add(GameControl.Right, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Right]));
             loaded.KeyboardInputs.Add(GameControl.Down, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Down]));
             loaded.KeyboardInputs.Add(GameControl.Left, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Left]));
+            loaded.KeyboardInputs.Add(GameControl.Right, GetControlInputFromConfigValue(ControlType.Keyboard, inputFile, ControlMapping[GameControl.Right]));
 
             loaded.GamepadInputs.Add(GameControl.OK, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.OK]));
             loaded.GamepadInputs.Add(GameControl.Exit, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Exit]));
@@ -256,9 +256,9 @@ namespace AppUI.Classes
             loaded.GamepadInputs.Add(GameControl.Start, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Start]));
             loaded.GamepadInputs.Add(GameControl.Select, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Select]));
             loaded.GamepadInputs.Add(GameControl.Up, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Up]));
-            loaded.GamepadInputs.Add(GameControl.Right, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Right]));
             loaded.GamepadInputs.Add(GameControl.Down, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Down]));
             loaded.GamepadInputs.Add(GameControl.Left, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Left]));
+            loaded.GamepadInputs.Add(GameControl.Right, GetControlInputFromConfigValue(ControlType.Joystick, inputFile, ControlMapping[GameControl.Right]));
 
             return loaded;
         }
@@ -266,10 +266,10 @@ namespace AppUI.Classes
         public static bool SaveConfigurationToFile(string pathToFile, ControlConfiguration configToSave)
         {
             string buffer = $@"Keyboard
-1. ""Select""   {configToSave.KeyboardInputs[GameControl.OK].ConfigValue}
-2. ""Exit""     {configToSave.KeyboardInputs[GameControl.Exit].ConfigValue}
+1. ""Menu""   {configToSave.KeyboardInputs[GameControl.Menu].ConfigValue}
+2. ""Select""     {configToSave.KeyboardInputs[GameControl.OK].ConfigValue}
 3. ""Misc""     {configToSave.KeyboardInputs[GameControl.Misc].ConfigValue}
-4. ""Menu""     {configToSave.KeyboardInputs[GameControl.Menu].ConfigValue}
+4. ""Exit""     {configToSave.KeyboardInputs[GameControl.Exit].ConfigValue}
 5. ""Toggle""   {configToSave.KeyboardInputs[GameControl.Toggle].ConfigValue}
 6. ""Trigger""  {configToSave.KeyboardInputs[GameControl.Trigger].ConfigValue}
 7. ""RotLt""    {configToSave.KeyboardInputs[GameControl.RotLt].ConfigValue}
@@ -281,10 +281,10 @@ namespace AppUI.Classes
 13. ""Left""     {configToSave.KeyboardInputs[GameControl.Left].ConfigValue}
 14. ""Right""    {configToSave.KeyboardInputs[GameControl.Right].ConfigValue}
 Joystick
-1. ""Select""   {configToSave.GamepadInputs[GameControl.OK].ConfigValue}
-2. ""Exit""     {configToSave.GamepadInputs[GameControl.Exit].ConfigValue}
+1. ""Menu""   {configToSave.GamepadInputs[GameControl.Menu].ConfigValue}
+2. ""Select""     {configToSave.GamepadInputs[GameControl.OK].ConfigValue}
 3. ""Misc""     {configToSave.GamepadInputs[GameControl.Misc].ConfigValue}
-4. ""Menu""     {configToSave.GamepadInputs[GameControl.Menu].ConfigValue}
+4. ""Exit""     {configToSave.GamepadInputs[GameControl.Exit].ConfigValue}
 5. ""Toggle""   {configToSave.GamepadInputs[GameControl.Toggle].ConfigValue}
 6. ""Trigger""  {configToSave.GamepadInputs[GameControl.Trigger].ConfigValue}
 7. ""RotLt""    {configToSave.GamepadInputs[GameControl.RotLt].ConfigValue}
