@@ -725,7 +725,12 @@ namespace AppUI.ViewModels
             // if new setting SelectedMidiDevice is missing, reset Game Launch Settings to defaults
             if (Sys.Settings.GameLaunchSettings.SelectedMidiDevice == Guid.Empty)
             {
+                // backup user configured input scheme
+                string inGameConfigOption = Sys.Settings.GameLaunchSettings.InGameConfigOption;
+                // Restore all the other settings
                 Sys.Settings.GameLaunchSettings = LaunchSettings.DefaultSettings();
+                // Restore user configured input scheme
+                Sys.Settings.GameLaunchSettings.InGameConfigOption = inGameConfigOption;
             }
 
             if (showSettings)
