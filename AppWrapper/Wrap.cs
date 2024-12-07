@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Diagnostics;
 using Iros;
+using System.Reflection.Metadata;
 
 namespace AppWrapper {
     public static class Wrap {
@@ -305,21 +306,20 @@ namespace AppWrapper {
         {            
             uint ret = 0;
 
-            DebugLogger.DetailedWriteLine($">> GetFileType on {hFile}");
             if (_varchives.ContainsKey(hFile))
             {
                 //DebugLogger.WriteLine(" ---faking dummy file");
                 ret = 1;
             }
 
+            DebugLogger.DetailedWriteLine($">> GetFileType on {hFile}: {ret}");
+
             return ret;
         }
 
         public static uint HSetFilePointer(IntPtr hFile, int lDistanceTomove, IntPtr lpDistanceToMoveHigh, uint dwMoveMethod)
         {
-            //DebugLogger.WriteLine("SetFilePointer on {0} to {1} by {2}", handle, lDistanceTomove, dwMoveMethod);
             uint ret = uint.MaxValue;
-
             long offset = lDistanceTomove;
 
             if (lpDistanceToMoveHigh != IntPtr.Zero)
@@ -328,6 +328,7 @@ namespace AppWrapper {
             if (_varchives.ContainsKey(hFile))
             {
                 ret = _varchives[hFile].SetFilePointer(offset, (Win32.EMoveMethod)dwMoveMethod);
+                DebugLogger.WriteLine($">> SetFilePointer on dummy handle {hFile} to {lDistanceTomove} by {dwMoveMethod}");
             }
             
             return ret;
@@ -343,6 +344,7 @@ namespace AppWrapper {
                 ret = _varchives[handle].ReadFile(bytes, numBytesToRead, ref _numBytesRead);
                 byte[] tmp = BitConverter.GetBytes(_numBytesRead);
                 Util.CopyToIntPtr(tmp, numBytesRead, tmp.Length);
+                DebugLogger.DetailedWriteLine($">> ReadFile on dummy handle {handle}, bytesToRead {numBytesToRead}, bytesRead {_numBytesRead}");
                 return ret;
             }
 
@@ -352,7 +354,7 @@ namespace AppWrapper {
         public static IntPtr CreateVA(OverrideFile of) {
             VArchiveData va = new VArchiveData(of.Archive.GetBytes(of.File));
             IntPtr dummy = of.Archive.GetDummyHandle(_process);
-            DebugLogger.WriteLine($">> Creating dummy file handle {dummy} to access {of.Archive}{of.File}");
+            DebugLogger.WriteLine($">> Creating dummy file handle {dummy} to access {of.Archive}\\{of.File}");
             _varchives[dummy] = va;
 
             return dummy;
@@ -455,13 +457,14 @@ namespace AppWrapper {
 
             if (result && _varchives.ContainsKey(hFile))
             {
-                DebugLogger.DetailedWriteLine($">> Overriding GetFileInformationByHandle for dummy file {hFile}");
                 _lpFileInformation.FileSizeHigh = (uint)(_varchives[hFile].Size >> 32);
                 _lpFileInformation.FileSizeLow = (uint)(_varchives[hFile].Size & 0xffffffff);
 
                 // Update again the struct
                 tmp = Util.StructToBytes(_lpFileInformation);
                 Util.CopyToIntPtr(tmp, lpFileInformation, tmp.Length);
+
+                DebugLogger.DetailedWriteLine($">> Overriding GetFileInformationByHandle for dummy file {hFile}: {_varchives[hFile].Size} bytes");
             }
 
             return result ? 1 : 0;
@@ -514,7 +517,11 @@ namespace AppWrapper {
             int ret = 0;
 
             if (_varchives.ContainsKey(hFile))
+            {
                 ret = _varchives[hFile].SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, (uint)dwMoveMethod);
+                
+                DebugLogger.WriteLine($">> SetFilePointerEx on dummy handle {hFile} to {liDistanceToMove} by {dwMoveMethod}");
+            }
 
             return ret;
         }
