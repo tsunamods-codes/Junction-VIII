@@ -70,6 +70,9 @@ struct host_exports
 // API to initialize AppProxy
 static HRESULT(WINAPI* HostInitialize)(host_exports*) = nullptr;
 
+// CreateFileA
+static HANDLE(WINAPI* TrueCreateFileA)(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) = CreateFileA;
+
 // CreateFileW
 static HANDLE(WINAPI* TrueCreateFileW)(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) = CreateFileW;
 
@@ -116,6 +119,26 @@ HANDLE currentMainThread = nullptr;
 BOOL inDotNetCode = false;
 
 // FUNCTIONS -------------------------------------
+
+HANDLE WINAPI _CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+{
+    HANDLE ret = nullptr;
+
+    if (exports.CreateFileA)
+    {
+        if (!inDotNetCode)
+        {
+            inDotNetCode = true;
+            ret = exports.CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+            inDotNetCode = false;
+        }
+    }
+
+    if (ret == nullptr)
+        ret = TrueCreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+
+    return ret;
+}
 
 HANDLE WINAPI _CreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
@@ -293,6 +316,7 @@ VOID WINAPI _PostQuitMessage(int nExitCode)
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
         // ------------------------------------
+        DetourDetach((PVOID*)&TrueCreateFileA, _CreateFileA);
         DetourDetach((PVOID*)&TrueCreateFileW, _CreateFileW);
         DetourDetach((PVOID*)&TrueReadFile, _ReadFile);
         DetourDetach((PVOID*)&TrueFindFirstFileW, _FindFirstFileW);
@@ -508,6 +532,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
             DetourTransactionBegin();
             DetourUpdateThread(GetCurrentThread());
             // ------------------------------------
+            DetourAttach((PVOID*)&TrueCreateFileA, _CreateFileA);
             DetourAttach((PVOID*)&TrueCreateFileW, _CreateFileW);
             DetourAttach((PVOID*)&TrueReadFile, _ReadFile);
             DetourAttach((PVOID*)&TrueFindFirstFileW, _FindFirstFileW);

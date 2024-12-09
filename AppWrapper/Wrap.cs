@@ -360,6 +360,85 @@ namespace AppWrapper {
             return dummy;
         }
 
+        public static IntPtr HCreateFileA(
+            [MarshalAs(UnmanagedType.LPStr)] string lpFileName,
+            [MarshalAs(UnmanagedType.U4)] FileAccess dwDesiredAccess,
+            [MarshalAs(UnmanagedType.U4)] FileShare dwShareMode,
+            IntPtr lpSecurityAttributes,
+            [MarshalAs(UnmanagedType.U4)] FileMode dwCreationDisposition,
+            [MarshalAs(UnmanagedType.U4)] FileAttributes dwFlagsAndAttributes,
+            IntPtr hTemplateFile)
+        {
+            IntPtr ret = IntPtr.Zero;
+
+            // Normalize Unix paths if any
+            lpFileName = lpFileName.Replace("/", "\\");
+
+            // Usually this check should be enough...
+            bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
+            // ...but if it fails, last resort is to check if the file exists in the game directory
+            if (!isFF8GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
+            {
+                isFF8GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            // If a game file is found, process with replacing its content with relative mod file
+            if (isFF8GameFile)
+            {
+                lpFileName = lpFileName.Replace("\\/", "\\").Replace("\\\\", "\\");
+                DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
+                if (lpFileName.IndexOf('\\') < 0)
+                {
+                    //DebugLogger.WriteLine("No path: curdir is {0}", System.IO.Directory.GetCurrentDirectory(), 0);
+                    lpFileName = Path.Combine(Directory.GetCurrentDirectory(), lpFileName);
+                }
+
+                foreach (string path in _profile.MonitorPaths)
+                {
+                    if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        string match = lpFileName.Substring(path.Length);
+                        OverrideFile mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                        //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+
+                        if (mapped == null)
+                        {
+                            // Attempt a second round, this time relaxing the path match replacing only the game folder path.
+                            match = lpFileName.Substring(_profile.FF8Path.Length + 1);
+                            mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                            //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+                        }
+
+                        if (mapped != null)
+                        {
+                            DebugLogger.WriteLine($"   - Remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                            if (mapped.Archive == null)
+                            {
+                                lpFileName = mapped.File;
+                            }
+                            else
+                            {
+                                ret = CreateVA(mapped);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                DebugLogger.DetailedWriteLine($">> Skipped file {lpFileName}");
+
+            if (ret == IntPtr.Zero)
+                ret = Win32.CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+
+            //DebugLogger.WriteLine("Hooked CreateFileW for {0} under {1}", lpFileName, handle.ToInt32());
+
+            return ret;
+        }
+
         public static IntPtr HCreateFileW(
             [MarshalAs(UnmanagedType.LPWStr)] string lpFileName,
             [MarshalAs(UnmanagedType.U4)] FileAccess dwDesiredAccess,
