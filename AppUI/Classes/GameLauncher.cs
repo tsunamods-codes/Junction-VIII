@@ -250,6 +250,7 @@ namespace AppUI.Classes
                         }
                     }
                 }
+                converter.Ensure102PatchApplied();
             }
 
             // Auto-patch for 4GB support

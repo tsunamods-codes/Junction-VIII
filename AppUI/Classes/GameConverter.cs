@@ -171,6 +171,53 @@ namespace AppUI.Classes
             return false;
         }
 
+        public void Ensure102PatchApplied()
+        {
+            if (!Directory.Exists(InstallPath))
+            {
+                return;
+            }
+
+            // Check if bink32 is from 1.02 ( fixes vertically flipped movies )
+            bool patchApplied = false;
+
+            byte[][] requiredHashes = {
+                Convert.FromHexString("66D81FEB880C218BA9FF2AFDA41747A794B30446"), // 1.02
+            };
+            try
+            {
+                using (FileStream fs = new FileStream(Path.Combine(InstallPath, "binkw32.dll"), FileMode.Open))
+                {
+                    bool matchesAtLeastOne = false;
+                    byte[] currentHash = SHA1.HashData(fs);
+                    foreach (byte[] hash in requiredHashes)
+                    {
+                        if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
+                    }
+
+                    if (matchesAtLeastOne) patchApplied = true;
+                }
+            }
+            catch (Exception)
+            {
+                // Assume is the old one
+            }
+
+            if (!patchApplied)
+            {
+                string ff8ExePath = Path.Combine(Sys.PathToPatchedExeFolder, "binkw32.dll");
+
+                try
+                {
+                    File.Copy(ff8ExePath, Path.Combine(InstallPath, "binkw32.dll"), true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// Checks all files, folders, and sub-folders for signs of pirated files 
         /// </summary>
