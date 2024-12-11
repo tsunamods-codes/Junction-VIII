@@ -11,6 +11,8 @@
     <system:String x:Key="PlayWithMinimalValidation">Εναρξη με ελάχιστη επικύρωση</system:String>
     <system:String x:Key="PlayWithVariableDump">Εναρξη με το αρχείο μεταβλητής χωρητικότητας</system:String>
 
+    <system:String x:Key="RunChocobo">Run Chocobo</system:String>
+
     <system:String x:Key="Settings">Ρυθμίσεις</system:String>
     <system:String x:Key="ChangeColorTheme">Αλλαγή χρώματος θέματος...</system:String>
     <system:String x:Key="GeneralSettings">Γενικές Ρυθμίσεις...</system:String>

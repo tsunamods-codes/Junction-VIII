@@ -834,6 +834,61 @@ namespace AppUI.Classes
             }
         }
 
+        /// <summary>
+        /// Launches FF8.exe without loading any mods.
+        /// </summary>
+        internal static async Task<bool> LaunchChocoboExe()
+        {
+            string chocoboExe = string.Empty;
+
+            try
+            {
+                if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+                {
+                    chocoboExe = Path.Combine(Sys.InstallPath, "chocobo_en.exe");
+                    string ticket = Path.Combine(Path.GetDirectoryName(Sys.Settings.FF8Exe), ".J8LaunchChoco");
+
+                    // Create signal file for the custom launcher
+                    File.Create(ticket);
+
+                    // Start game via Steam
+                    ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
+                    {
+                        WorkingDirectory = GameConverter.GetSteamPath(),
+                        UseShellExecute = true,
+                        Arguments = "-applaunch 39150"
+                    };
+                    Process.Start(startInfo);
+
+                    // Wait for game process
+                    await waitForProcess(Path.GetFileNameWithoutExtension(chocoboExe));
+
+                    // Delete signal file
+                    File.Delete(ticket);
+                }
+                else
+                {
+                    chocoboExe = Path.Combine(Sys.InstallPath, "chocobo.exe");
+
+                    // Start game directly
+                    ProcessStartInfo startInfo = new ProcessStartInfo(chocoboExe)
+                    {
+                        WorkingDirectory = Path.GetDirectoryName(chocoboExe),
+                        UseShellExecute = true,
+                    };
+                    Process.Start(startInfo);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {chocoboExe} ...", NLog.LogLevel.Error);
+                Logger.Error(ex);
+                return false;
+            }
+        }
+
         internal static bool SanityCheckSettings()
         {
             List<string> changes = new List<string>();
