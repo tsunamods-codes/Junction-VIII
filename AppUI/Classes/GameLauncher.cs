@@ -846,10 +846,10 @@ namespace AppUI.Classes
                 if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
                 {
                     chocoboExe = Path.Combine(Sys.InstallPath, "chocobo_en.exe");
-                    string ticket = Path.Combine(Path.GetDirectoryName(Sys.Settings.FF8Exe), ".J8LaunchChoco");
+                    string ticket = Path.Combine(Sys.InstallPath, ".J8LaunchChoco");
 
                     // Create signal file for the custom launcher
-                    File.Create(ticket);
+                    System.IO.File.WriteAllText(ticket, "chocobo_en.exe");
 
                     // Start game via Steam
                     ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
