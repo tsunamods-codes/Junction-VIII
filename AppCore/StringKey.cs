@@ -118,7 +118,6 @@
         EnterNameForCatalog,
         GeneralSettingsHaveBeenUpdated,
         SettingsNotValid,
-        Ff8ExePathChanged,
         MissingFf8ExePath,
         MissingLibraryPath,
         MissingTexturesPath,
