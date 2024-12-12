@@ -11,7 +11,7 @@
     <system:String x:Key="PlayWithMinimalValidation">Gioca con Convalida Minima</system:String>
     <system:String x:Key="PlayWithVariableDump">Gioca con Dump delle Variabili</system:String>
 
-    <system:String x:Key="PlayWithChocobo">Play With Chocobo</system:String>
+    <system:String x:Key="PlayWithChocobo">Play With Chocobo World</system:String>
 
     <system:String x:Key="Settings">Impostazioni</system:String>
     <system:String x:Key="ChangeColorTheme">Cambia Tema...</system:String>
