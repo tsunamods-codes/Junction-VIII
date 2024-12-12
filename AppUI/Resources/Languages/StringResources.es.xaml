@@ -786,6 +786,7 @@ Por último, puedes seleccionar la ruta de las cinemáticas en 'Opciones general
 
     <system:String x:Key="VerifyingFf8Exe">Verificando el FF8.exe ...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Se detectó un cambio en la ruta del juego, recomendamos encarecidamente que reinicies Junction 8. ¿Te gustaría hacerlo ahora?</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">Se ha detectado que ff8.exe es distinto. Creando una copia de reserva y copiando el .exe correcto ...</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">error al intentar copiar ff8.exe. Abortando ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">error al crear una copia de reserva de ff8.exe. Abortando ...</system:String>

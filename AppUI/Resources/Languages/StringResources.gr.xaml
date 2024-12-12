@@ -781,6 +781,7 @@ Once done, do close the game and the launcher, and finally retry to click Play h
 
     <system:String x:Key="VerifyingFf8Exe">Γίνεται επαλήθευση του ff8.exe ...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Εντοπίστηκε αλλαγή διαδρομής παιχνιδιού, σας συνιστούμε ανεπιφύλακτα να επανεκκινήσετε το Junction 8. Θέλετε να το κάνετε τώρα;</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">Το ff8.exe εντοπίστηκε να είναι διαφορετικό. Δημιουργία αντιγράφων ασφαλείας και αντιγραφή σωστών .exe ...</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">Αποτυχία αντιγραφής του ff8.exe. Ματαίωση ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">Αποτυχία δημιουργίας αντιγράφου ασφαλείας για το ff8.exe. Ματαίωση ...</system:String>

@@ -777,6 +777,7 @@ Enfin, vous pouvez définir le chemin d'accès de votre film dans les 'Paramètr
 
     <system:String x:Key="VerifyingFf8Exe">Vérification de ff8 exe...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Changement de chemin de jeu détecté, nous vous recommandons vivement de redémarrer Junction 8. Souhaitez-vous le faire maintenant ?</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">ff8.exe détecté comme étant différent. création d'une sauvegarde et copie du bon fichier .exe...</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">échec de la copie de ff8.exe. Abandon...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">échec de la création d'une sauvegarde de ff8.exe. Abandon...</system:String>

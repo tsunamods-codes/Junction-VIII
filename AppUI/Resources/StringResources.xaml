@@ -784,6 +784,7 @@ Lastly, you can set your movie path in 'General Settings' to point to your game 
 
     <system:String x:Key="VerifyingFf8Exe">Verifying ff8 exe ...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Game path change detected, we highly recommend you restart Junction 8 would you like to now?</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">ff8.exe detected to be different. creating backup and copying correct .exe ...</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">failed to copy ff8.exe. Aborting ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">failed to create backup of ff8.exe. Aborting ...</system:String>
