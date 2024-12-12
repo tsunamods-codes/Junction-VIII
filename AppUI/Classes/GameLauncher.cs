@@ -867,7 +867,11 @@ namespace AppUI.Classes
                     Process.Start(startInfo);
 
                     // Wait for game process
-                    await waitForProcess(Path.GetFileNameWithoutExtension(chocoboExe));
+                    Process game = await waitForProcess(Path.GetFileNameWithoutExtension(chocoboExe));
+                    if (game != null)
+                    {
+                        ff8Proc = game;
+                    }
 
                     // Delete signal file
                     File.Delete(ticket);
@@ -882,8 +886,28 @@ namespace AppUI.Classes
                         WorkingDirectory = Path.GetDirectoryName(chocoboExe),
                         UseShellExecute = true,
                     };
-                    Process.Start(startInfo);
+                    ff8Proc = Process.Start(startInfo);
                 }
+
+                ff8Proc.EnableRaisingEvents = true;
+                ff8Proc.Exited += (o, e) =>
+                {
+                    try
+                    {
+                        if (!IsChocoboRunning() && Instance._controllerInterceptor != null)
+                        {
+                            // stop polling for input once all ff8 procs are closed (could be multiple instances open)
+                            Instance._controllerInterceptor.PollingInput = false;
+                        }
+
+                        // cleanup
+                        DeleteJ8WrapperDlls();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                };
 
                 return true;
             }
@@ -1324,6 +1348,21 @@ namespace AppUI.Classes
             bool ret = false;
 
             string fileName = Path.GetFileNameWithoutExtension(Sys.Settings.FF8Exe);
+            ret = Process.GetProcessesByName(fileName).Length > 0;
+
+            if (!ret && Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+            {
+                ret = Process.GetProcessesByName("FF8_Launcher").Length > 0;
+            }
+
+            return ret;
+        }
+
+        public static bool IsChocoboRunning()
+        {
+            bool ret = false;
+
+            string fileName = Sys.Settings.FF8InstalledVersion == FF8Version.Steam ? "chocobo_en" : "chocobo";
             ret = Process.GetProcessesByName(fileName).Length > 0;
 
             if (!ret && Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
