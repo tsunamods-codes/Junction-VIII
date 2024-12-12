@@ -31,10 +31,11 @@ namespace AppUI.Windows
             txtLog.MaxLines = int.MaxValue;
         }
 
-        public static GameLaunchViewModel Show(bool variableDump, bool debugLogging, bool noMods = false)
+        public static GameLaunchViewModel Show(bool variableDump, bool debugLogging, bool noMods = false, bool runChocobo = false)
         {
             GameLaunchWindow launchWindow = new GameLaunchWindow(variableDump, debugLogging);
             launchWindow.ViewModel.IsLaunchingWithNoMods = noMods;
+            launchWindow.ViewModel.IsLaunchingChocobo = runChocobo;
 
             if (!Sys.Settings.GameLaunchSettings.ShowLauncherWindow)
             {

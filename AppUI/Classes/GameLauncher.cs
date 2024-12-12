@@ -81,7 +81,7 @@ namespace AppUI.Classes
 
         private static Process ff8Proc;
 
-        public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false)
+        public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false, bool launchChocobo = false)
         {
             bool runAsVanilla = false;
             string vanillaMsg = "";
@@ -461,7 +461,10 @@ namespace AppUI.Classes
             if (runAsVanilla)
             {
                 Instance.RaiseProgressChanged(vanillaMsg);
-                await LaunchFF8Exe();
+                if (launchChocobo)
+                    await LaunchChocoboExe();
+                else
+                    await LaunchFF8Exe();
 
                 return true;
             }
@@ -494,7 +497,10 @@ namespace AppUI.Classes
                 {
                     try
                     {
-                        await LaunchFF8Exe();
+                        if (launchChocobo)
+                            await LaunchChocoboExe();
+                        else
+                            await LaunchFF8Exe();
                         didInject = true;
                     }
                     catch (Exception e)

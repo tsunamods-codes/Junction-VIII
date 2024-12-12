@@ -11,7 +11,7 @@
     <system:String x:Key="PlayWithMinimalValidation">Jogue com Validação Mínima</system:String>
     <system:String x:Key="PlayWithVariableDump">Jogar Com Despejo Variável</system:String>
 
-    <system:String x:Key="RunChocobo">Run Chocobo</system:String>
+    <system:String x:Key="PlayWithChocobo">Play With Chocobo</system:String>
 
     <system:String x:Key="Settings">Configurações</system:String>
     <system:String x:Key="ChangeColorTheme">Alterar Tema de Cores...</system:String>

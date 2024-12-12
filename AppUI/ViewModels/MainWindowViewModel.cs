@@ -1639,11 +1639,11 @@ namespace AppUI.ViewModels
             return AppHints[r.Next(0, AppHints.Count)];
         }
 
-        internal void LaunchGame(bool variableDump = false, bool debugLogging = false, bool noMods = false)
+        internal void LaunchGame(bool variableDump = false, bool debugLogging = false, bool noMods = false, bool runChocobo = false)
         {
             IsGameLaunching = true;
             GameLauncher.Instance.LaunchCompleted += GameLauncher_LaunchCompleted;
-            GameLaunchWindow.Show(variableDump, debugLogging, noMods);
+            GameLaunchWindow.Show(variableDump, debugLogging, noMods, runChocobo);
         }
 
         private void GameLauncher_LaunchCompleted(bool wasSuccessful)

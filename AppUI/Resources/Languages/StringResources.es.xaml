@@ -10,7 +10,7 @@
     <system:String x:Key="PlayWithDebugLog">Jugar con debug log</system:String>
     <system:String x:Key="PlayWithVariableDump">Jugar con variable dump</system:String>
 
-    <system:String x:Key="RunChocobo">Run Chocobo</system:String>
+    <system:String x:Key="PlayWithChocobo">Play With Chocobo</system:String>
 
     <system:String x:Key="Settings">Opciones</system:String>
     <system:String x:Key="ChangeColorTheme">Cambiar el color del tema...</system:String>

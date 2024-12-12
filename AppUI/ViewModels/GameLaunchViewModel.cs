@@ -37,6 +37,7 @@ namespace AppUI.ViewModels
         }
 
         public bool IsLaunchingWithNoMods { get; internal set; }
+        public bool IsLaunchingChocobo { get; internal set; }
 
         internal Task<bool> BeginLaunchProcessAsync()
         {
@@ -48,7 +49,7 @@ namespace AppUI.ViewModels
                 {
                     GameLauncher.Instance.ProgressChanged += LaunchGame_ProgressChanged;
 
-                    didLaunch = GameLauncher.LaunchGame(variableDump, debugLogging, IsLaunchingWithNoMods).Result;
+                    didLaunch = GameLauncher.LaunchGame(variableDump, debugLogging, IsLaunchingWithNoMods, IsLaunchingChocobo).Result;
                 }
                 finally
                 {

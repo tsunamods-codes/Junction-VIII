@@ -133,7 +133,7 @@
                               ContextMenuService.Placement="Bottom">
                     <ToggleButton.ContextMenu>
                         <ContextMenu x:Name="menuPlayOptions" Closed="menuPlayOptions_Closed">
-                            <MenuItem x:Name="menuRunChocobo" Header="{DynamicResource RunChocobo}" Click="menuRunChocobo_Click"/>
+                            <MenuItem x:Name="menuPlayWithChocobo" Header="{DynamicResource PlayWithChocobo}" Click="menuPlayWithChocobo_Click"/>
                             <MenuItem Style="{StaticResource ContextMenuSeperator}"/>
                             <MenuItem x:Name="menuPlayWithMods" Header="{DynamicResource PlayWithMods}" Click="menuPlayWithMods_Click"/>
                             <MenuItem x:Name="menuPlayWithoutMods" Header="{DynamicResource PlayWithNoMods}" Click="menuPlayWithoutMods_Click"/>
