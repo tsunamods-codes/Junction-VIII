@@ -784,6 +784,7 @@ Abschließend können Sie Ihren Videodateipfad in "Allgemeines einstellen" so w�
 
     <system:String x:Key="VerifyingFf8Exe">Prüfe die "ff8.exe"...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Änderung des Spielpfads erkannt, wir empfehlen dringend, Junction 8 neu zu starten. Möchten Sie dies jetzt tun?</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">Es wurde festgestellt, dass die "ff8.exe" fehlt oder unterschiedlich ist. Erstellen Sie ein Backup (falls vorhanden) und kopieren Sie die korrekte .exe-Datei...</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">Fehler beim Kopieren der "ff8.exe". Abbruch...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">Fehler beim Erstellen des Backups von "ff8.exe". Abbruch...</system:String>

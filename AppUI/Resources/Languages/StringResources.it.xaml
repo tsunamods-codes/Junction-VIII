@@ -782,6 +782,7 @@ Infine, puoi impostare il percorso alla cartella Movies in 'Impostazioni General
     <system:String x:Key="VerifyingFf8Exe">Controllo l'eseguibile di ff8 ...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">ff8.exe individuato, ma differente. creo copia di backup e tento di correggere ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Rilevata modifica del percorso di gioco, ti consigliamo vivamente di riavviare Junction 8. Vuoi farlo ora?</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">copia di ff8.exe non riuscita. Annullo ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">copia di backup di ff8.exe non riuscita. Annullo ...</system:String>
 

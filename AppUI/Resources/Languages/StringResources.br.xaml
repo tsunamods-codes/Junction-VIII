@@ -783,6 +783,7 @@ Por último, você pode ajustar seu caminho de filmes em 'Configurações Gerais
     <system:String x:Key="VerifyingFf8Exe">Verificando ff8 exe ...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">ff8.exe detectado como diferente. Criando backup e copiando .exe correto ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Alteração no caminho do jogo detectada, recomendamos fortemente que você reinicie o Junction 8. Você gostaria de fazer isso agora?</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">Não foi possível copiar ff8.exe. Abortando ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">Não foi possível criar backup de ff8.exe. Abortando ...</system:String>
 
