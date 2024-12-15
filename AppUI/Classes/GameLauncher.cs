@@ -786,6 +786,9 @@ namespace AppUI.Classes
             {
                 if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
                 {
+                    string chocoTicket = Path.Combine(Sys.InstallPath, ".J8LaunchChoco");
+                    if (File.Exists(chocoTicket)) File.Delete(chocoTicket);
+
                     // Start game via Steam
                     ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
                     {
