@@ -366,11 +366,14 @@ namespace AppUI.Classes
                     return false;
                 }
 
-                //
-                // Copy J8Wrapper* dlls to FF8
-                //
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingEasyHookToFf8PathIfNotFoundOrOlder));
-                CopyJ8WrapperDlls();
+                if (!launchChocobo)
+                {
+                    //
+                    // Copy J8Wrapper* dlls to FF8
+                    //
+                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingEasyHookToFf8PathIfNotFoundOrOlder));
+                    CopyJ8WrapperDlls();
+                }
 
                 //
                 // Inherit FFNx Config keys from each mod
