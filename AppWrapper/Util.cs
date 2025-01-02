@@ -30,12 +30,12 @@ namespace Iros {
         }
 
         public static void SerializeBinary(object o, System.IO.Stream s) {
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter fmt = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            var fmt = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             fmt.Serialize(s, o);
         }
 
         public static T DeserializeBinary<T>(System.IO.Stream s) {
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter fmt = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            var fmt = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             return (T)fmt.Deserialize(s);
         }
 
