@@ -207,7 +207,7 @@ namespace Iros.Workshop {
         public void SetPathsFromInstallationPath(string pathToFf8Install)
         {
             FF8Exe = Sys.Settings.FF8InstalledVersion == FF8Version.Original2K ? Path.Combine(pathToFf8Install, "FF8.exe") : Path.Combine(pathToFf8Install, "ff8_en.exe");
-            if (LibraryLocation == string.Empty) LibraryLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Junction VIII");
+            if (LibraryLocation == string.Empty) LibraryLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Junction VIII");
 
             LogAndCreateFolderIfNotExists(LibraryLocation);
 
