@@ -330,6 +330,11 @@ namespace AppUI
             ViewModel.ShowGameDriverConfigWindow();
         }
 
+        private void menuPlayWithChocobo_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.LaunchGame(runChocobo: true);
+        }
+
         private void menuPlayWithMods_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.LaunchGame(false, false);

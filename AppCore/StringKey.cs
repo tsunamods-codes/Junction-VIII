@@ -119,6 +119,7 @@
         GeneralSettingsHaveBeenUpdated,
         SettingsNotValid,
         MissingFf8ExePath,
+        Ff8ExePathChanged,
         MissingLibraryPath,
         MissingTexturesPath,
         MissingMoviePath,

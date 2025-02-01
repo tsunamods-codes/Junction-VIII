@@ -2,6 +2,8 @@
 //
 
 #include <windows.h>
+#include <stdio.h>
+#include <sys/stat.h>
 #include "Resource.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
@@ -13,8 +15,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
 
-    // Start the process
-    if (!CreateProcess(L"ff8_en.exe", NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) return 1;
+    // Check if the .J8LaunchChoco file exists
+    struct stat dummy;
+    if (stat(".J8LaunchChoco", &dummy) == 0)
+    {
+        // Start the process
+        if (!CreateProcess(L"chocobo_en.exe", NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) return 1;        
+    }
+    else
+    {
+        // Start the process
+        if (!CreateProcess(L"ff8_en.exe", NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) return 1;
+    }
 
     // Wait for the process to finish
     WaitForSingleObject(pi.hProcess, INFINITE);

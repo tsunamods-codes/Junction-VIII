@@ -1,3 +1,4 @@
+X(CreateFileA)
 X(CreateFileW)
 X(ReadFile)
 X(FindFirstFileW)

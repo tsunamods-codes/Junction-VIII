@@ -10,6 +10,8 @@
     <system:String x:Key="PlayWithMinimalValidation">Mit minimaler Validierung spielen...</system:String>
     <system:String x:Key="PlayWithVariableDump">Mit variablem Dump spielen...</system:String>
 
+    <system:String x:Key="PlayWithChocobo">Play With Chocobo World</system:String>
+
     <system:String x:Key="Settings">Einstellungen</system:String>
     <system:String x:Key="ChangeColorTheme">Farbschema wechseln...</system:String>
     <system:String x:Key="GeneralSettings">Allgemeines einstellen...</system:String>
@@ -782,6 +784,7 @@ Abschließend können Sie Ihren Videodateipfad in "Allgemeines einstellen" so w�
 
     <system:String x:Key="VerifyingFf8Exe">Prüfe die "ff8.exe"...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Änderung des Spielpfads erkannt, wir empfehlen dringend, Junction 8 neu zu starten. Möchten Sie dies jetzt tun?</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">Es wurde festgestellt, dass die "ff8.exe" fehlt oder unterschiedlich ist. Erstellen Sie ein Backup (falls vorhanden) und kopieren Sie die korrekte .exe-Datei...</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">Fehler beim Kopieren der "ff8.exe". Abbruch...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">Fehler beim Erstellen des Backups von "ff8.exe". Abbruch...</system:String>

@@ -11,6 +11,8 @@
     <system:String x:Key="PlayWithMinimalValidation">Gioca con Convalida Minima</system:String>
     <system:String x:Key="PlayWithVariableDump">Gioca con Dump delle Variabili</system:String>
 
+    <system:String x:Key="PlayWithChocobo">Play With Chocobo World</system:String>
+
     <system:String x:Key="Settings">Impostazioni</system:String>
     <system:String x:Key="ChangeColorTheme">Cambia Tema...</system:String>
     <system:String x:Key="GeneralSettings">Impostazioni Generali...</system:String>
@@ -780,6 +782,7 @@ Infine, puoi impostare il percorso alla cartella Movies in 'Impostazioni General
     <system:String x:Key="VerifyingFf8Exe">Controllo l'eseguibile di ff8 ...</system:String>
     <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
     <system:String x:Key="Ff8ExeDetectedToBeDifferent">ff8.exe individuato, ma differente. creo copia di backup e tento di correggere ...</system:String>
+    <system:String x:Key="Ff8ExePathChanged">Rilevata modifica del percorso di gioco, ti consigliamo vivamente di riavviare Junction 8. Vuoi farlo ora?</system:String>
     <system:String x:Key="FailedToCopyFf8Exe">copia di ff8.exe non riuscita. Annullo ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8Exe">copia di backup di ff8.exe non riuscita. Annullo ...</system:String>
 

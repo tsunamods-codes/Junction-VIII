@@ -725,7 +725,12 @@ namespace AppUI.ViewModels
             // if new setting SelectedMidiDevice is missing, reset Game Launch Settings to defaults
             if (Sys.Settings.GameLaunchSettings.SelectedMidiDevice == Guid.Empty)
             {
+                // backup user configured input scheme
+                string inGameConfigOption = Sys.Settings.GameLaunchSettings.InGameConfigOption;
+                // Restore all the other settings
                 Sys.Settings.GameLaunchSettings = LaunchSettings.DefaultSettings();
+                // Restore user configured input scheme
+                Sys.Settings.GameLaunchSettings.InGameConfigOption = inGameConfigOption;
             }
 
             if (showSettings)
@@ -1634,11 +1639,11 @@ namespace AppUI.ViewModels
             return AppHints[r.Next(0, AppHints.Count)];
         }
 
-        internal void LaunchGame(bool variableDump = false, bool debugLogging = false, bool noMods = false)
+        internal void LaunchGame(bool variableDump = false, bool debugLogging = false, bool noMods = false, bool runChocobo = false)
         {
             IsGameLaunching = true;
             GameLauncher.Instance.LaunchCompleted += GameLauncher_LaunchCompleted;
-            GameLaunchWindow.Show(variableDump, debugLogging, noMods);
+            GameLaunchWindow.Show(variableDump, debugLogging, noMods, runChocobo);
         }
 
         private void GameLauncher_LaunchCompleted(bool wasSuccessful)

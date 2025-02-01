@@ -81,7 +81,7 @@ namespace AppUI.Classes
 
         private static Process ff8Proc;
 
-        public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false)
+        public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false, bool launchChocobo = false)
         {
             bool runAsVanilla = false;
             string vanillaMsg = "";
@@ -250,6 +250,7 @@ namespace AppUI.Classes
                         }
                     }
                 }
+                converter.Ensure102PatchApplied();
             }
 
             // Auto-patch for 4GB support
@@ -365,11 +366,14 @@ namespace AppUI.Classes
                     return false;
                 }
 
-                //
-                // Copy J8Wrapper* dlls to FF8
-                //
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingEasyHookToFf8PathIfNotFoundOrOlder));
-                CopyJ8WrapperDlls();
+                if (!launchChocobo)
+                {
+                    //
+                    // Copy J8Wrapper* dlls to FF8
+                    //
+                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingEasyHookToFf8PathIfNotFoundOrOlder));
+                    CopyJ8WrapperDlls();
+                }
 
                 //
                 // Inherit FFNx Config keys from each mod
@@ -460,7 +464,10 @@ namespace AppUI.Classes
             if (runAsVanilla)
             {
                 Instance.RaiseProgressChanged(vanillaMsg);
-                await LaunchFF8Exe();
+                if (launchChocobo)
+                    await LaunchChocoboExe();
+                else
+                    await LaunchFF8Exe();
 
                 return true;
             }
@@ -493,7 +500,10 @@ namespace AppUI.Classes
                 {
                     try
                     {
-                        await LaunchFF8Exe();
+                        if (launchChocobo)
+                            await LaunchChocoboExe();
+                        else
+                            await LaunchFF8Exe();
                         didInject = true;
                     }
                     catch (Exception e)
@@ -690,6 +700,8 @@ namespace AppUI.Classes
             File.Copy(Path.Combine(src, "AppWrapper.dll"), Path.Combine(dest, "AppWrapper.dll"), true);
             File.Copy(Path.Combine(src, "AppLoader.dll"), Path.Combine(dest, "dinput.dll"), true);
             File.Copy(Path.Combine(src, "AppLoader.pdb"), Path.Combine(dest, "AppLoader.pdb"), true);
+            File.Copy(Path.Combine(src, "nethost.dll"), Path.Combine(dest, "nethost.dll"), true);
+            File.Copy(Path.Combine(src, "System.Runtime.Serialization.Formatters.dll"), Path.Combine(dest, "System.Runtime.Serialization.Formatters.dll"), true);
         }
 
         private static void DeleteJ8WrapperDlls()
@@ -705,6 +717,8 @@ namespace AppUI.Classes
             File.Delete(Path.Combine(dest, "AppWrapper.dll"));
             File.Delete(Path.Combine(dest, "dinput.dll"));
             File.Delete(Path.Combine(dest, "AppLoader.pdb"));
+            File.Delete(Path.Combine(dest, "nethost.dll"));
+            File.Delete(Path.Combine(dest, "System.Runtime.Serialization.Formatters.dll"));
         }
 
         private static void StartTurboLogForVariableDump(RuntimeProfile runtimeProfiles)
@@ -776,6 +790,9 @@ namespace AppUI.Classes
             {
                 if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
                 {
+                    string chocoTicket = Path.Combine(Sys.InstallPath, ".J8LaunchChoco");
+                    if (File.Exists(chocoTicket)) File.Delete(chocoTicket);
+
                     // Start game via Steam
                     ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
                     {
@@ -828,6 +845,85 @@ namespace AppUI.Classes
             catch (Exception ex)
             {
                 Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {Sys.Settings.FF8Exe} ...", NLog.LogLevel.Error);
+                Logger.Error(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Launches FF8.exe without loading any mods.
+        /// </summary>
+        internal static async Task<bool> LaunchChocoboExe()
+        {
+            string chocoboExe = string.Empty;
+
+            try
+            {
+                if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+                {
+                    chocoboExe = Path.Combine(Sys.InstallPath, "chocobo_en.exe");
+                    string ticket = Path.Combine(Sys.InstallPath, ".J8LaunchChoco");
+
+                    // Create signal file for the custom launcher
+                    System.IO.File.WriteAllText(ticket, "chocobo_en.exe");
+
+                    // Start game via Steam
+                    ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
+                    {
+                        WorkingDirectory = GameConverter.GetSteamPath(),
+                        UseShellExecute = true,
+                        Arguments = "-applaunch 39150"
+                    };
+                    Process.Start(startInfo);
+
+                    // Wait for game process
+                    Process game = await waitForProcess(Path.GetFileNameWithoutExtension(chocoboExe));
+                    if (game != null)
+                    {
+                        ff8Proc = game;
+                    }
+
+                    // Delete signal file
+                    File.Delete(ticket);
+                }
+                else
+                {
+                    chocoboExe = Path.Combine(Sys.InstallPath, "chocobo.exe");
+
+                    // Start game directly
+                    ProcessStartInfo startInfo = new ProcessStartInfo(chocoboExe)
+                    {
+                        WorkingDirectory = Path.GetDirectoryName(chocoboExe),
+                        UseShellExecute = true,
+                    };
+                    ff8Proc = Process.Start(startInfo);
+                }
+
+                ff8Proc.EnableRaisingEvents = true;
+                ff8Proc.Exited += (o, e) =>
+                {
+                    try
+                    {
+                        if (!IsChocoboRunning() && Instance._controllerInterceptor != null)
+                        {
+                            // stop polling for input once all ff8 procs are closed (could be multiple instances open)
+                            Instance._controllerInterceptor.PollingInput = false;
+                        }
+
+                        // cleanup
+                        DeleteJ8WrapperDlls();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                };
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {chocoboExe} ...", NLog.LogLevel.Error);
                 Logger.Error(ex);
                 return false;
             }
@@ -1262,6 +1358,21 @@ namespace AppUI.Classes
             bool ret = false;
 
             string fileName = Path.GetFileNameWithoutExtension(Sys.Settings.FF8Exe);
+            ret = Process.GetProcessesByName(fileName).Length > 0;
+
+            if (!ret && Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+            {
+                ret = Process.GetProcessesByName("FF8_Launcher").Length > 0;
+            }
+
+            return ret;
+        }
+
+        public static bool IsChocoboRunning()
+        {
+            bool ret = false;
+
+            string fileName = Sys.Settings.FF8InstalledVersion == FF8Version.Steam ? "chocobo_en" : "chocobo";
             ret = Process.GetProcessesByName(fileName).Length > 0;
 
             if (!ret && Sys.Settings.FF8InstalledVersion == FF8Version.Steam)

@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Diagnostics;
 using Iros;
+using System.Reflection.Metadata;
 
 namespace AppWrapper {
     public static class Wrap {
@@ -305,21 +306,20 @@ namespace AppWrapper {
         {            
             uint ret = 0;
 
-            DebugLogger.DetailedWriteLine($">> GetFileType on {hFile}");
             if (_varchives.ContainsKey(hFile))
             {
                 //DebugLogger.WriteLine(" ---faking dummy file");
                 ret = 1;
             }
 
+            DebugLogger.DetailedWriteLine($">> GetFileType on {hFile}: {ret}");
+
             return ret;
         }
 
         public static uint HSetFilePointer(IntPtr hFile, int lDistanceTomove, IntPtr lpDistanceToMoveHigh, uint dwMoveMethod)
         {
-            //DebugLogger.WriteLine("SetFilePointer on {0} to {1} by {2}", handle, lDistanceTomove, dwMoveMethod);
             uint ret = uint.MaxValue;
-
             long offset = lDistanceTomove;
 
             if (lpDistanceToMoveHigh != IntPtr.Zero)
@@ -328,6 +328,7 @@ namespace AppWrapper {
             if (_varchives.ContainsKey(hFile))
             {
                 ret = _varchives[hFile].SetFilePointer(offset, (Win32.EMoveMethod)dwMoveMethod);
+                DebugLogger.WriteLine($">> SetFilePointer on dummy handle {hFile} to {lDistanceTomove} by {dwMoveMethod}");
             }
             
             return ret;
@@ -343,6 +344,7 @@ namespace AppWrapper {
                 ret = _varchives[handle].ReadFile(bytes, numBytesToRead, ref _numBytesRead);
                 byte[] tmp = BitConverter.GetBytes(_numBytesRead);
                 Util.CopyToIntPtr(tmp, numBytesRead, tmp.Length);
+                DebugLogger.DetailedWriteLine($">> ReadFile on dummy handle {handle}, bytesToRead {numBytesToRead}, bytesRead {_numBytesRead}");
                 return ret;
             }
 
@@ -352,10 +354,89 @@ namespace AppWrapper {
         public static IntPtr CreateVA(OverrideFile of) {
             VArchiveData va = new VArchiveData(of.Archive.GetBytes(of.File));
             IntPtr dummy = of.Archive.GetDummyHandle(_process);
-            DebugLogger.WriteLine($">> Creating dummy file handle {dummy} to access {of.Archive}{of.File}");
+            DebugLogger.WriteLine($">> Creating dummy file handle {dummy} to access {of.Archive}\\{of.File}");
             _varchives[dummy] = va;
 
             return dummy;
+        }
+
+        public static IntPtr HCreateFileA(
+            [MarshalAs(UnmanagedType.LPStr)] string lpFileName,
+            [MarshalAs(UnmanagedType.U4)] FileAccess dwDesiredAccess,
+            [MarshalAs(UnmanagedType.U4)] FileShare dwShareMode,
+            IntPtr lpSecurityAttributes,
+            [MarshalAs(UnmanagedType.U4)] FileMode dwCreationDisposition,
+            [MarshalAs(UnmanagedType.U4)] FileAttributes dwFlagsAndAttributes,
+            IntPtr hTemplateFile)
+        {
+            IntPtr ret = IntPtr.Zero;
+
+            // Normalize Unix paths if any
+            lpFileName = lpFileName.Replace("/", "\\");
+
+            // Usually this check should be enough...
+            bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
+            // ...but if it fails, last resort is to check if the file exists in the game directory
+            if (!isFF8GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
+            {
+                isFF8GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            // If a game file is found, process with replacing its content with relative mod file
+            if (isFF8GameFile)
+            {
+                lpFileName = lpFileName.Replace("\\/", "\\").Replace("\\\\", "\\");
+                DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
+                if (lpFileName.IndexOf('\\') < 0)
+                {
+                    //DebugLogger.WriteLine("No path: curdir is {0}", System.IO.Directory.GetCurrentDirectory(), 0);
+                    lpFileName = Path.Combine(Directory.GetCurrentDirectory(), lpFileName);
+                }
+
+                foreach (string path in _profile.MonitorPaths)
+                {
+                    if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        string match = lpFileName.Substring(path.Length);
+                        OverrideFile mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                        //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+
+                        if (mapped == null)
+                        {
+                            // Attempt a second round, this time relaxing the path match replacing only the game folder path.
+                            match = lpFileName.Substring(_profile.FF8Path.Length + 1);
+                            mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                            //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+                        }
+
+                        if (mapped != null)
+                        {
+                            DebugLogger.WriteLine($"   - Remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                            if (mapped.Archive == null)
+                            {
+                                lpFileName = mapped.File;
+                            }
+                            else
+                            {
+                                ret = CreateVA(mapped);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                DebugLogger.DetailedWriteLine($">> Skipped file {lpFileName}");
+
+            if (ret == IntPtr.Zero)
+                ret = Win32.CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+
+            //DebugLogger.WriteLine("Hooked CreateFileW for {0} under {1}", lpFileName, handle.ToInt32());
+
+            return ret;
         }
 
         public static IntPtr HCreateFileW(
@@ -455,13 +536,14 @@ namespace AppWrapper {
 
             if (result && _varchives.ContainsKey(hFile))
             {
-                DebugLogger.DetailedWriteLine($">> Overriding GetFileInformationByHandle for dummy file {hFile}");
                 _lpFileInformation.FileSizeHigh = (uint)(_varchives[hFile].Size >> 32);
                 _lpFileInformation.FileSizeLow = (uint)(_varchives[hFile].Size & 0xffffffff);
 
                 // Update again the struct
                 tmp = Util.StructToBytes(_lpFileInformation);
                 Util.CopyToIntPtr(tmp, lpFileInformation, tmp.Length);
+
+                DebugLogger.DetailedWriteLine($">> Overriding GetFileInformationByHandle for dummy file {hFile}: {_varchives[hFile].Size} bytes");
             }
 
             return result ? 1 : 0;
@@ -514,7 +596,11 @@ namespace AppWrapper {
             int ret = 0;
 
             if (_varchives.ContainsKey(hFile))
+            {
                 ret = _varchives[hFile].SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, (uint)dwMoveMethod);
+                
+                DebugLogger.WriteLine($">> SetFilePointerEx on dummy handle {hFile} to {liDistanceToMove} by {dwMoveMethod}");
+            }
 
             return ret;
         }
