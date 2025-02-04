@@ -163,17 +163,6 @@
       <Settings></Settings>
     </Option>
   </Setting>
-  
-  <Setting xsi:type="DropDown">
-    <Group>Cheats</Group>
-    <Name>Soft Reset</Name>
-    <Description>Not configurable. Quickly reset the game with a game over. *Do not reset during battle.*{0}Usage: 'CTRL+R' or 'L3, then Select+Start'</Description>
-    <DefaultValue></DefaultValue>
-    <Option>
-      <Text>See Description</Text>
-      <Settings></Settings>
-    </Option>
-  </Setting>
 
   <Setting xsi:type="DropDown">
     <Group>Cheats</Group>

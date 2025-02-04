@@ -163,17 +163,6 @@
       <Settings></Settings>
     </Option>
   </Setting>
-  
-  <Setting xsi:type="DropDown">
-    <Group>Trapaça</Group>
-    <Name>Reinicialização Suave</Name>
-    <Description>Não configurável. Reinicia o jogo rapidamente com um game over.{0}Uso: CTRL+R ou L1+L2+R1+R2+Selecionar+Iniciar</Description>
-    <DefaultValue></DefaultValue>
-    <Option>
-      <Text>Veja a Descrição</Text>
-      <Settings></Settings>
-    </Option>
-  </Setting>
 
   <Setting xsi:type="DropDown">
     <Group>Trapaça</Group>

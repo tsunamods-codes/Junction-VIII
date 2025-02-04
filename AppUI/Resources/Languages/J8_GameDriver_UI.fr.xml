@@ -163,17 +163,6 @@
       <Settings></Settings>
     </Option>
   </Setting>
-  
-  <Setting xsi:type="DropDown">
-    <Group>Fonctions de triche</Group>
-    <Name>R.A.Z Rapide</Name>
-    <Description>Non configurable. Réinitialise rapidement le jeu par un "game over".{0}Utilisation: CTRL+R ou L1+L2+R1+R2+Sélectionner+Démarrer</Description>
-    <DefaultValue></DefaultValue>
-    <Option>
-      <Text>Voir Description</Text>
-      <Settings></Settings>
-    </Option>
-  </Setting>
 
   <Setting xsi:type="DropDown">
     <Group>Fonctions de triche</Group>
