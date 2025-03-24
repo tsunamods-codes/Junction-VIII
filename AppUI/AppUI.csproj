@@ -259,13 +259,13 @@
   <ItemGroup>
     <PackageReference Include="AsmResolver.PE.File" Version="5.5.1" />
     <PackageReference Include="Extended.Wpf.Toolkit">
-      <Version>4.7.25103.5738</Version>
+      <Version>4.7.25104.5739</Version>
     </PackageReference>
     <PackageReference Include="MegaApiClient">
       <Version>1.10.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.162">
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.183">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
