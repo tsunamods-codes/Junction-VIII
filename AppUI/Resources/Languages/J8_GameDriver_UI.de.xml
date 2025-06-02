@@ -163,7 +163,7 @@
       <Settings></Settings>
     </Option>
   </Setting>
-  
+
   <Setting xsi:type="DropDown">
     <Group>Cheats</Group>
     <Name>Soft-Reset</Name>
@@ -225,7 +225,16 @@
     </Option>
   </Setting>
 
-  <!-- ADVANCED TAB -->  
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Erweitert</Group>
+    <Name>Steam-Kompatibilität</Name>
+    <Description>Aktiviert Steam-Funktionen (Spielaktivität, Controller und Errungenschaften). Erfordert, dass Steam bereits gestartet wurde.</Description>
+	  <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="Checkbox">
     <Group>Erweitert</Group>
     <Name>Debug-Informationen anzeigen</Name>

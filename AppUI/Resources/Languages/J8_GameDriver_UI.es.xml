@@ -223,6 +223,14 @@
   </Setting>
 
   <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzado</Group>
+    <Name>Compatibilidad con Steam</Name>
+    <Description>Activar las opciones de Steam (Actividad del juego, mando y logros). ES NECESARIO que Steam esté en ejecución.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
 
   <Setting xsi:type="Checkbox">
     <Group>Avanzado</Group>

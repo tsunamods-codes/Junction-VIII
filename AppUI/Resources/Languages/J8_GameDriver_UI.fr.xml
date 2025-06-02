@@ -214,7 +214,16 @@
     </Option>
   </Setting>
 
-  <!-- ADVANCED TAB -->	
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Avancé</Group>
+    <Name>Steam Compatibility</Name>
+    <Description>Enable Steam features (Game activity, Controller, and Achievements). REQUIRES Steam to be running.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="Checkbox">
     <Group>Avancé</Group>
     <Name>Afficher des Statistiques en Superposition</Name>

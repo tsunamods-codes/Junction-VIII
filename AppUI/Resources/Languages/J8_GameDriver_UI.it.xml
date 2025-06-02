@@ -217,6 +217,15 @@
   <!-- ADVANCED TAB -->
   <Setting xsi:type="Checkbox">
     <Group>Avanzate</Group>
+    <Name>Compatibilità Steam</Name>
+    <Description>Abilita funzionalità Steam (Attività di gioco, Controller, e Obiettivi). RICHIEDE che Steam sia in esecuzione.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzate</Group>
     <Name>Mostra Statistiche</Name>
     <Description>Mostra alcune informazioni di debug in tempo reale in sovraimpressione.</Description>
     <DefaultValue>show_stats = false</DefaultValue>

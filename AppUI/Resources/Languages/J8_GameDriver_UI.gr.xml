@@ -217,6 +217,15 @@
   <!-- ADVANCED TAB -->
   <Setting xsi:type="Checkbox">
     <Group>Για προχωρημένους</Group>
+    <Name>Steam Compatibility</Name>
+    <Description>Enable Steam features (Game activity, Controller, and Achievements). REQUIRES Steam to be running.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>Για προχωρημένους</Group>
     <Name>Εμφάνιση πληροφοριών εντοπισμού σφαλμάτων</Name>
     <Description>Εμφανίζει πληροφορίες σε πραγματικό χρόνο σχετικά με τη διαδικασία απόδοσης/απόδοση σε μια επικάλυψη ή στη γραμμή τίτλων.</Description>
     <DefaultValue>show_stats = false</DefaultValue>
