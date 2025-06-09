@@ -13,6 +13,7 @@ namespace AppProxy
         private static MethodInfo? _mRun = null;
         private static MethodInfo? _mShutdown = null;
         private static MethodInfo? _mHCreateFileA = null;
+        private static MethodInfo? _mHCreateFile2 = null;
         private static MethodInfo? _mHCreateFileW = null;
         private static MethodInfo? _mHReadFile = null;
         private static MethodInfo? _mHFindFirstFileW = null;
@@ -30,6 +31,7 @@ namespace AppProxy
         {
             public delegate* unmanaged<void> Shutdown;
             public delegate* unmanaged<byte*, uint, uint, void*, uint, uint, void*, void*> CreateFileA;
+            public delegate* unmanaged<ushort*, uint, uint, uint, void*, void*> CreateFile2;
             public delegate* unmanaged<ushort*, uint, uint, void*, uint, uint, void*, void*> CreateFileW;
             public delegate* unmanaged<void*, void*, uint, uint*, void*, int> ReadFile;
             //public delegate* unmanaged<void*, void*, uint, uint*, void*, int> WriteFile;
@@ -71,6 +73,7 @@ namespace AppProxy
 
                 _exports->Shutdown = &Shutdown;
                 _exports->CreateFileA = &HCreateFileA;
+                _exports->CreateFile2 = &HCreateFile2;
                 _exports->CreateFileW = &HCreateFileW;
                 _exports->ReadFile = &HReadFile;
                 _exports->FindFirstFileW = &HFindFirstFileW;
@@ -91,6 +94,7 @@ namespace AppProxy
                     _mRun = t.GetMethod("Run", BindingFlags.Static | BindingFlags.Public);
                     _mShutdown = t.GetMethod("Shutdown", BindingFlags.Static | BindingFlags.Public);
                     _mHCreateFileA = t.GetMethod("HCreateFileA", BindingFlags.Static | BindingFlags.Public);
+                    _mHCreateFile2 = t.GetMethod("HCreateFile2", BindingFlags.Static | BindingFlags.Public);
                     _mHCreateFileW = t.GetMethod("HCreateFileW", BindingFlags.Static | BindingFlags.Public);
                     _mHReadFile = t.GetMethod("HReadFile", BindingFlags.Static | BindingFlags.Public);
                     _mHFindFirstFileW = t.GetMethod("HFindFirstFileW", BindingFlags.Static | BindingFlags.Public);
@@ -126,6 +130,7 @@ namespace AppProxy
 
                 _exports->Shutdown = null;
                 _exports->CreateFileA = null;
+                _exports->CreateFile2 = null;
                 _exports->CreateFileW = null;
                 _exports->ReadFile = null;
                 _exports->FindFirstFileW = null;
@@ -156,6 +161,23 @@ namespace AppProxy
             try
             {
                 if (_mHCreateFileA != null) ret = (IntPtr)(_mHCreateFileA.Invoke(null, new object[] { StringFromUtf8(lpFileName), (System.IO.FileAccess)dwDesiredAccess, (System.IO.FileShare)dwShareMode, new IntPtr(lpSecurityAttributes), (System.IO.FileMode)dwCreationDisposition, (System.IO.FileAttributes)dwFlagsAndAttributes, new IntPtr(hTemplateFile) }) ?? IntPtr.Zero);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+
+            return ret == IntPtr.Zero ? null : ret.ToPointer();
+        }
+
+        [UnmanagedCallersOnly]
+        public static void* HCreateFile2(ushort* lpFileName, uint dwDesiredAccess, uint dwShareMode, uint dwCreationDisposition, void* pCreateExParams)
+        {
+            IntPtr ret = IntPtr.Zero;
+
+            try
+            {
+                if (_mHCreateFile2 != null) ret = (IntPtr)(_mHCreateFile2.Invoke(null, new object[] { new string((char*)lpFileName), (System.IO.FileAccess)dwDesiredAccess, (System.IO.FileShare)dwShareMode, (System.IO.FileMode)dwCreationDisposition, new IntPtr(pCreateExParams) }) ?? IntPtr.Zero);
             }
             catch (Exception ex)
             {
