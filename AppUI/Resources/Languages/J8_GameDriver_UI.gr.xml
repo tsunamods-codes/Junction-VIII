@@ -141,6 +141,15 @@
     <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
   </Setting>
 
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Always capture Input</Name>
+    <Description>Allows the game window to not be focused but still get controller inputs</Description>
+    <DefaultValue>ff8_always_capture_input  = false</DefaultValue>
+    <TrueSetting>ff8_always_capture_input  = true</TrueSetting>
+    <FalseSetting>ff8_always_capture_input  = false</FalseSetting>
+  </Setting>
+
   <!-- CHEATS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Απατώ</Group>
