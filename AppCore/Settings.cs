@@ -176,6 +176,7 @@ namespace Iros.Workshop {
 
             defaultSettings.ExtraFolders.Add("ambient");
             defaultSettings.ExtraFolders.Add("direct");
+            defaultSettings.ExtraFolders.Add("override");
             defaultSettings.ExtraFolders.Add("save");
             defaultSettings.ExtraFolders.Add("sfx");
             defaultSettings.ExtraFolders.Add("voice");
