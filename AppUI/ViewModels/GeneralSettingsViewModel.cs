@@ -498,9 +498,24 @@ namespace AppUI.ViewModels
             Sys.Settings.ExtraFolders = ExtraFolderList.Distinct().ToList();
 
             // ensure required folders are always in ExtraFolders list
+            if (!Sys.Settings.ExtraFolders.Contains("ambient", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("ambient");
+            }
+
             if (!Sys.Settings.ExtraFolders.Contains("direct", StringComparer.InvariantCultureIgnoreCase))
             {
                 Sys.Settings.ExtraFolders.Add("direct");
+            }
+
+            if (!Sys.Settings.ExtraFolders.Contains("override", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("override");
+            }
+
+            if (!Sys.Settings.ExtraFolders.Contains("save", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("save");
             }
 
             if (!Sys.Settings.ExtraFolders.Contains("sfx", StringComparer.InvariantCultureIgnoreCase))
@@ -511,11 +526,6 @@ namespace AppUI.ViewModels
             if (!Sys.Settings.ExtraFolders.Contains("voice", StringComparer.InvariantCultureIgnoreCase))
             {
                 Sys.Settings.ExtraFolders.Add("voice");
-            }
-
-            if (!Sys.Settings.ExtraFolders.Contains("ambient", StringComparer.InvariantCultureIgnoreCase))
-            {
-                Sys.Settings.ExtraFolders.Add("ambient");
             }
 
             if (!Sys.Settings.ExtraFolders.Contains("widescreen", StringComparer.InvariantCultureIgnoreCase))
