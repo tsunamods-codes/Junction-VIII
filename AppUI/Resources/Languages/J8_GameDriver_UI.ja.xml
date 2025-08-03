@@ -83,6 +83,14 @@
       <Text>Stretch to Fill</Text>
       <Settings>aspect_ratio = 1</Settings>
     </Option>
+	<Option>
+      <Text>Widescreen (16:9)</Text>
+      <Settings>aspect_ratio = 2</Settings>
+    </Option>
+    <Option>
+      <Text>Widescreen (16:10)</Text>
+      <Settings>aspect_ratio = 3</Settings>
+    </Option>
   </Setting>
 
   <Setting xsi:type="DropDown">

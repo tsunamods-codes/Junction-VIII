@@ -73,7 +73,7 @@
   <Setting xsi:type="DropDown">
     <Group>Grafik</Group>
     <Name>Seitenverhältnis</Name>
-    <Description>"Standard (4:3)" behält das Seitenverhältnis in 4:3 bei und füllt die linke und rechte Seite mit schwarzen Balken. "Strecken (anpassen)" füllt das Bild entsprechend der Größe.</Description>
+    <Description>"Standard (4:3)" behält das Seitenverhältnis in 4:3 bei und füllt die linke und rechte Seite mit schwarzen Balken. "Strecken (anpassen)" füllt das Bild entsprechend der Größe. "Breitbild (16:9)" und "Breitbild (16:10)" zeigen das Bild im echten Widescreen an.</Description>
     <DefaultValue>aspect_ratio = 0</DefaultValue>
     <Option>
       <Text>Standard (4:3)</Text>
@@ -82,6 +82,14 @@
     <Option>
       <Text>Strecken (anpassen)</Text>
       <Settings>aspect_ratio = 1</Settings>
+    </Option>
+    <Option>
+      <Text>Breitbild (16:9)</Text>
+      <Settings>aspect_ratio = 2</Settings>
+    </Option>
+    <Option>
+      <Text>Breitbild (16:10)</Text>
+      <Settings>aspect_ratio = 3</Settings>
     </Option>
   </Setting>
 

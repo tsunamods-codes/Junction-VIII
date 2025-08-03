@@ -180,6 +180,7 @@ namespace Iros.Workshop {
             defaultSettings.ExtraFolders.Add("save");
             defaultSettings.ExtraFolders.Add("sfx");
             defaultSettings.ExtraFolders.Add("voice");
+            defaultSettings.ExtraFolders.Add("widescreen");
 
             FileVersionInfo appVersion = FileVersionInfo.GetVersionInfo(Sys._J8Exe);
             if (appVersion.FilePrivatePart > 0 || appVersion.ProductPrivatePart > 0)
