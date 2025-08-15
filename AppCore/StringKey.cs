@@ -649,6 +649,7 @@
         CannotContinueWithDEPEnabled,
         SomethingWentWrongWhileDisablingDEP,
         App4GBPatchRequired,
-        App4GBPatchApplied
+        App4GBPatchApplied,
+        ReShadeShaders
     }
 }
