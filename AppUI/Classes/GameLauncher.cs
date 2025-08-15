@@ -338,6 +338,9 @@ namespace AppUI.Classes
             Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingFf8InputCfgToFf8Path));
             bool didCopyCfg = CopyKeyboardInputCfg();
 
+            // Copy Reshade
+            ReShadeUpdater.Install();
+
             //
             // Determine if game will be ran as 'vanilla' with mods so don't have to inject with AppLoader
             //
@@ -833,6 +836,7 @@ namespace AppUI.Classes
 
                         // cleanup
                         DeleteJ8WrapperDlls();
+                        ReShadeUpdater.Cleanup();
                     }
                     catch (Exception ex)
                     {

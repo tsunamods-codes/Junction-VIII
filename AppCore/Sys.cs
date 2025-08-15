@@ -223,6 +223,22 @@ namespace Iros.Workshop
             }
         }
 
+        public static string PathToReShadeFolder
+        {
+            get
+            {
+                return Path.Combine(SysFolder, "ReShade");
+            }
+        }
+
+        public static string PathToReShade
+        {
+            get
+            {
+                return Path.Combine(Sys.PathToReShadeFolder, "ReShade32.dll");
+            }
+        }
+
         public static string PathToPatchedExeFolder
         {
             get
