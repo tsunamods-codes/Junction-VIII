@@ -373,66 +373,72 @@ namespace AppWrapper {
             IntPtr ret = IntPtr.Zero;
 
             // Usually this check should be enough...
-            bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
+            bool isFF7GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
             // ...but if it fails, last resort is to check if the file exists in the game directory
-            if (!isFF8GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
+            if (!isFF7GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
             {
-                isFF8GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
+                isFF7GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
             }
 
             // If a game file is found, process with replacing its content with relative mod file
-            if (isFF8GameFile)
+            if (isFF7GameFile)
             {
                 lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("/", "\\").Replace("\\\\", "\\"));
-                DebugLogger.DetailedWriteLine($">> CreateFileA for {lpFileName}...");
+                DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
                 if (lpFileName.IndexOf('\\') < 0)
                 {
                     //DebugLogger.WriteLine("No path: curdir is {0}", System.IO.Directory.GetCurrentDirectory(), 0);
                     lpFileName = Path.Combine(Directory.GetCurrentDirectory(), lpFileName);
                 }
 
-                string match = lpFileName.Substring(_profile.FF8Path.Length + 1);
-                OverrideFile mapped = LGPWrapper.MapFile(match, _mappedFiles);
+                string match = string.Empty;
+                OverrideFile mapped = null;
 
-                //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
-
-                if (mapped != null)
+                // Search first through the usual monitored paths
+                foreach (string path in _profile.MonitorPaths)
                 {
-                    DebugLogger.DetailedWriteLine($">> CreateFileA remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
-
-                    if (mapped.Archive == null)
-                        ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-                    else
-                        ret = CreateVA(mapped);
-                }
-                else if (!Path.HasExtension(lpFileName)) // Is it a directory?
-                {
-                    if (_mappedFiles.Keys.Any(p => p.StartsWith(match, StringComparison.OrdinalIgnoreCase)))
+                    if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (!Path.Exists(lpFileName)) Directory.CreateDirectory(lpFileName);
-                        DebugLogger.DetailedWriteLine($">> CreateFileA creating missing dir {lpFileName}");
+                        match = lpFileName.Substring(path.Length);
+                        mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                        if (mapped != null)
+                        {
+                            DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                            if (mapped.Archive == null)
+                                ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+                            else
+                                ret = CreateVA(mapped);
+
+                            break;
+                        }
                     }
                 }
-                else
+
+                // If not found, try looking for the game searched path
+                if (ret == IntPtr.Zero)
                 {
-                    foreach (string path in _profile.MonitorPaths)
+                    match = lpFileName.Substring(_profile.FF8Path.Length + 1);
+                    mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                    //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+
+                    if (mapped != null)
                     {
-                        if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
+                        DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                        if (mapped.Archive == null)
+                            ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+                        else
+                            ret = CreateVA(mapped);
+                    }
+                    else if (!Path.HasExtension(lpFileName)) // Is it a directory?
+                    {
+                        if (_mappedFiles.Keys.Any(p => p.StartsWith(match, StringComparison.OrdinalIgnoreCase)))
                         {
-                            match = lpFileName.Substring(path.Length);
-                            mapped = LGPWrapper.MapFile(match, _mappedFiles);
-
-                            if (mapped != null)
-                            {
-                                DebugLogger.DetailedWriteLine($">> CreateFileA remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
-
-                                if (mapped.Archive == null)
-                                    ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-                                else
-                                    ret = CreateVA(mapped);
-
-                                break;
-                            }
+                            if (!Path.Exists(lpFileName)) Directory.CreateDirectory(lpFileName);
+                            DebugLogger.DetailedWriteLine($">> CreateFileW creating missing dir {lpFileName}");
                         }
                     }
                 }
@@ -455,66 +461,72 @@ namespace AppWrapper {
             IntPtr ret = IntPtr.Zero;
 
             // Usually this check should be enough...
-            bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
+            bool isFF7GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
             // ...but if it fails, last resort is to check if the file exists in the game directory
-            if (!isFF8GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
+            if (!isFF7GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
             {
-                isFF8GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
+                isFF7GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
             }
 
             // If a game file is found, process with replacing its content with relative mod file
-            if (isFF8GameFile)
+            if (isFF7GameFile)
             {
                 lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("/", "\\").Replace("\\\\", "\\"));
-                DebugLogger.DetailedWriteLine($">> CreateFile2 for {lpFileName}...");
+                DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
                 if (lpFileName.IndexOf('\\') < 0)
                 {
                     //DebugLogger.WriteLine("No path: curdir is {0}", System.IO.Directory.GetCurrentDirectory(), 0);
                     lpFileName = Path.Combine(Directory.GetCurrentDirectory(), lpFileName);
                 }
 
-                string match = lpFileName.Substring(_profile.FF8Path.Length + 1);
-                OverrideFile mapped = LGPWrapper.MapFile(match, _mappedFiles);
+                string match = string.Empty;
+                OverrideFile mapped = null;
 
-                //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
-
-                if (mapped != null)
+                // Search first through the usual monitored paths
+                foreach (string path in _profile.MonitorPaths)
                 {
-                    DebugLogger.DetailedWriteLine($">> CreateFile2 remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
-
-                    if (mapped.Archive == null)
-                        ret = Win32.CreateFile2(mapped.File, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
-                    else
-                        ret = CreateVA(mapped);
-                }
-                else if (!Path.HasExtension(lpFileName)) // Is it a directory?
-                {
-                    if (_mappedFiles.Keys.Any(p => p.StartsWith(match, StringComparison.OrdinalIgnoreCase)))
+                    if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (!Path.Exists(lpFileName)) Directory.CreateDirectory(lpFileName);
-                        DebugLogger.DetailedWriteLine($">> CreateFile2 creating missing dir {lpFileName}");
+                        match = lpFileName.Substring(path.Length);
+                        mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                        if (mapped != null)
+                        {
+                            DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                            if (mapped.Archive == null)
+                                ret = Win32.CreateFile2(mapped.File, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
+                            else
+                                ret = CreateVA(mapped);
+
+                            break;
+                        }
                     }
                 }
-                else
+
+                // If not found, try looking for the game searched path
+                if (ret == IntPtr.Zero)
                 {
-                    foreach (string path in _profile.MonitorPaths)
+                    match = lpFileName.Substring(_profile.FF8Path.Length + 1);
+                    mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                    //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+
+                    if (mapped != null)
                     {
-                        if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
+                        DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                        if (mapped.Archive == null)
+                            ret = Win32.CreateFile2(mapped.File, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
+                        else
+                            ret = CreateVA(mapped);
+                    }
+                    else if (!Path.HasExtension(lpFileName)) // Is it a directory?
+                    {
+                        if (_mappedFiles.Keys.Any(p => p.StartsWith(match, StringComparison.OrdinalIgnoreCase)))
                         {
-                            match = lpFileName.Substring(path.Length);
-                            mapped = LGPWrapper.MapFile(match, _mappedFiles);
-
-                            if (mapped != null)
-                            {
-                                DebugLogger.DetailedWriteLine($">> CreateFile2 remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
-
-                                if (mapped.Archive == null)
-                                    ret = Win32.CreateFile2(mapped.File, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
-                                else
-                                    ret = CreateVA(mapped);
-
-                                break;
-                            }
+                            if (!Path.Exists(lpFileName)) Directory.CreateDirectory(lpFileName);
+                            DebugLogger.DetailedWriteLine($">> CreateFileW creating missing dir {lpFileName}");
                         }
                     }
                 }
@@ -539,15 +551,15 @@ namespace AppWrapper {
             IntPtr ret = IntPtr.Zero;
 
             // Usually this check should be enough...
-            bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
+            bool isFF7GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
             // ...but if it fails, last resort is to check if the file exists in the game directory
-            if (!isFF8GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
+            if (!isFF7GameFile && !lpFileName.StartsWith("\\", StringComparison.InvariantCultureIgnoreCase) && !Path.IsPathRooted(lpFileName))
             {
-                isFF8GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
+                isFF7GameFile = _profile.gameFiles.Any(s => s.EndsWith(lpFileName, StringComparison.InvariantCultureIgnoreCase));
             }
 
             // If a game file is found, process with replacing its content with relative mod file
-            if (isFF8GameFile)
+            if (isFF7GameFile)
             {
                 lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("/", "\\").Replace("\\\\", "\\"));
                 DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
@@ -557,48 +569,54 @@ namespace AppWrapper {
                     lpFileName = Path.Combine(Directory.GetCurrentDirectory(), lpFileName);
                 }
 
-                string match = lpFileName.Substring(_profile.FF8Path.Length + 1);
-                OverrideFile mapped = LGPWrapper.MapFile(match, _mappedFiles);
+                string match = string.Empty;
+                OverrideFile mapped = null;
 
-                //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
-
-                if (mapped != null)
+                // Search first through the usual monitored paths
+                foreach (string path in _profile.MonitorPaths)
                 {
-                    DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
-
-                    if (mapped.Archive == null)
-                        ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-                    else
-                        ret = CreateVA(mapped);
-                }
-                else if (!Path.HasExtension(lpFileName)) // Is it a directory?
-                {
-                    if (_mappedFiles.Keys.Any(p => p.StartsWith(match, StringComparison.OrdinalIgnoreCase)))
+                    if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (!Path.Exists(lpFileName)) Directory.CreateDirectory(lpFileName);
-                        DebugLogger.DetailedWriteLine($">> CreateFileW creating missing dir {lpFileName}");
+                        match = lpFileName.Substring(path.Length);
+                        mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                        if (mapped != null)
+                        {
+                            DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                            if (mapped.Archive == null)
+                                ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+                            else
+                                ret = CreateVA(mapped);
+
+                            break;
+                        }
                     }
                 }
-                else
+
+                // If not found, try looking for the game searched path
+                if (ret == IntPtr.Zero)
                 {
-                    foreach (string path in _profile.MonitorPaths)
+                    match = lpFileName.Substring(_profile.FF8Path.Length + 1);
+                    mapped = LGPWrapper.MapFile(match, _mappedFiles);
+
+                    //DebugLogger.WriteLine($"Attempting match '{match}' for {lpFileName}...");
+
+                    if (mapped != null)
                     {
-                        if (lpFileName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
+                        DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
+
+                        if (mapped.Archive == null)
+                            ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+                        else
+                            ret = CreateVA(mapped);
+                    }
+                    else if (!Path.HasExtension(lpFileName)) // Is it a directory?
+                    {
+                        if (_mappedFiles.Keys.Any(p => p.StartsWith(match, StringComparison.OrdinalIgnoreCase)))
                         {
-                            match = lpFileName.Substring(path.Length);
-                            mapped = LGPWrapper.MapFile(match, _mappedFiles);
-
-                            if (mapped != null)
-                            {
-                                DebugLogger.DetailedWriteLine($">> CreateFileW remapping {lpFileName} to {mapped.File} [ Matched: '{match}' ]");
-
-                                if (mapped.Archive == null)
-                                    ret = Win32.CreateFileW(mapped.File, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-                                else
-                                    ret = CreateVA(mapped);
-
-                                break;
-                            }
+                            if (!Path.Exists(lpFileName)) Directory.CreateDirectory(lpFileName);
+                            DebugLogger.DetailedWriteLine($">> CreateFileW creating missing dir {lpFileName}");
                         }
                     }
                 }
