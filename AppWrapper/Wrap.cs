@@ -372,6 +372,9 @@ namespace AppWrapper {
         {
             IntPtr ret = IntPtr.Zero;
 
+            // Normalize Unix paths if any
+            lpFileName = lpFileName.Replace("/", "\\");
+
             // Usually this check should be enough...
             bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
             // ...but if it fails, last resort is to check if the file exists in the game directory
@@ -383,7 +386,7 @@ namespace AppWrapper {
             // If a game file is found, process with replacing its content with relative mod file
             if (isFF8GameFile)
             {
-                lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("/", "\\").Replace("\\\\", "\\"));
+                lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("\\\\", "\\"));
                 DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
                 if (lpFileName.IndexOf('\\') < 0)
                 {
@@ -460,6 +463,9 @@ namespace AppWrapper {
         {
             IntPtr ret = IntPtr.Zero;
 
+            // Normalize Unix paths if any
+            lpFileName = lpFileName.Replace("/", "\\");
+
             // Usually this check should be enough...
             bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
             // ...but if it fails, last resort is to check if the file exists in the game directory
@@ -471,7 +477,7 @@ namespace AppWrapper {
             // If a game file is found, process with replacing its content with relative mod file
             if (isFF8GameFile)
             {
-                lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("/", "\\").Replace("\\\\", "\\"));
+                lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("\\\\", "\\"));
                 DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
                 if (lpFileName.IndexOf('\\') < 0)
                 {
@@ -550,6 +556,9 @@ namespace AppWrapper {
         {
             IntPtr ret = IntPtr.Zero;
 
+            // Normalize Unix paths if any
+            lpFileName = lpFileName.Replace("/", "\\");
+
             // Usually this check should be enough...
             bool isFF8GameFile = lpFileName.StartsWith(_profile.FF8Path, StringComparison.InvariantCultureIgnoreCase);
             // ...but if it fails, last resort is to check if the file exists in the game directory
@@ -561,7 +570,7 @@ namespace AppWrapper {
             // If a game file is found, process with replacing its content with relative mod file
             if (isFF8GameFile)
             {
-                lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("/", "\\").Replace("\\\\", "\\"));
+                lpFileName = Path.GetFullPath(lpFileName.Replace("\\/", "\\").Replace("\\\\", "\\"));
                 DebugLogger.DetailedWriteLine($">> CreateFileW for {lpFileName}...");
                 if (lpFileName.IndexOf('\\') < 0)
                 {
