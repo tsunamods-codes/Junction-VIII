@@ -682,7 +682,7 @@ namespace AppWrapper {
         public static IntPtr HFindFirstFileW(string lpFileName, IntPtr lpFindFileData)
         {
             var matches = FindFirstMatch(lpFileName);
-            if (matches.Count > 0)
+            if (matches.Count > 2)
             {
                 string firstMatch = matches.Dequeue();
                 IntPtr searchHandle = Win32.FindFirstFileW(Path.Combine(_profile.FF8Path, "*"), lpFindFileData);
@@ -708,7 +708,7 @@ namespace AppWrapper {
         {
             var matches = FindFirstMatch(lpFileName);
 
-            if (matches.Count > 0)
+            if (matches.Count > 2)
             {
                 string firstMatch = matches.Dequeue();
                 IntPtr searchHandle = Win32.FindFirstFileExW(Path.Combine(_profile.FF8Path, "*"), (FINDEX_INFO_LEVELS)fInfoLevelId, lpFindFileData, (FINDEX_SEARCH_OPS)fSearchOp, lpSearchFilter, dwAdditionalFlags);
