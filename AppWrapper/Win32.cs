@@ -108,6 +108,8 @@ namespace AppWrapper {
             public uint nFileSizeLow;
         }
 
+        public const int ERROR_NO_MORE_FILES = 18;
+
         // -------------------------------------------------------------------------------------------------------------------------------------------
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
@@ -211,6 +213,9 @@ namespace AppWrapper {
         string lpFileName,
         GET_FILEEX_INFO_LEVELS fInfoLevelId,
         IntPtr lpFileInformation);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetLastError(uint dwErrCode);
     }
 
 }
