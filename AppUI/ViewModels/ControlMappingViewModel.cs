@@ -1315,6 +1315,7 @@ namespace AppUI.ViewModels
                 { GamePadButton.Button10, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/Options_Start.png" },
                 { GamePadButton.Button11, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/XB_LS_Click.png" },
                 { GamePadButton.Button12, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/XB_RS_Click.png" },
+                { GamePadButton.Button13, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/Home_Guide.png" },
                 { GamePadButton.Up, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/XB_LS_Up.png" },
                 { GamePadButton.Down, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/XB_LS_Down.png" },
                 { GamePadButton.Left, "/Junction VIII;component/Resources/Icons/PS_Xbox_Icons/XB_LS_Left.png" },
