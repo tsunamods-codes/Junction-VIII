@@ -30,7 +30,7 @@
   </Setting>
 
   <Setting xsi:type="DropDown">
-    <Group>Graphics</Group>
+    <Group>Grafik</Group>
     <Name>Display</Name>
     <Description>Sets the preferred display where to run the game.</Description>
     <DefaultValue>display_index = -1</DefaultValue>
@@ -73,7 +73,7 @@
   <Setting xsi:type="DropDown">
     <Group>Grafik</Group>
     <Name>Seitenverhältnis</Name>
-    <Description>"Standard (4:3)" behält das Seitenverhältnis in 4:3 bei und füllt die linke und rechte Seite mit schwarzen Balken. "Strecken (anpassen)" füllt das Bild entsprechend der Größe.</Description>
+    <Description>"Standard (4:3)" behält das Seitenverhältnis in 4:3 bei und füllt die linke und rechte Seite mit schwarzen Balken. "Strecken (anpassen)" füllt das Bild entsprechend der Größe. "Breitbild (16:9)" und "Breitbild (16:10)" zeigen das Bild im echten Widescreen an.</Description>
     <DefaultValue>aspect_ratio = 0</DefaultValue>
     <Option>
       <Text>Standard (4:3)</Text>
@@ -82,6 +82,14 @@
     <Option>
       <Text>Strecken (anpassen)</Text>
       <Settings>aspect_ratio = 1</Settings>
+    </Option>
+    <Option>
+      <Text>Breitbild (16:9)</Text>
+      <Settings>aspect_ratio = 2</Settings>
+    </Option>
+    <Option>
+      <Text>Breitbild (16:10)</Text>
+      <Settings>aspect_ratio = 3</Settings>
     </Option>
   </Setting>
 
@@ -141,6 +149,15 @@
     <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
   </Setting>
 
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Always capture Input</Name>
+    <Description>Allows the game window to not be focused but still get controller inputs</Description>
+    <DefaultValue>ff8_always_capture_input  = false</DefaultValue>
+    <TrueSetting>ff8_always_capture_input  = true</TrueSetting>
+    <FalseSetting>ff8_always_capture_input  = false</FalseSetting>
+  </Setting>
+
   <!-- CHEATS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Cheats</Group>
@@ -163,7 +180,7 @@
       <Settings></Settings>
     </Option>
   </Setting>
-  
+
   <Setting xsi:type="DropDown">
     <Group>Cheats</Group>
     <Name>Soft-Reset</Name>
@@ -225,7 +242,16 @@
     </Option>
   </Setting>
 
-  <!-- ADVANCED TAB -->  
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Erweitert</Group>
+    <Name>Steam-Kompatibilität</Name>
+    <Description>Aktiviert Steam-Funktionen (Spielaktivität, Controller und Errungenschaften). Erfordert, dass Steam bereits gestartet wurde.</Description>
+	  <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="Checkbox">
     <Group>Erweitert</Group>
     <Name>Debug-Informationen anzeigen</Name>

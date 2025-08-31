@@ -498,9 +498,24 @@ namespace AppUI.ViewModels
             Sys.Settings.ExtraFolders = ExtraFolderList.Distinct().ToList();
 
             // ensure required folders are always in ExtraFolders list
+            if (!Sys.Settings.ExtraFolders.Contains("ambient", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("ambient");
+            }
+
             if (!Sys.Settings.ExtraFolders.Contains("direct", StringComparer.InvariantCultureIgnoreCase))
             {
                 Sys.Settings.ExtraFolders.Add("direct");
+            }
+
+            if (!Sys.Settings.ExtraFolders.Contains("override", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("override");
+            }
+
+            if (!Sys.Settings.ExtraFolders.Contains("save", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("save");
             }
 
             if (!Sys.Settings.ExtraFolders.Contains("sfx", StringComparer.InvariantCultureIgnoreCase))
@@ -513,9 +528,9 @@ namespace AppUI.ViewModels
                 Sys.Settings.ExtraFolders.Add("voice");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("ambient", StringComparer.InvariantCultureIgnoreCase))
+            if (!Sys.Settings.ExtraFolders.Contains("widescreen", StringComparer.InvariantCultureIgnoreCase))
             {
-                Sys.Settings.ExtraFolders.Add("ambient");
+                Sys.Settings.ExtraFolders.Add("widescreen");
             }
 
             Sys.Settings.FF8Exe = FF8ExePathInput;
@@ -728,18 +743,13 @@ namespace AppUI.ViewModels
         {
             try
             {
-                //Create Prog_ID in Registry so we can associate file types
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIII", "", $"Junction VIII Mod File");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIII\\DefaultIcon", "", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIII\\shell\\open\\command", "", $"\"{Sys._J8Exe}\" /OPENIRO:\"%1\"");
-
                 //Associate .iroj mod files with J8's Prog_ID- .iroj extension
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj", "", $"JunctionVIII Mod File");
+                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj", "", $"JunctionVIIIIROJ");
                 RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj\\DefaultIcon", "", $"\"{Sys._J8Exe}\"");
                 RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj\\shell\\open\\command", "", $"\"{Sys._J8Exe}\" /OPENIRO:\"%1\"");
 
                 // create registry keys to assocaite .irojp files
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp", "", $"Junction VIII Mod Patch");
+                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp", "", $"JunctionVIIIIROJP");
                 RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp\\DefaultIcon", "", $"\"{Sys._J8Exe}\"");
                 RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp\\shell\\open\\command", "", $"\"{Sys._J8Exe}\" /OPENIROP:\"%1\"");
 
@@ -765,7 +775,6 @@ namespace AppUI.ViewModels
         {
             try
             {
-                RegistryHelper.DeleteKey("HKEY_CLASSES_ROOT\\JunctionVIII");
                 RegistryHelper.DeleteKey("HKEY_CLASSES_ROOT\\.iroj");
                 RegistryHelper.DeleteKey("HKEY_CLASSES_ROOT\\.irojp");
 
@@ -850,8 +859,8 @@ namespace AppUI.ViewModels
                 RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\Directory\\shell\\Pack into IROJ\\command", "", $"\"{Sys._J8Exe}\" /PACKIRO:\"%1\"");
 
                 // create registry keys for 'Unpack IROJ' for files
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj\\shell\\Unpack IROJ", "Icon", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj\\shell\\Unpack IROJ\\command", "", $"\"{Sys._J8Exe}\" /UNPACKIRO:\"%1\"");
+                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ", "Icon", $"\"{Sys._J8Exe}\"");
+                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ\\command", "", $"\"{Sys._J8Exe}\" /UNPACKIRO:\"%1\"");
 
                 SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
 
@@ -875,7 +884,7 @@ namespace AppUI.ViewModels
             try
             {
                 RegistryHelper.DeleteKey("HKEY_CLASSES_ROOT\\Directory\\shell\\Pack into IROJ");
-                RegistryHelper.DeleteKey("HKEY_CLASSES_ROOT\\.iroj\\shell\\Unpack IROJ");
+                RegistryHelper.DeleteKey("HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ");
 
                 SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
 

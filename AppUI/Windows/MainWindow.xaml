@@ -164,7 +164,7 @@
                         <ContextMenu x:Name="menuTools" Closed="menuTools_Closed">
                             <MenuItem x:Name="menuItemCatalogCreation" Header="{DynamicResource CatalogModCreationTool}" Click="menuItemCatalogCreation_Click"/>
                             <MenuItem x:Name="menuItemIroCreation" Header="{DynamicResource IROTools}" Click="menuItemIroCreation_Click"/>
-
+                            <MenuItem x:Name="menuItemOpenSaveDir" Header="{DynamicResource OpenSaveGamePath}" Click="menuItemOpenSaveDir_Click"/>
                         </ContextMenu>
                     </cls:ButtonWithImage.ContextMenu>
                 </cls:ButtonWithImage>

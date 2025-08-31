@@ -201,6 +201,7 @@ namespace AppUI.Classes
             // GAME CONVERTER - Make sure game is ready for mods
             //
             FFNxDriverUpdater.CleanupUnnecessaryFiles();
+            ReShadeUpdater.Cleanup();
 
             Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingInstalledGameIsCompatible));
             if (converter.IsGamePirated())
@@ -338,6 +339,9 @@ namespace AppUI.Classes
             Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingFf8InputCfgToFf8Path));
             bool didCopyCfg = CopyKeyboardInputCfg();
 
+            // Copy Reshade
+            ReShadeUpdater.Install();
+
             //
             // Determine if game will be ran as 'vanilla' with mods so don't have to inject with AppLoader
             //
@@ -380,7 +384,7 @@ namespace AppUI.Classes
                 //
                 Sys.FFNxConfig.Reload();
                 Sys.FFNxConfig.Backup(true);
-                Sys.FFNxConfig.OverrideInternalKeys();
+                Sys.FFNxConfig.OverrideInternalKeys(debug && runtimeProfile != null);
                 foreach (RuntimeMod mod in runtimeProfile.Mods)
                 {
                     foreach(FFNxFlag flag in mod.FFNxConfig)
@@ -833,6 +837,7 @@ namespace AppUI.Classes
 
                         // cleanup
                         DeleteJ8WrapperDlls();
+                        ReShadeUpdater.Cleanup();
                     }
                     catch (Exception ex)
                     {

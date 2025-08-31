@@ -30,7 +30,7 @@
   </Setting>
 
   <Setting xsi:type="DropDown">
-    <Group>Graphics</Group>
+    <Group>Graphismes</Group>
     <Name>Display</Name>
     <Description>Sets the preferred display where to run the game.</Description>
     <DefaultValue>display_index = -1</DefaultValue>
@@ -82,6 +82,14 @@
     <Option>
       <Text>Étirer au format de l'écran</Text>
       <Settings>aspect_ratio = 1</Settings>
+    </Option>
+	<Option>
+      <Text>Widescreen (16:9)</Text>
+      <Settings>aspect_ratio = 2</Settings>
+    </Option>
+    <Option>
+      <Text>Widescreen (16:10)</Text>
+      <Settings>aspect_ratio = 3</Settings>
     </Option>
   </Setting>
 
@@ -141,6 +149,15 @@
     <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
   </Setting>
 
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Always capture Input</Name>
+    <Description>Allows the game window to not be focused but still get controller inputs</Description>
+    <DefaultValue>ff8_always_capture_input  = false</DefaultValue>
+    <TrueSetting>ff8_always_capture_input  = true</TrueSetting>
+    <FalseSetting>ff8_always_capture_input  = false</FalseSetting>
+  </Setting>
+
   <!-- CHEATS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Fonctions de triche</Group>
@@ -157,17 +174,6 @@
     <Group>Fonctions de triche</Group>
     <Name>Passer les cinématiques</Name>
     <Description>Non configurable. Saute la cinématique courrante.{0}Utilisation: CTRL+S ou Sélectionner+Démarrer</Description>
-    <DefaultValue></DefaultValue>
-    <Option>
-      <Text>Voir Description</Text>
-      <Settings></Settings>
-    </Option>
-  </Setting>
-  
-  <Setting xsi:type="DropDown">
-    <Group>Fonctions de triche</Group>
-    <Name>R.A.Z Rapide</Name>
-    <Description>Non configurable. Réinitialise rapidement le jeu par un "game over".{0}Utilisation: CTRL+R ou L1+L2+R1+R2+Sélectionner+Démarrer</Description>
     <DefaultValue></DefaultValue>
     <Option>
       <Text>Voir Description</Text>
@@ -225,7 +231,16 @@
     </Option>
   </Setting>
 
-  <!-- ADVANCED TAB -->	
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Avancé</Group>
+    <Name>Steam Compatibility</Name>
+    <Description>Enable Steam features (Game activity, Controller, and Achievements). REQUIRES Steam to be running.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="Checkbox">
     <Group>Avancé</Group>
     <Name>Afficher des Statistiques en Superposition</Name>

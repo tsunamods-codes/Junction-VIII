@@ -83,6 +83,14 @@
       <Text>Stretch to Fill</Text>
       <Settings>aspect_ratio = 1</Settings>
     </Option>
+	<Option>
+		<Text>Widescreen (16:9)</Text>
+		<Settings>aspect_ratio = 2</Settings>
+	</Option>
+	<Option>
+		<Text>Widescreen (16:10)</Text>
+		<Settings>aspect_ratio = 3</Settings>
+	</Option>
   </Setting>
 
   <Setting xsi:type="DropDown">
@@ -141,6 +149,15 @@
     <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
   </Setting>
 
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Always capture Input</Name>
+    <Description>Allows the game window to not be focused but still get controller inputs</Description>
+    <DefaultValue>ff8_always_capture_input  = false</DefaultValue>
+    <TrueSetting>ff8_always_capture_input  = true</TrueSetting>
+    <FalseSetting>ff8_always_capture_input  = false</FalseSetting>
+  </Setting>
+
   <!-- CHEATS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Cheats</Group>
@@ -157,17 +174,6 @@
     <Group>Cheats</Group>
     <Name>Skip Movies</Name>
     <Description>Not configurable. Immediately skips to end of a movie.{0}Usage: 'CTRL+S' or 'L3, then Square'</Description>
-    <DefaultValue></DefaultValue>
-    <Option>
-      <Text>See Description</Text>
-      <Settings></Settings>
-    </Option>
-  </Setting>
-  
-  <Setting xsi:type="DropDown">
-    <Group>Cheats</Group>
-    <Name>Soft Reset</Name>
-    <Description>Not configurable. Quickly reset the game with a game over. *Do not reset during battle.*{0}Usage: 'CTRL+R' or 'L3, then Select+Start'</Description>
     <DefaultValue></DefaultValue>
     <Option>
       <Text>See Description</Text>
@@ -225,7 +231,16 @@
     </Option>
   </Setting>
 
-  <!-- ADVANCED TAB -->  
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Advanced</Group>
+    <Name>Steam Compatibility</Name>
+    <Description>Enable Steam features (Game activity, Controller, and Achievements). REQUIRES Steam to be running.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="Checkbox">
     <Group>Advanced</Group>
     <Name>Show Debug Info</Name>
@@ -261,7 +276,7 @@
     <TrueSetting>show_renderer_backend = true</TrueSetting>
     <FalseSetting>show_renderer_backend = false</FalseSetting>
   </Setting>
-  
+
   <Setting xsi:type="DropDown">
     <Group>Advanced</Group>
     <Name>Internal Resolution Scaler</Name>

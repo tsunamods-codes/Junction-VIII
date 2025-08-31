@@ -1153,6 +1153,7 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
     <system:String x:Key="UserInterface">Interface de Usuário</system:String>
     <system:String x:Key="WorldModels">Modelos do Mundo</system:String>
     <system:String x:Key="WorldTextures">Texturas do Mundo</system:String>
+    <system:String x:Key="ReShadeShaders">ReShade Shaders</system:String>
 
     <system:String x:Key="Cancelling">Cancelando</system:String>
 
@@ -1248,4 +1249,6 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
 
     <system:String x:Key="App4GBPatchRequired">Ensuring Game exe has the 4GB patch applied...</system:String>
     <system:String x:Key="App4GBPatchApplied">4GB patch applied successfully.</system:String>
+
+    <system:String x:Key="OpenSaveGamePath">Open Save Directory...</system:String>
 </ResourceDictionary>

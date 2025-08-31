@@ -21,6 +21,8 @@ namespace AppUI.Windows
 
         private FFNxDriverUpdater FFNxUpdater = new FFNxDriverUpdater();
 
+        private ReShadeUpdater ReShadeUpdater = new ReShadeUpdater();
+
         private bool PathChanged = false;
 
         public GeneralSettingsWindow()
@@ -407,6 +409,12 @@ namespace AppUI.Windows
         private void btnJ8CheckForUpdate_Click(object sender, RoutedEventArgs e)
         {
             CoreUpdater.CheckForUpdates(Sys.Settings.AppUpdateChannel, true);
+            ViewModel.SaveSettings();
+        }
+
+        private void btnReShadeCheckForUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            ReShadeUpdater.CheckForUpdates(true);
             ViewModel.SaveSettings();
         }
     }

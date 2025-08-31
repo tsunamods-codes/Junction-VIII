@@ -30,7 +30,7 @@
   </Setting>
 
   <Setting xsi:type="DropDown">
-    <Group>Graphics</Group>
+    <Group>Gráficos</Group>
     <Name>Display</Name>
     <Description>Sets the preferred display where to run the game.</Description>
     <DefaultValue>display_index = -1</DefaultValue>
@@ -149,6 +149,15 @@
     <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
   </Setting>
 
+  <Setting xsi:type="Checkbox">
+    <Group>Controls</Group>
+    <Name>Always capture Input</Name>
+    <Description>Allows the game window to not be focused but still get controller inputs</Description>
+    <DefaultValue>ff8_always_capture_input  = false</DefaultValue>
+    <TrueSetting>ff8_always_capture_input  = true</TrueSetting>
+    <FalseSetting>ff8_always_capture_input  = false</FalseSetting>
+  </Setting>
+
   <!-- CHEATS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Trucos</Group>
@@ -165,17 +174,6 @@
     <Group>Trucos</Group>
     <Name>Saltar Cinemáticas</Name>
     <Description>No configurable. Salta inmediatamente al final de una cinemática.{0}Uso: CTRL+S o Seleccionar+Iniciar.</Description>
-    <DefaultValue></DefaultValue>
-    <Option>
-      <Text>Ver la Descripción</Text>
-      <Settings></Settings>
-    </Option>
-  </Setting>
-  
-  <Setting xsi:type="DropDown">
-    <Group>Trucos</Group>
-    <Name>Reinicio Rápido</Name>
-    <Description>No configurable. Reinicia rápidamente el juego con un game over.{0}Uso: CTRL+R o L1+L2+R1+R2+Seleccionar+Iniciar.</Description>
     <DefaultValue></DefaultValue>
     <Option>
       <Text>Ver la Descripción</Text>
@@ -234,6 +232,14 @@
   </Setting>
 
   <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>Avanzado</Group>
+    <Name>Compatibilidad con Steam</Name>
+    <Description>Activar las opciones de Steam (Actividad del juego, mando y logros). ES NECESARIO que Steam esté en ejecución.</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
 
   <Setting xsi:type="Checkbox">
     <Group>Avanzado</Group>
