@@ -247,15 +247,15 @@ namespace AppUI.Classes
 
                     if (success)
                     {
-                        using (var archive = ZipArchive.Open(download.SaveFilePath))
+                        using (var archive = ZipArchive.OpenArchive(download.SaveFilePath, new SharpCompress.Readers.ReaderOptions()
+                        {
+                            ExtractFullPath = true,
+                            Overwrite = true
+                        }))
                         {
                             foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
                             {
-                                entry.WriteToDirectory(Sys.InstallPath, new ExtractionOptions()
-                                {
-                                    ExtractFullPath = true,
-                                    Overwrite = true
-                                });
+                                entry.WriteToDirectory(Sys.InstallPath);
                             }
                         }
 

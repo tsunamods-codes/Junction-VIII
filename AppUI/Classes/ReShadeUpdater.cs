@@ -176,15 +176,15 @@ namespace AppUI.Classes
                         }
 
                         // Extract ReShade files
-                        using (var archive = ZipArchive.Open(zipStream))
+                        using (var archive = ZipArchive.OpenArchive(zipStream, new SharpCompress.Readers.ReaderOptions()
+                        {
+                            ExtractFullPath = true,
+                            Overwrite = true
+                        }))
                         {
                             foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
                             {
-                                entry.WriteToDirectory(Sys.PathToReShadeFolder, new ExtractionOptions()
-                                {
-                                    ExtractFullPath = true,
-                                    Overwrite = true
-                                });
+                                entry.WriteToDirectory(Sys.PathToReShadeFolder);
                             }
                         }
 

@@ -354,12 +354,16 @@ namespace Iros.Workshop
                     {
                         using (var fs = new FileStream(source, FileMode.Open, FileAccess.Read))
                         {
-                            var archive = ArchiveFactory.Open(fs);
+                            var archive = ArchiveFactory.OpenArchive(fs, new ReaderOptions()
+                            {
+                                ExtractFullPath = true,
+                                Overwrite = true
+                            });
                             var iroEnt = archive.Entries.FirstOrDefault(e => Path.GetExtension(e.Key).Equals(".iroj", StringComparison.InvariantCultureIgnoreCase));
                             if (iroEnt != null)
                             {
                                 SetPercentComplete?.Invoke(50);
-                                iroEnt.WriteToFile(_dest, new SharpCompress.Common.ExtractionOptions() { Overwrite = true });
+                                iroEnt.WriteToFile(_dest);
                             }
                             else
                             {
@@ -377,7 +381,7 @@ namespace Iros.Workshop
                                     {
                                         if (!reader.Entry.IsDirectory)
                                         {
-                                            reader.WriteEntryToDirectory(extractTo, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
+                                            reader.WriteEntryToDirectory(extractTo);
                                         }
 
                                         count++;

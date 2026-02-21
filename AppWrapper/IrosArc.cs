@@ -166,7 +166,7 @@ namespace AppWrapper {
             var cdata = new System.IO.MemoryStream();
             //Lzs.Encode(new System.IO.MemoryStream(input), cdata);
             byte[] lprops;
-            using (var lzma = new SharpCompress.Compressors.LZMA.LzmaStream(new SharpCompress.Compressors.LZMA.LzmaEncoderProperties(), false, cdata)) {
+            using (var lzma = SharpCompress.Compressors.LZMA.LzmaStream.Create(new SharpCompress.Compressors.LZMA.LzmaEncoderProperties(), false, cdata)) {
                 lzma.Write(input, 0, input.Length);
                 lprops = lzma.Properties;
             }
@@ -480,7 +480,7 @@ namespace AppWrapper {
                             byte[] cdata = new byte[e.Length - propSize - 8];
                             _data.ReadExactly(cdata);
                             data = new byte[decSize];
-                            var lzma = new SharpCompress.Compressors.LZMA.LzmaStream(props, new System.IO.MemoryStream(cdata));
+                            var lzma = SharpCompress.Compressors.LZMA.LzmaStream.Create(props, new System.IO.MemoryStream(cdata));
                             lzma.ReadExactly(data);
                             /*int srcSize = cdata.Length;
                             switch (LzmaUncompress(data, ref decSize, cdata, ref srcSize, props, props.Length)) {
