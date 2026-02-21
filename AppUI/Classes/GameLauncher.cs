@@ -422,6 +422,9 @@ namespace AppUI.Classes
                     }
                 }
                 Sys.FFNxConfig.Save();
+
+                // Refresh runtime profile using new FFNx flags from mods
+                runtimeProfile = CreateRuntimeProfile();
             }
             else
             {
