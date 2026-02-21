@@ -533,6 +533,11 @@ namespace AppUI.ViewModels
                 Sys.Settings.ExtraFolders.Add("widescreen");
             }
 
+            if (!Sys.Settings.ExtraFolders.Contains("shaders", StringComparer.InvariantCultureIgnoreCase))
+            {
+                Sys.Settings.ExtraFolders.Add("shaders");
+            }
+
             Sys.Settings.FF8Exe = FF8ExePathInput;
             Sys.Settings.LibraryLocation = LibraryPathInput;
             Sys.Settings.FFNxUpdateChannel = FFNxUpdateChannel;

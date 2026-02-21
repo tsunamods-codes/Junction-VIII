@@ -1153,7 +1153,7 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
     <system:String x:Key="UserInterface">Interface de Usuário</system:String>
     <system:String x:Key="WorldModels">Modelos do Mundo</system:String>
     <system:String x:Key="WorldTextures">Texturas do Mundo</system:String>
-    <system:String x:Key="ReShadeShaders">ReShade Shaders</system:String>
+    <system:String x:Key="ModShaders">Shaders</system:String>
 
     <system:String x:Key="Cancelling">Cancelando</system:String>
 

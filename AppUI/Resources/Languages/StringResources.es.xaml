@@ -1159,7 +1159,7 @@ Por último, puedes seleccionar la ruta de las cinemáticas en 'Opciones general
     <system:String x:Key="UserInterface">Interfaz de usuario</system:String>
     <system:String x:Key="WorldModels">Modelos del mundo</system:String>
     <system:String x:Key="WorldTextures">Texturas del mundo</system:String>
-    <system:String x:Key="ReShadeShaders">ReShade Shaders</system:String>
+    <system:String x:Key="ModShaders">Shaders</system:String>
 
 
     <system:String x:Key="Cancelling">Cancelando</system:String>

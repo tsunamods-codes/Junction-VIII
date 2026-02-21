@@ -650,6 +650,6 @@
         SomethingWentWrongWhileDisablingDEP,
         App4GBPatchRequired,
         App4GBPatchApplied,
-        ReShadeShaders
+        ModShaders
     }
 }
