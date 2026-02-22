@@ -44,7 +44,7 @@ namespace AppUI.Windows
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            bool settingsSaved = ViewModel.SaveSettings();
+            bool settingsSaved = ViewModel.SaveSettings(true);
 
             if (PathChanged)
             {
