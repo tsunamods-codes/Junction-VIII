@@ -732,7 +732,7 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     <system:String x:Key="FileNotFoundAborting">fichier non trouvé. Abandon...</system:String>
     <system:String x:Key="Ff8ExeNotFoundYouMayNeedToConfigure">Exe de FF8 non trouvé. Vous devrez peut-être configurer J8 en utilisant le menu Paramètres > Paramètres Généraux.</system:String>
     <system:String x:Key="VerifyingInstalledGameIsCompatible">Vérification de la compatibilité du jeu installé...</system:String>
-    <system:String x:Key="ErrorCodeYarr">Code d'erreur : YARR ! Impossible de continuer. Cette version de FF8 semble être piratée. Merci d'utiliser une version authentique du jeu. Si cette version est authentique, veuillez signaler cette erreur sur les forums Qhimm.</system:String>
+    <system:String x:Key="ErrorCodeYarr">Échec de la vérification d'intégrité des fichiers EXE/DLL, veuillez réinstaller à partir du CD ou utiliser « Vérifier mes fichiers » pour réparer.</system:String>
     <system:String x:Key="VerifyingGameIsNotInstalledInProtectedFolder">Vérification que le jeu ne soit pas installé dans un dossier système ou protégé...</system:String>
 
     <system:String x:Key="Ff8IsCurrentlyInstalledInASystemFolder" xml:space="preserve">FF8 est actuellement installé dans un dossier système, ce qui peut empêcher les mods de fonctionner. Il est recommandé de l'installer dans C:\Games\Final Fantasy VIII
