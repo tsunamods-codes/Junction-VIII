@@ -736,7 +736,7 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     <system:String x:Key="FileNotFoundAborting">Αδυναμία εύρεσης αρχείου. Γίνεται ακύρωση ...</system:String>
     <system:String x:Key="Ff8ExeNotFoundYouMayNeedToConfigure">Το αρχείο FF8.exe δεν βρέθηκε. Ισως χρειαστεί διαμόρφωση του J8 μέσω του μενού 'Ρυθμίσεις'>'Γενικές Ρυθμίσεις'.</system:String>
     <system:String x:Key="VerifyingInstalledGameIsCompatible">Επαλήθευση συμβατότητας του εγκατεστημένου παιχνιδιού ...</system:String>
-    <system:String x:Key="ErrorCodeYarr">Κωδικός σφάλματος: YARR! Αδύνατον να συνεχιστεί η διαδικασία. Παρακαλώ αναφέρτε αυτό το σφάλμα στα φόρουμ του Qhimm.</system:String>
+    <system:String x:Key="ErrorCodeYarr">Αποτυχία ελέγχου ακεραιότητας EXE/DLL, εγκαταστήστε ξανά από το CD ή χρησιμοποιήστε την επιλογή "Επαλήθευση των αρχείων μου" για επιδιόρθωση.</system:String>
     <system:String x:Key="VerifyingGameIsNotInstalledInProtectedFolder">Επαληθεύεται αν το παιχνίδι είναι εγκατεστημένο σε έναν φάκελο συστήματος/προστατευμένο ...</system:String>
 
     <system:String x:Key="Ff8IsCurrentlyInstalledInASystemFolder" xml:space="preserve">Το FF8 είναι εγκατεστημένο σε έναν φάκελο συστήματος που μπορεί να προκαλέσει αδυναμία λειτουργίας των τροποποιήσεων. Προτείνεται να γίνει εγκατάσταση στον φάκελο C:\Games\Final Fantasy VIII
