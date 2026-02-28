@@ -187,6 +187,8 @@ namespace AppUI.Classes
 
         public void DownloadAndExtractLatestVersion(FFNxUpdateChannelOptions channel)
         {
+            SwitchToDownloadPanel();
+
             DownloadItem download = new DownloadItem()
             {
                 Links = new List<string>() { LocationUtil.FormatHttpUrl(GetUpdateChannel(channel)) },
@@ -250,7 +252,8 @@ namespace AppUI.Classes
                         using (var archive = ZipArchive.OpenArchive(download.SaveFilePath, new SharpCompress.Readers.ReaderOptions()
                         {
                             ExtractFullPath = true,
-                            Overwrite = true
+                            Overwrite = true,
+                            LeaveStreamOpen = false
                         }))
                         {
                             foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
@@ -266,10 +269,10 @@ namespace AppUI.Classes
                         Sys.FFNxConfig.OverrideInternalKeys();
                         Sys.FFNxConfig.Save();
 
+                        File.Delete(download.SaveFilePath);
+
                         MessageDialogWindow.Show($"Successfully updated FFNx to version {version}. All options have been set to default.\n\nEnjoy!", "Success", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                         Sys.Message(new WMessage() { Text = $"Successfully updated FFNx to version {version}" });
-
-                        File.Delete(download.SaveFilePath);
                     }
                     else
                     {
