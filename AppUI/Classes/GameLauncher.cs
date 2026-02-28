@@ -195,6 +195,8 @@ namespace AppUI.Classes
                         goto LaunchGame;
                     }
                 }
+                var appidPath = Path.Combine(Sys.InstallPath, "steam_appid.txt");
+                if (!File.Exists(appidPath)) File.WriteAllText(appidPath, "39150");
             }
 
             //
@@ -263,18 +265,6 @@ namespace AppUI.Classes
                 file.FileHeader.Characteristics |= Characteristics.LargeAddressAware;
                 file.Write(Sys.Settings.FF8Exe);
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.App4GBPatchApplied));
-            }
-
-            //
-            // Copy the new launcher to the game path
-            //
-            if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
-            {
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingFf8LauncherExe));
-
-                string src = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                string dest = Path.GetDirectoryName(Sys.Settings.FF8Exe);
-                File.Copy(Path.Combine(src, "AppLauncher.exe"), Path.Combine(dest, "FF8_Launcher.exe"), true);
             }
 
             //
@@ -802,37 +792,13 @@ namespace AppUI.Classes
         {
             try
             {
-                if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+                // Start game directly
+                ProcessStartInfo startInfo = new ProcessStartInfo(Sys.Settings.FF8Exe)
                 {
-                    string chocoTicket = Path.Combine(Sys.InstallPath, ".J8LaunchChoco");
-                    if (File.Exists(chocoTicket)) File.Delete(chocoTicket);
-
-                    // Start game via Steam
-                    ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
-                    {
-                        WorkingDirectory = GameConverter.GetSteamPath(),
-                        UseShellExecute = true,
-                        Arguments = "-applaunch 39150"
-                    };
-                    Process.Start(startInfo);
-
-                    // Wait for game process
-                    Process game = await waitForProcess(Path.GetFileNameWithoutExtension(Sys.Settings.FF8Exe));
-                    if (game != null)
-                    {
-                        ff8Proc = game;
-                    }
-                }
-                else
-                {
-                    // Start game directly
-                    ProcessStartInfo startInfo = new ProcessStartInfo(Sys.Settings.FF8Exe)
-                    {
-                        WorkingDirectory = Path.GetDirectoryName(Sys.Settings.FF8Exe),
-                        UseShellExecute = true,
-                    };
-                    ff8Proc = Process.Start(startInfo);
-                }
+                    WorkingDirectory = Path.GetDirectoryName(Sys.Settings.FF8Exe),
+                    UseShellExecute = true,
+                };
+                ff8Proc = Process.Start(startInfo);
 
                 ff8Proc.EnableRaisingEvents = true;
                 ff8Proc.Exited += (o, e) =>
@@ -875,44 +841,17 @@ namespace AppUI.Classes
             try
             {
                 if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
-                {
                     chocoboExe = Path.Combine(Sys.InstallPath, "chocobo_en.exe");
-                    string ticket = Path.Combine(Sys.InstallPath, ".J8LaunchChoco");
-
-                    // Create signal file for the custom launcher
-                    System.IO.File.WriteAllText(ticket, "chocobo_en.exe");
-
-                    // Start game via Steam
-                    ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
-                    {
-                        WorkingDirectory = GameConverter.GetSteamPath(),
-                        UseShellExecute = true,
-                        Arguments = "-applaunch 39150"
-                    };
-                    Process.Start(startInfo);
-
-                    // Wait for game process
-                    Process game = await waitForProcess(Path.GetFileNameWithoutExtension(chocoboExe));
-                    if (game != null)
-                    {
-                        ff8Proc = game;
-                    }
-
-                    // Delete signal file
-                    File.Delete(ticket);
-                }
                 else
-                {
                     chocoboExe = Path.Combine(Sys.InstallPath, "chocobo.exe");
 
-                    // Start game directly
-                    ProcessStartInfo startInfo = new ProcessStartInfo(chocoboExe)
-                    {
-                        WorkingDirectory = Path.GetDirectoryName(chocoboExe),
-                        UseShellExecute = true,
-                    };
-                    ff8Proc = Process.Start(startInfo);
-                }
+                // Start game directly
+                ProcessStartInfo startInfo = new ProcessStartInfo(chocoboExe)
+                {
+                    WorkingDirectory = Path.GetDirectoryName(chocoboExe),
+                    UseShellExecute = true,
+                };
+                ff8Proc = Process.Start(startInfo);
 
                 ff8Proc.EnableRaisingEvents = true;
                 ff8Proc.Exited += (o, e) =>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32819.101
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppUI", "AppUI\AppUI.csproj", "{5F6C267D-0F93-4C71-BA58-0C1AD6242383}"
 EndProject
@@ -14,8 +14,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppLoader", "AppLoader\AppLoader.vcxproj", "{D95622DB-5459-4369-9585-F6457AAF3FC3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppProxy", "AppProxy\AppProxy.csproj", "{F955F161-A47E-4399-9FD2-DB0D83E6461A}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppLauncher", "AppLauncher\AppLauncher.vcxproj", "{E9DF030F-3113-46CD-81EB-DDEC52A7C926}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogValidator", "CatalogValidator\CatalogValidator.csproj", "{EFEE6C73-070D-45D4-A436-04F6352DDD9C}"
 EndProject
@@ -101,18 +99,6 @@ Global
 		{F955F161-A47E-4399-9FD2-DB0D83E6461A}.Release|x64.Build.0 = Release|Any CPU
 		{F955F161-A47E-4399-9FD2-DB0D83E6461A}.Release|x86.ActiveCfg = Release|Any CPU
 		{F955F161-A47E-4399-9FD2-DB0D83E6461A}.Release|x86.Build.0 = Release|Any CPU
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Debug|Any CPU.ActiveCfg = Debug|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Debug|Any CPU.Build.0 = Debug|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Debug|x64.ActiveCfg = Debug|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Debug|x64.Build.0 = Debug|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Debug|x86.ActiveCfg = Debug|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Debug|x86.Build.0 = Debug|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Release|Any CPU.ActiveCfg = Release|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Release|Any CPU.Build.0 = Release|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Release|x64.ActiveCfg = Release|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Release|x64.Build.0 = Release|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Release|x86.ActiveCfg = Release|win32
-		{E9DF030F-3113-46CD-81EB-DDEC52A7C926}.Release|x86.Build.0 = Release|win32
 		{EFEE6C73-070D-45D4-A436-04F6352DDD9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFEE6C73-070D-45D4-A436-04F6352DDD9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFEE6C73-070D-45D4-A436-04F6352DDD9C}.Debug|x64.ActiveCfg = Debug|Any CPU
