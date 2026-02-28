@@ -419,8 +419,9 @@ namespace AppUI.ViewModels
         public static void AutoDetectSystemPaths(Settings settings)
         {
             string ff8 = null;
+            bool isRunningInWine = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WINELOADER"));
 
-            if (string.IsNullOrEmpty(settings.FF8Exe) || !File.Exists(settings.FF8Exe))
+            if (string.IsNullOrEmpty(settings.FF8Exe) || !File.Exists(settings.FF8Exe) && !isRunningInWine)
             {
                 Logger.Info("FF8 Exe path is empty or ff8.exe is missing. Auto detecting paths ...");
 
