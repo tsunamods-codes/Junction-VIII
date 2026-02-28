@@ -1,6 +1,10 @@
 ﻿using AppCore;
+using GameFinder.RegistryUtils;
+using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
 using Iros.Workshop;
 using Microsoft.Win32;
+using NexusMods.Paths;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,28 +44,21 @@ namespace AppUI.Classes
             switch (installedVersion)
             {
                 case FF8Version.Steam:
+                    var steamHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
+                    var steamGameId = AppId.From(39150);
 
-                    // Detect if Steam is installed
-                    string steamPath = GetSteamPath();
-
-                    if (steamPath != null)
+                    foreach (var result in steamHandler.FindAllGames())
                     {
-                        var stream = File.OpenRead(Path.Combine(steamPath, "steamapps\\libraryfolders.vdf"));
-                        var kv = KVSerializer.Create(KVSerializationFormat.KeyValues1Text);
-                        KVObject data = kv.Deserialize(stream);
-
-                        // Look through multiple libraries
-                        foreach (var section in data)
+                        // using the switch method
+                        result.Switch(game =>
                         {
-                            var libraryPath = section["path"].ToString().Replace("\\\\", "\\");
-
-                            if (File.Exists(Path.Combine(libraryPath, "steamapps\\appmanifest_39150.acf")))
-                            {
-                                installPath = Path.Combine(libraryPath, "steamapps\\common\\FINAL FANTASY VIII");
-                            }
-                        }
+                            if (game.AppId == steamGameId)
+                                installPath = game.Path.GetFullPath().Replace("/", "\\");
+                        }, error =>
+                        {
+                            // Do nothing
+                        });
                     }
-
                     break;
 
                 case FF8Version.Original2K:
