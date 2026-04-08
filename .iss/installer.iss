@@ -15,7 +15,7 @@
 #endif
 
 #ifndef MyAppTargetFramework
-  #define MyAppTargetFramework "net9.0-windows7.0"
+  #define MyAppTargetFramework "net10.0-windows7.0"
 #endif
 
 #define public Dependency_Path_NetCoreCheck ""
