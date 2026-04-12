@@ -923,6 +923,7 @@ Por último, puedes seleccionar la ruta de las cinemáticas en 'Opciones general
     <system:String x:Key="FailedToCopyErrorHasBeenLogged">error al copiar. Se ha registrado el error</system:String>
     <system:String x:Key="FailedToFindOnAnyDisc">error al buscar {0} en disco(s) ...</system:String>
     <system:String x:Key="FileNotFound">archivo no encontrado ...</system:String>
+    <system:String x:Key="FFNxTomlNotFoundRunGameFirst" xml:space="preserve">Archivo FFNx.toml no encontrado.\n\nPor favor, ejecute el juego al menos una vez e inténtelo de nuevo.</system:String>
     <system:String x:Key="CannotCopySourceFileBecauseItIsMissingAt">no se pudo copiar el archivo fuente por que falta en</system:String>
     <system:String x:Key="CopyingFileFrom">copiando archivo desde</system:String>
 
