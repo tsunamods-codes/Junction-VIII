@@ -482,6 +482,9 @@ Haz clic en 'Cancelar' para detener el proceso.</system:String>
     <system:String x:Key="SettingsNotValid">Configuración no válida</system:String>
     <system:String x:Key="MissingFf8ExePath">Falta la ruta del FF8 Exe.</system:String>
     <system:String x:Key="MissingLibraryPath">Falta la ruta de la Biblioteca.</system:String>
+    <system:String x:Key="PromptMoveModsToNewLibrary">La ubicación de la biblioteca ha cambiado. ¿Deseas mover tus mods existentes a la nueva ubicación?</system:String>
+    <system:String x:Key="MovedModsToNewLibrary">Los mods han sido movidos a la nueva ubicación de la biblioteca.</system:String>
+    <system:String x:Key="FailedToMoveModsToNewLibrary">Error al mover los mods a la nueva ubicación de la biblioteca. Consulta los registros para más detalles.</system:String>
     <system:String x:Key="MissingTexturesPath">Falta la ruta de las Texturas (Aali OpenGL).</system:String>
     <system:String x:Key="MissingMoviePath">Falta la ruta para las Cinemáticas.</system:String>
     <system:String x:Key="LibraryPathCannotBeGameOrApp">Library path can not be the same used by the Game or Junction VIII. Use the default path or pick any other one that is none of them.</system:String>

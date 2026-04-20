@@ -480,6 +480,9 @@ Auf "Abbrechen" klicken, um den Vorgang zu unterbrechen.</system:String>
     <system:String x:Key="SettingsNotValid">Einstellungen sind nicht gültig</system:String>
     <system:String x:Key="MissingFf8ExePath">Pfad zur "ff8.exe" ist nicht vorhanden.</system:String>
     <system:String x:Key="MissingLibraryPath">Pfad zur Bibliothek ist nicht vorhanden.</system:String>
+    <system:String x:Key="PromptMoveModsToNewLibrary">The library location has changed. Would you like to move your existing mods to the new location?</system:String>
+    <system:String x:Key="MovedModsToNewLibrary">Mods have been moved to the new library location.</system:String>
+    <system:String x:Key="FailedToMoveModsToNewLibrary">Failed to move mods to the new library location. Check the logs for details.</system:String>
     <system:String x:Key="MissingTexturesPath">Pfad zu den Texturen (Aali-OpenGL) ist nicht vorhanden.</system:String>
     <system:String x:Key="MissingMoviePath">Pfad zu den Videos ist nicht vorhanden.</system:String>
     <system:String x:Key="LibraryPathCannotBeGameOrApp">Library path can not be the same used by the Game or Junction VIII. Use the default path or pick any other one that is none of them.</system:String>
