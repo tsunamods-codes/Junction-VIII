@@ -141,7 +141,7 @@ namespace AppCore
             };
             var client = new HttpClient(handler);
             client.DefaultRequestHeaders.ExpectContinue = false;
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0");
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0");
             if (Headers != null)  client.DefaultRequestHeaders.Add("Referer", Headers["Referer"]);
             var request = new HttpRequestMessage { RequestUri = new Uri(_sourceUrl) };
             if (range > 0) request.Headers.Range = new RangeHeaderValue(0, range);
@@ -285,7 +285,7 @@ namespace AppCore
                         var document = await BrowsingContext.New().OpenAsync(m => m.Content(html));
 
                         if (document.Title.Contains("Quota exceeded")) throw new Exception(document.Title);
-                        
+
                         var url = _responseUri + String.Format("&confirm={0}&uuid={1}", document.QuerySelector("input[name=\"confirm\"]").Attributes["value"].Value, document.QuerySelector("input[name=\"uuid\"]").Attributes["value"].Value);
 
                         DownloadProgressChanged?.Invoke(this, new ProgressChangedEventArgs((int)(0), _userState));
@@ -294,7 +294,7 @@ namespace AppCore
 
                         var handler = _cookies != null ? new HttpClientHandler() { CookieContainer = _cookies } : new HttpClientHandler();
                         var client = new HttpClient(handler);
-                        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0");
+                        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0");
                         client.DefaultRequestHeaders.Add("Referer", _sourceUrl);
                         var request = new HttpRequestMessage { RequestUri = new Uri(url) };
 
