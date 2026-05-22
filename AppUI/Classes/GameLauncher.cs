@@ -1,7 +1,6 @@
 ﻿using AppCore;
 using AppWrapper;
 using AsmResolver.PE.File;
-using AsmResolver.PE.File.Headers;
 using Iros;
 using Iros.Workshop;
 using Microsoft.Win32;
