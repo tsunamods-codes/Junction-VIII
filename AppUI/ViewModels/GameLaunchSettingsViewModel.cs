@@ -417,12 +417,9 @@ namespace AppUI.ViewModels
             LastVolumeSliderChanged = VolumeSlider.Music;
 
             // Initialize direct music
-            object dmusic = null;
             PInvoke.CoInitialize();
             Guid CLSID_DirectMusic = new Guid("636b9f10-0c7d-11d1-95b2-0020afdc7421"); // CLSID for DirectMusic
-            Guid IID_IDirectMusic = typeof(IDirectMusic).GUID;
-            HRESULT hr = PInvoke.CoCreateInstance(CLSID_DirectMusic, null, CLSCTX.CLSCTX_INPROC_SERVER, IID_IDirectMusic, out dmusic);
-            _directMusic = (IDirectMusic)dmusic;
+            HRESULT hr = PInvoke.CoCreateInstance<IDirectMusic>(in CLSID_DirectMusic, null, CLSCTX.CLSCTX_INPROC_SERVER, out _directMusic);
 
             // initialize sound devices on background task because it can take up to 1-3 seconds to loop over audio devices and get their names
             SelectedSoundDevice = ResourceHelper.Get(StringKey.LoadingDevices);
