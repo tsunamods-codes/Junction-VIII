@@ -451,10 +451,19 @@ namespace AppUI
         private void menuItemOpenSaveDir_Click(object sender, RoutedEventArgs e)
         {
             string path = Path.Combine(Sys.InstallPath, "save");
-            if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+
+            switch (Sys.Settings.FF8InstalledVersion)
             {
-                path = Directory.EnumerateDirectories(GameConverter.GetSteamFF8UserPath(), "user_*").First();
+                case FF8Version.Steam:
+                    path = Directory.EnumerateDirectories(GameConverter.GetSteamFF8UserPath(), "user_*").First();
+                    break;
+                case FF8Version.Remastered:
+                case FF8Version.GOG:
+                    string remasteredPath = GameConverter.GetRemasteredFF8UserPath();
+                    if (!string.IsNullOrEmpty(remasteredPath)) path = remasteredPath;
+                    break;
             }
+
             ProcessStartInfo startInfo = new ProcessStartInfo(path)
             {
                 UseShellExecute = true,

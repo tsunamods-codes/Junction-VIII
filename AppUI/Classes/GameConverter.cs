@@ -1,5 +1,6 @@
 ﻿using AppCore;
 using GameFinder.RegistryUtils;
+using GameFinder.StoreHandlers.GOG;
 using GameFinder.StoreHandlers.Steam;
 using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
 using Iros.Workshop;
@@ -30,6 +31,12 @@ namespace AppUI.Classes
 
         public const string BackupFolderName = "J8-BACKUP";
 
+        public const uint SteamAppId = 39150;
+
+        public const uint RemasteredSteamAppId = 1026680;
+
+        public const long RemasteredGogGameId = 1086370078;
+
         public string InstallPath { get; set; }
 
         public GameConverter(string installPath)
@@ -44,15 +51,23 @@ namespace AppUI.Classes
             switch (installedVersion)
             {
                 case FF8Version.Steam:
-                    var steamHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
-                    var steamGameId = AppId.From(39150);
+                    installPath = GetSteamGameInstallLocation(SteamAppId);
+                    break;
 
-                    foreach (var result in steamHandler.FindAllGames())
+                case FF8Version.Remastered:
+                    installPath = GetSteamGameInstallLocation(RemasteredSteamAppId);
+                    break;
+
+                case FF8Version.GOG:
+                    var gogHandler = new GOGHandler(WindowsRegistry.Shared, FileSystem.Shared);
+                    var gogGameId = GOGGameId.From(RemasteredGogGameId);
+
+                    foreach (var result in gogHandler.FindAllGames())
                     {
                         // using the switch method
                         result.Switch(game =>
                         {
-                            if (game.AppId == steamGameId)
+                            if (game.Id == gogGameId)
                                 installPath = game.Path.GetFullPath().Replace("/", "\\");
                         }, error =>
                         {
@@ -64,6 +79,29 @@ namespace AppUI.Classes
                 case FF8Version.Original2K:
                     installPath = RegistryHelper.GetValue(FF8RegKey.FF8AppKeyPath, "Path", "") as string;
                     break;
+            }
+
+            return installPath;
+        }
+
+        private static string GetSteamGameInstallLocation(uint appId)
+        {
+            string installPath = "";
+
+            var steamHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
+            var steamGameId = AppId.From(appId);
+
+            foreach (var result in steamHandler.FindAllGames())
+            {
+                // using the switch method
+                result.Switch(game =>
+                {
+                    if (game.AppId == steamGameId)
+                        installPath = game.Path.GetFullPath().Replace("/", "\\");
+                }, error =>
+                {
+                    // Do nothing
+                });
             }
 
             return installPath;
@@ -92,6 +130,34 @@ namespace AppUI.Classes
             string ret = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Square Enix\\FINAL FANTASY VIII Steam";
 
             return ret;
+        }
+
+        /// <summary>
+        /// Returns the user folder of the Remastered release for the store the game was bought from.
+        /// </summary>
+        public static string GetRemasteredFF8StorePath()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "My Games",
+                "FINAL FANTASY VIII Remastered",
+                Sys.Settings.FF8InstalledVersion == FF8Version.GOG ? "GOG" : "Steam"
+            );
+        }
+
+        /// <summary>
+        /// Returns the saves folder of the Remastered release, or an empty string when the game has never been run.
+        /// </summary>
+        public static string GetRemasteredFF8UserPath()
+        {
+            string storePath = GetRemasteredFF8StorePath();
+
+            if (!Directory.Exists(storePath)) return string.Empty;
+
+            // the store user id is a numeric folder
+            string userPath = Directory.EnumerateDirectories(storePath).FirstOrDefault(d => ulong.TryParse(Path.GetFileName(d), out _));
+
+            return userPath == null ? string.Empty : Path.Combine(userPath, "game_data", "user", "saves");
         }
 
         public bool IsGamePirated()

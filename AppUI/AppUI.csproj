@@ -267,6 +267,7 @@
     <PackageReference Include="Extended.Wpf.Toolkit">
       <Version>5.1.2</Version>
     </PackageReference>
+    <PackageReference Include="GameFinder.StoreHandlers.GOG" Version="4.9.0" />
     <PackageReference Include="GameFinder.StoreHandlers.Steam" Version="4.9.0" />
     <PackageReference Include="ini-parser-netstandard" Version="2.5.3" />
     <PackageReference Include="MegaApiClient">

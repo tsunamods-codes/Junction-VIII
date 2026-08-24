@@ -231,7 +231,8 @@ namespace Iros.Workshop.ConfigSettings
             _toml["external_sfx_path"] = "sfx";
             _toml["external_sfx_ext"] = "ogg";
             _toml["external_music_path"] = "data/music";
-            if (Directory.EnumerateFiles(Path.Combine(Sys.InstallPath, "data/music"), "*.ogg").Any())
+            string pathToExternalMusic = Path.Combine(Sys.InstallPath, "data", "music");
+            if (Directory.Exists(pathToExternalMusic) && Directory.EnumerateFiles(pathToExternalMusic, "*.ogg").Any())
                 _toml["use_external_music"] = true;
             _toml["external_music_ext"] = "ogg";
             _toml["external_voice_path"] = "voice";
