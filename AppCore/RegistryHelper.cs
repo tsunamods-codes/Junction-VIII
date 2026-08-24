@@ -31,6 +31,10 @@ namespace AppCore
 
         public const string FF8SteamKeyPath32Bit = @"HKEY_CURRENT_USER\Software\Valve\Steam\Apps\39150";
 
+        public const string FF8RemasteredSteamKeyPath64Bit = @"HKEY_CURRENT_USER\Software\Wow6432Node\Valve\Steam\Apps\1026680";
+
+        public const string FF8RemasteredSteamKeyPath32Bit = @"HKEY_CURRENT_USER\Software\Valve\Steam\Apps\1026680";
+
         public const string SquareSoftKeyPath64Bit = @"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Square Soft, Inc";
 
         public const string SquareSoftKeyPath32Bit = @"HKEY_LOCAL_MACHINE\SOFTWARE\Square Soft, Inc";

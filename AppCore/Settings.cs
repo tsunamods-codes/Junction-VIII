@@ -19,7 +19,9 @@ namespace Iros.Workshop {
     {
         Unknown = -1,
         Steam,
-        Original2K
+        Original2K,
+        Remastered,
+        GOG
     }
 
     public enum GeneralOptions {
@@ -209,7 +211,11 @@ namespace Iros.Workshop {
         /// <param name="pathToFf8Install"></param>
         public void SetPathsFromInstallationPath(string pathToFf8Install)
         {
-            FF8Exe = Sys.Settings.FF8InstalledVersion == FF8Version.Original2K ? Path.Combine(pathToFf8Install, "FF8.exe") : Path.Combine(pathToFf8Install, "ff8_en.exe");
+            FF8Exe = Sys.Settings.FF8InstalledVersion switch
+            {
+                FF8Version.Original2K or FF8Version.Remastered or FF8Version.GOG => Path.Combine(pathToFf8Install, "FF8.exe"),
+                _ => Path.Combine(pathToFf8Install, "ff8_en.exe")
+            };
 
             if (LibraryLocation == string.Empty)
             {

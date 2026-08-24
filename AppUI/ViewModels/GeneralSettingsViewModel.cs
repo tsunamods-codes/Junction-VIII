@@ -430,9 +430,26 @@ namespace AppUI.ViewModels
                     // Reset state
                     Sys.Settings.FF8InstalledVersion = FF8Version.Unknown;
 
-                    // First try to autodetect the Steam installation if any
-                    ff8 = GameConverter.GetInstallLocation(FF8Version.Steam);
-                    Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.Steam : FF8Version.Unknown;
+                    // First try to autodetect the Remastered release if any
+                    if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
+                    {
+                        ff8 = GameConverter.GetInstallLocation(FF8Version.Remastered);
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.Remastered : FF8Version.Unknown;
+                    }
+
+                    // If no Steam version detected, attempt to detect the GOG release
+                    if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
+                    {
+                        ff8 = GameConverter.GetInstallLocation(FF8Version.GOG);
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.GOG : FF8Version.Unknown;
+                    }
+
+                    // Then try to autodetect the Steam installation if any
+                    if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
+                    {
+                        ff8 = GameConverter.GetInstallLocation(FF8Version.Steam);
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.Steam : FF8Version.Unknown;
+                    }
 
                     // Finally as a last attempt try to autodetect the 2000 release
                     if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
@@ -474,7 +491,15 @@ namespace AppUI.ViewModels
             // User has given a ff8 exe path, try to guess which version it is
             else
             {
-                if (settings.FF8Exe.ToLower().EndsWith("ff8_en.exe"))
+                if (settings.FF8Exe.ToLower().EndsWith("ffviii.exe"))
+                {
+                    string goggame = Path.Combine(Path.GetDirectoryName(settings.FF8Exe), $"goggame-{GameConverter.RemasteredGogGameId}.info");
+
+                    // FFVIII.exe only identifies the Remastered release, the game is then run through ff8.exe
+                    Sys.Settings.FF8InstalledVersion = File.Exists(goggame) ? FF8Version.GOG : FF8Version.Remastered;
+                    settings.FF8Exe = Path.Combine(Path.GetDirectoryName(settings.FF8Exe), "ff8.exe");
+                }
+                else if (settings.FF8Exe.ToLower().EndsWith("ff8_en.exe"))
                 {
                     string ff8Launcher = Path.Combine(Path.GetDirectoryName(settings.FF8Exe), "FF8_Launcher.exe");
 
@@ -482,8 +507,15 @@ namespace AppUI.ViewModels
                 }
                 else if(settings.FF8Exe.ToLower().EndsWith("ff8.exe"))
                 {
-                    // No previously converted edition detected, looks like a genuine 2000 edition
-                    Sys.Settings.FF8InstalledVersion = FF8Version.Original2K;
+                    string ff8Folder = Path.GetDirectoryName(settings.FF8Exe);
+                    string ffviiiExe = Path.Combine(ff8Folder, "FFVIII.exe");
+                    string goggame = Path.Combine(ff8Folder, $"goggame-{GameConverter.RemasteredGogGameId}.info");
+
+                    if (File.Exists(ffviiiExe))
+                        Sys.Settings.FF8InstalledVersion = File.Exists(goggame) ? FF8Version.GOG : FF8Version.Remastered;
+                    else
+                        // No previously converted edition detected, looks like a genuine 2000 edition
+                        Sys.Settings.FF8InstalledVersion = FF8Version.Original2K;
                 }
             }
         }

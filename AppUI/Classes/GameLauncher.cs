@@ -170,6 +170,20 @@ namespace AppUI.Classes
                 }
             }
 
+            if (Sys.Settings.FF8InstalledVersion == FF8Version.Remastered || Sys.Settings.FF8InstalledVersion == FF8Version.GOG)
+            {
+                // The Remastered release ships without ff8.exe, which mods still expect in the game directory
+                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingFf8Exe));
+                if (!File.Exists(Path.Combine(converter.InstallPath, "ff8.exe")))
+                {
+                    if (!converter.CopyFF8ExeToGame())
+                    {
+                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCopyFf8Exe)}", NLog.LogLevel.Error);
+                        return false;
+                    }
+                }
+            }
+
             Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.CheckingFf8ExeExistsAt)} {Sys.Settings.FF8Exe} ...");
             if (!File.Exists(Sys.Settings.FF8Exe))
             {
@@ -194,8 +208,13 @@ namespace AppUI.Classes
                         goto LaunchGame;
                     }
                 }
+            }
+
+            if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam || Sys.Settings.FF8InstalledVersion == FF8Version.Remastered)
+            {
                 var appidPath = Path.Combine(Sys.InstallPath, "steam_appid.txt");
-                if (!File.Exists(appidPath)) File.WriteAllText(appidPath, "39150");
+                var appId = Sys.Settings.FF8InstalledVersion == FF8Version.Remastered ? GameConverter.RemasteredSteamAppId : GameConverter.SteamAppId;
+                if (!File.Exists(appidPath)) File.WriteAllText(appidPath, appId.ToString());
             }
 
             //
