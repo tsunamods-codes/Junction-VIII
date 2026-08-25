@@ -559,10 +559,12 @@ namespace AppUI.Classes
             }
 
             string ff8ExePath = Path.Combine(Sys.PathToPatchedExeFolder, "ff8.exe");
+            string binkw32Path = Path.Combine(Sys.PathToPatchedExeFolder, "binkw32.dll");
 
             try
             {
                 File.Copy(ff8ExePath, Path.Combine(InstallPath, "ff8.exe"), true);
+                File.Copy(binkw32Path, Path.Combine(InstallPath, "binkw32.dll"), true);
                 return true;
             }
             catch (Exception ex)
