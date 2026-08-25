@@ -789,6 +789,10 @@ Enfin, vous pouvez définir le chemin d'accès de votre film dans les 'Paramètr
     <system:String x:Key="FailedToCopyFf8ConfigExe">échec de la copie de FF8Config.exe. Abandon...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">échec de la création d'une sauvegarde de FF8Config.exe. Abandon...</system:String>
 
+    <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Vérification qu'EAXUnified est installé...</system:String>
+    <system:String x:Key="InstallingEAXUnified">eax.dll introuvable, installation d'EAXUnified. Une invite UAC peut apparaître, veuillez l'accepter pour continuer...</system:String>
+    <system:String x:Key="FailedToInstallEAXUnified">échec de l'installation d'EAXUnified. Abandon...</system:String>
+
     <system:String x:Key="CheckingAProfileIsActive">Vérification qu'un profil est actif...</system:String>
     <system:String x:Key="ActiveProfileNotFound">profil actif non trouvé. Abandon...</system:String>
     <system:String x:Key="CreateAProfileFirstAndTryAgain">Créer d'abord un profil dans Paramètres > Profils et réessayer.</system:String>

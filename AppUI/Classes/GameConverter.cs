@@ -107,6 +107,51 @@ namespace AppUI.Classes
             return installPath;
         }
 
+        /// <summary>
+        /// Returns the path to the system's eax.dll (32-bit, since FF8 is a 32-bit game) regardless of OS bitness.
+        /// </summary>
+        public static string GetEAXSystemDllPath()
+        {
+            string systemFolder = Environment.Is64BitOperatingSystem
+                ? Environment.GetFolderPath(Environment.SpecialFolder.SystemX86) // SysWOW64
+                : Environment.GetFolderPath(Environment.SpecialFolder.System); // System32
+
+            return Path.Combine(systemFolder, "eax.dll");
+        }
+
+        /// <summary>
+        /// Silently installs EAXUnified if eax.dll is not already present on the system.
+        /// </summary>
+        public bool EnsureEAXUnifiedInstalled()
+        {
+            if (File.Exists(GetEAXSystemDllPath())) return true;
+
+            string installerPath = Path.Combine(Sys.PathToPatchedExeFolder, "EAXUnified.exe");
+
+            try
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo(installerPath)
+                {
+                    Arguments = "/s /v/qn",
+                    UseShellExecute = true,
+                    Verb = "runas", // writes to the Windows system folder, requires elevation
+                    CreateNoWindow = true,
+                };
+
+                using (Process proc = Process.Start(startInfo))
+                {
+                    proc.WaitForExit();
+                }
+
+                return File.Exists(GetEAXSystemDllPath());
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return false;
+            }
+        }
+
         public static string GetSteamPath()
         {
             string ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath32Bit, "SteamPath") as string;

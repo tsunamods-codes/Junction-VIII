@@ -793,6 +793,10 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     <system:String x:Key="FailedToCopyFf8ConfigExe">Αποτυχία αντιγραφής του FF8Config.exe. Ματαίωση ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">Αποτυχία δημιουργίας αντιγράφου ασφαλείας για το FF8Config.exe. Ματαίωση ...</system:String>
 
+    <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Έλεγχος αν το EAXUnified είναι εγκατεστημένο ...</system:String>
+    <system:String x:Key="InstallingEAXUnified">Το eax.dll δεν βρέθηκε, εγκατάσταση του EAXUnified. Ενδέχεται να εμφανιστεί μήνυμα UAC, παρακαλώ αποδεχτείτε το για να συνεχίσετε ...</system:String>
+    <system:String x:Key="FailedToInstallEAXUnified">Αποτυχία εγκατάστασης του EAXUnified. Ματαίωση ...</system:String>
+
     <system:String x:Key="CheckingAProfileIsActive">Γίνεται έλεγχο για κάποιο ενεργό προφίλ ...</system:String>
     <system:String x:Key="ActiveProfileNotFound">Αδυναμία έυρεσης ενεργού προφίλ. Ματαίωση ...</system:String>
     <system:String x:Key="CreateAProfileFirstAndTryAgain">Δημιουργήστε ένα προφίλ πρώτα στις Ρυθμίσεις> Προφίλ και δοκιμάστε ξανά.</system:String>

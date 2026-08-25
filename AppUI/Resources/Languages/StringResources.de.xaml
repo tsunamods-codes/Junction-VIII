@@ -796,6 +796,10 @@ Abschließend können Sie Ihren Videodateipfad in "Allgemeines einstellen" so w�
     <system:String x:Key="FailedToCopyFf8ConfigExe">Fehler beim Kopieren der "ff8config.exe". Abbruch...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">Fehler beim Erstellen des Backups von "ff8config.exe". Abbruch...</system:String>
 
+    <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Prüfe, ob EAXUnified installiert ist ...</system:String>
+    <system:String x:Key="InstallingEAXUnified">eax.dll wurde nicht gefunden, EAXUnified wird installiert. Es kann eine UAC-Eingabeaufforderung erscheinen, bitte bestätigen Sie diese, um fortzufahren ...</system:String>
+    <system:String x:Key="FailedToInstallEAXUnified">Fehler beim Installieren von EAXUnified. Abbruch...</system:String>
+
     <system:String x:Key="CheckingAProfileIsActive">Prüfe, ob ein aktives Profil vorhanden ist...</system:String>
     <system:String x:Key="ActiveProfileNotFound">Es ist kein aktives Profil vorhanden. Abbruch...</system:String>
     <system:String x:Key="CreateAProfileFirstAndTryAgain">Erstellen Sie zunächst ein Profil unter "Einstellungen" > "Profile verwalten..." und versuchen Sie es erneut.</system:String>

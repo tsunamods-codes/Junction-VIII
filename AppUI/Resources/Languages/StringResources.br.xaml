@@ -794,6 +794,10 @@ Por último, você pode ajustar seu caminho de filmes em 'Configurações Gerais
     <system:String x:Key="FailedToCopyFf8ConfigExe">Não foi possível copiar FF8Config.exe. Abortando ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">Não foi possível criar backup de FF8Config.exe. Abortando ...</system:String>
 
+    <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Verificando se o EAXUnified está instalado ...</system:String>
+    <system:String x:Key="InstallingEAXUnified">eax.dll não encontrado, instalando o EAXUnified. Um prompt do UAC pode aparecer, por favor aceite-o para continuar ...</system:String>
+    <system:String x:Key="FailedToInstallEAXUnified">falha ao instalar o EAXUnified. Abortando ...</system:String>
+
     <system:String x:Key="CheckingAProfileIsActive">Verificando se há perfil ativo ...</system:String>
     <system:String x:Key="ActiveProfileNotFound">perfil ativo não foi encontrado. Abortando ...</system:String>
     <system:String x:Key="CreateAProfileFirstAndTryAgain">Crie um perfil primeiro em Configurações>Perfis e tente novamente.</system:String>

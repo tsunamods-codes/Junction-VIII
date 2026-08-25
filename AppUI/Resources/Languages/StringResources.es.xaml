@@ -798,6 +798,10 @@ Por último, puedes seleccionar la ruta de las cinemáticas en 'Opciones general
     <system:String x:Key="FailedToCopyFf8ConfigExe">error al intentar copiar FF8Config.exe. Abortando ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">error al intentar crear una copia de reserva de FF8Config.exe. Abortando ...</system:String>
 
+    <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Comprobando si EAXUnified está instalado ...</system:String>
+    <system:String x:Key="InstallingEAXUnified">no se encontró eax.dll, instalando EAXUnified. Puede aparecer un aviso de UAC, acéptalo para continuar ...</system:String>
+    <system:String x:Key="FailedToInstallEAXUnified">error al instalar EAXUnified. Abortando ...</system:String>
+
     <system:String x:Key="CheckingAProfileIsActive">Comprobando que hay un perfil activo...</system:String>
     <system:String x:Key="ActiveProfileNotFound">perfil activo no encontrado. Abortando...</system:String>
     <system:String x:Key="CreateAProfileFirstAndTryAgain">Primero crea un perfil en Opciones>Perfiles y vuelve a intentarlo.</system:String>

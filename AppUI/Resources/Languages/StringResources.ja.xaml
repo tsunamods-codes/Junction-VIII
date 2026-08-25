@@ -783,6 +783,10 @@ Lastly, you can set your movie path in 'General Settings' to point to your game 
     <system:String x:Key="FailedToCopyFf8ConfigExe">failed to copy FF8Config.exe. Aborting ...</system:String>
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">failed to create backup of FF8Config.exe. Aborting ...</system:String>
 
+    <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Verifying EAXUnified is installed ...</system:String>
+    <system:String x:Key="InstallingEAXUnified">eax.dll not found, installing EAXUnified. A UAC prompt may appear, please accept it to continue ...</system:String>
+    <system:String x:Key="FailedToInstallEAXUnified">failed to install EAXUnified. Aborting ...</system:String>
+
     <system:String x:Key="CheckingAProfileIsActive">Checking a profile is active ...</system:String>
     <system:String x:Key="ActiveProfileNotFound">active profile not found. Aborting ...</system:String>
     <system:String x:Key="CreateAProfileFirstAndTryAgain">Create a profile first in Settings>Profiles and try again.</system:String>

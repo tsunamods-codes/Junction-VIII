@@ -182,6 +182,17 @@ namespace AppUI.Classes
                         return false;
                     }
                 }
+
+                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingEAXUnifiedIsInstalled));
+                if (!File.Exists(GameConverter.GetEAXSystemDllPath()))
+                {
+                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.InstallingEAXUnified)}");
+                    if (!converter.EnsureEAXUnifiedInstalled())
+                    {
+                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToInstallEAXUnified)}", NLog.LogLevel.Error);
+                        return false;
+                    }
+                }
             }
 
             Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.CheckingFf8ExeExistsAt)} {Sys.Settings.FF8Exe} ...");
