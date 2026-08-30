@@ -1446,24 +1446,30 @@ namespace AppUI.Classes
             using (var archive = ZipArchive.CreateArchive())
             {
                 // === FF8 files ===
-                if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
+                string saveRootPath = string.Empty;
+                string saveFilePattern = "*";
+
+                switch (Sys.Settings.FF8InstalledVersion)
                 {
-                    var di = new DirectoryInfo(GameConverter.GetSteamFF8UserPath());
-                    foreach (FileInfo fi in di.GetFiles("*.ff8", SearchOption.AllDirectories))
-                    {
-                        archive.AddEntry(Path.Combine("save", Path.GetFileName(fi.FullName)), fi.FullName);
-                    }
+                    case FF8Version.Steam:
+                        saveRootPath = GameConverter.GetSteamFF8UserPath();
+                        saveFilePattern = "*.ff8";
+                        break;
+                    case FF8Version.Remastered:
+                    case FF8Version.GOG:
+                        saveRootPath = GameConverter.GetRemasteredFF8UserPath();
+                        break;
+                    default:
+                        saveRootPath = Path.Combine(Sys.InstallPath, "save");
+                        break;
                 }
-                else
+
+                if (!string.IsNullOrWhiteSpace(saveRootPath) && Directory.Exists(saveRootPath))
                 {
-                    var savePath = Path.Combine(Sys.InstallPath, "save");
-                    if (Directory.Exists(savePath))
+                    foreach (string file in Directory.EnumerateFiles(saveRootPath, saveFilePattern, SearchOption.AllDirectories))
                     {
-                        var saveFiles = Directory.GetFiles(savePath);
-                        foreach (var file in saveFiles)
-                        {
-                            archive.AddEntry(Path.Combine("save", Path.GetFileName(file)), file);
-                        }
+                        string relativePath = Path.GetRelativePath(saveRootPath, file);
+                        archive.AddEntry(Path.Combine("save", relativePath), file);
                     }
                 }
 
