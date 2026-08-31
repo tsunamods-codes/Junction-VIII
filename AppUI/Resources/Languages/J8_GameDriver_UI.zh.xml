@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ConfigSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- GRAPHICS TAB -->
+  <Setting xsi:type="DropDown">
+    <Group>画面</Group>
+    <Name>图形 API</Name>
+    <Description>选择游戏的软件渲染方式。{0}如果遇到游戏闪退、场景黑屏等问题，可依次尝试每个选项，直到游戏正常。{0}DirectX 11是最稳定的选项。AMD显卡不建议选择OpenGL选项。</Description>
+    <DefaultValue>renderer_backend = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>renderer_backend = 0</Settings>
+    </Option>
+    <Option>
+      <Text>OpenGL</Text>
+      <Settings>renderer_backend = 1</Settings>
+    </Option>
+    <Option>
+      <Text>DirectX 11</Text>
+      <Settings>renderer_backend = 3</Settings>
+    </Option>
+    <Option>
+      <Text>DirectX 12</Text>
+      <Settings>renderer_backend = 4</Settings>
+    </Option>
+    <Option>
+      <Text>Vulkan</Text>
+      <Settings>renderer_backend = 5</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>画面</Group>
+    <Name>显示器</Name>
+    <Description>选择游戏运行时的画面投放到哪个显示器上。仅在你的电脑连接了多台显示器的情况下可选。</Description>
+    <DefaultValue>display_index = -1</DefaultValue>
+    <Option>
+      <Text>主显示器</Text>
+      <Settings>display_index = -1</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>画面</Group>
+    <Name>分辨率</Name>
+    <Description>设置游戏窗口大小。仅影响窗口模式的分辨率，不影响全屏模式。{0}全屏模式会自动使用当前桌面分辨率。{0}Auto选项会自动使用游戏默认窗口分辨率。</Description>
+    <DefaultValue>window_size_x = 0,window_size_y = 0</DefaultValue>
+    <Option>
+      <Text>自动</Text>
+      <Settings>window_size_x = 0,window_size_y = 0</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>画面</Group>
+    <Name>窗口/全屏模式</Name>
+    <Description>按照你的需求，选择窗口/全屏/无边框窗口模式。</Description>
+    <DefaultValue>fullscreen = false,borderless = false</DefaultValue>
+    <Option>
+      <Text>窗口</Text>
+      <Settings>fullscreen = false,borderless = false</Settings>
+    </Option>
+    <Option>
+      <Text>全屏</Text>
+      <Settings>fullscreen = true,borderless = false</Settings>
+    </Option>
+    <Option>
+      <Text>无边框</Text>
+      <Settings>fullscreen = false,borderless = true</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>画面</Group>
+    <Name>画面比例</Name>
+    <Description>设置游戏画面的宽高比。{0}选择与你的显示器匹配的比例，否则画面边缘会出现黑边，或画面竖向拉长。</Description>
+    <DefaultValue>aspect_ratio = 0</DefaultValue>
+    <Option>
+      <Text>原生 (4:3)</Text>
+      <Settings>aspect_ratio = 0</Settings>
+    </Option>
+    <Option>
+      <Text>拉伸画面</Text>
+      <Settings>aspect_ratio = 1</Settings>
+    </Option>
+	<Option>
+		<Text>宽屏 (16:9)</Text>
+		<Settings>aspect_ratio = 2</Settings>
+	</Option>
+	<Option>
+		<Text>宽屏 (16:10)</Text>
+		<Settings>aspect_ratio = 3</Settings>
+	</Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>画面</Group>
+    <Name>抗锯齿</Name>
+    <Description>减少锯齿边缘，提高图像质量。{0}考验电脑硬件配置，可能会使游戏卡顿。</Description>
+    <DefaultValue>enable_antialiasing = 0</DefaultValue>
+    <Option>
+      <Text>关闭</Text>
+      <Settings>enable_antialiasing = 0</Settings>
+    </Option>
+    <Option>
+      <Text>2x MSAA</Text>
+      <Settings>enable_antialiasing = 2</Settings>
+    </Option>
+    <Option>
+      <Text>4x MSAA</Text>
+      <Settings>enable_antialiasing = 4</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>画面</Group>
+    <Name>各向异性过滤</Name>
+    <Description>给高分辨率贴图加上滤镜，生成更清晰的图像。{0}占用更多系统内存。</Description>
+    <DefaultValue>enable_anisotropic = true</DefaultValue>
+    <TrueSetting>enable_anisotropic = true</TrueSetting>
+    <FalseSetting>enable_anisotropic = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>画面</Group>
+    <Name>垂直同步</Name>
+    <Description>将游戏帧率与你的显示器刷新率同步。如果遇到屏幕撕裂问题，请开启。{0}可能会影响60帧模式。{0}*如果你想使用【游戏变速】功能，请关闭垂直同步。</Description>
+    <DefaultValue>enable_vsync = true</DefaultValue>
+    <TrueSetting>enable_vsync = true</TrueSetting>
+    <FalseSetting>enable_vsync = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>画面</Group>
+    <Name>NTSC-J 色域模式</Name>
+    <Description>模拟90年代日本电视机的色域（FF8最初的设计标准），使画面色彩更丰富。同时影响菜单栏背景色。</Description>
+    <DefaultValue>enable_ntscj_gamut_mode = false</DefaultValue>
+    <TrueSetting>enable_ntscj_gamut_mode = true</TrueSetting>
+    <FalseSetting>enable_ntscj_gamut_mode = false</FalseSetting>
+  </Setting>
+
+  <!-- CONTROLS TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>控制</Group>
+    <Name>使用手柄按键图标</Name>
+    <Description>使用手柄按键的图标贴图来替代 "B1"、"B2" 等文字。默认使用游戏数据中的 PS1 按键图标。</Description>
+    <DefaultValue>ff8_use_gamepad_icons = false</DefaultValue>
+    <TrueSetting>ff8_use_gamepad_icons = true</TrueSetting>
+    <FalseSetting>ff8_use_gamepad_icons = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>控制</Group>
+    <Name>始终捕获输入</Name>
+    <Description>即使游戏窗口未处于焦点状态，也能继续接收手柄输入。</Description>
+    <DefaultValue>ff8_always_capture_input  = false</DefaultValue>
+    <TrueSetting>ff8_always_capture_input  = true</TrueSetting>
+    <FalseSetting>ff8_always_capture_input  = false</FalseSetting>
+  </Setting>
+
+  <!-- CHEATS TAB -->
+  <Setting xsi:type="DropDown">
+    <Group>快捷键</Group>
+    <Name>随机遇敌</Name>
+    <Description>开启或关闭随机遇敌。{0}使用方法：在游戏中按键盘 'CTRL+B'{0}	或 先按手柄 'L3' 再按 'Ο (B)'</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>详见下方描述</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>快捷键</Group>
+    <Name>跳过过场动画</Name>
+    <Description>跳过过场动画。有概率导致游戏卡死，建议仅用于跳过新游戏片头动画。{0}使用方法：在游戏中按键盘 'CTRL+S'{0}	或 先按手柄 'L3' 再按 '□ (X)'</Description>
+    <DefaultValue></DefaultValue>
+    <Option>
+      <Text>详见下方描述</Text>
+      <Settings></Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>快捷键</Group>
+    <Name>游戏变速递进值</Name>
+    <Description>设置游戏加速/减速的递进值。每次按快捷键时，递进值越大，越能更快到达【最大加速倍数】，或更快减速恢复到【正常速度】。{0}使用方法：按键盘 'CTRL+↑/↓' 或 先按手柄 'L3' 再按 'L1/R1' 进行加速/减速，{0}	键盘'CTRL+←/→' 或 先按手柄 'L3' 再按 'L2/R2' 开启/关闭变速。</Description>
+    <DefaultValue>speedhack_step = 0.5</DefaultValue>
+    <Option>
+      <Text>0.5</Text>
+      <Settings>speedhack_step = 0.5</Settings>
+    </Option>
+    <Option>
+      <Text>1.0</Text>
+      <Settings>speedhack_step = 1.0</Settings>
+    </Option>
+    <Option>
+      <Text>2.0</Text>
+      <Settings>speedhack_step = 2.0</Settings>
+    </Option>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>快捷键</Group>
+    <Name>最大加速倍数</Name>
+    <Description>设置游戏加速能达到的最大倍数。倍数越高，速度越快。{0}*需要关闭【垂直同步】才能使用游戏变速功能。</Description>
+    <DefaultValue>speedhack_max = 8.0</DefaultValue>
+    <Option>
+      <Text>2x</Text>
+      <Settings>speedhack_max = 2.0</Settings>
+    </Option>
+    <Option>
+      <Text>4x</Text>
+      <Settings>speedhack_max = 4.0</Settings>
+    </Option>
+    <Option>
+      <Text>6x</Text>
+      <Settings>speedhack_max = 6.0</Settings>
+    </Option>
+    <Option>
+      <Text>8x</Text>
+      <Settings>speedhack_max = 8.0</Settings>
+    </Option>
+    <Option>
+      <Text>10x</Text>
+      <Settings>speedhack_max = 10.0</Settings>
+    </Option>
+    <Option>
+      <Text>12x</Text>
+      <Settings>speedhack_max = 12.0</Settings>
+    </Option>
+  </Setting>
+
+  <!-- ADVANCED TAB -->
+  <Setting xsi:type="Checkbox">
+    <Group>高级</Group>
+    <Name>关联 Steam</Name>
+    <Description>与 FF8 Steam版进行关联，用于解锁游戏成就。</Description>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <TrueSetting>enable_steam_achievements = true</TrueSetting>
+    <FalseSetting>enable_steam_achievements = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>高级</Group>
+    <Name>游戏内显示调试信息</Name>
+    <Description>在全屏模式下的画面左上角，或窗口模式下的标题栏中，显示有关渲染过程/性能的实时信息。</Description>
+    <DefaultValue>show_stats = false</DefaultValue>
+    <TrueSetting>show_stats = true</TrueSetting>
+    <FalseSetting>show_stats = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>高级</Group>
+    <Name>显示驱动版本</Name>
+    <Description>在全屏模式下的画面左上角，或窗口模式下的标题栏中，显示当前的驱动版本。</Description>
+    <DefaultValue>show_version = false</DefaultValue>
+    <TrueSetting>show_version = true</TrueSetting>
+    <FalseSetting>show_version = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>高级</Group>
+    <Name>显示帧率</Name>
+    <Description>在全屏模式下的画面左上角，或窗口模式下的标题栏中，显示游戏实时帧率。</Description>
+    <DefaultValue>show_fps = false</DefaultValue>
+    <TrueSetting>show_fps = true</TrueSetting>
+    <FalseSetting>show_fps = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="Checkbox">
+    <Group>高级</Group>
+    <Name>显示图形API版本</Name>
+    <Description>在全屏模式下的画面左上角，或窗口模式下的标题栏中，显示当前使用的图形API版本(OpenGL/DirectX11)。</Description>
+    <DefaultValue>show_renderer_backend = false</DefaultValue>
+    <TrueSetting>show_renderer_backend = true</TrueSetting>
+    <FalseSetting>show_renderer_backend = false</FalseSetting>
+  </Setting>
+
+  <Setting xsi:type="DropDown">
+    <Group>高级</Group>
+    <Name>内部分辨率放大倍数</Name>
+    <Description>将游戏原生分辨率640x480乘以所选的倍数，提高画面精细度，并减少缩放产生的画面瑕疵。{0}倍数越高，对显卡性能的要求也越高。{0}带 * 号的选项是性能与画质的最佳平衡点。</Description>
+    <DefaultValue>internal_resolution_scale = 0</DefaultValue>
+    <Option>
+      <Text>Auto</Text>
+      <Settings>internal_resolution_scale = 0</Settings>
+    </Option>
+    <Option>
+      <Text>1x (可能导致画面模糊)</Text>
+      <Settings>internal_resolution_scale = 1</Settings>
+    </Option>
+    <Option>
+      <Text>2x</Text>
+      <Settings>internal_resolution_scale = 2</Settings>
+    </Option>
+    <Option>
+      <Text>*4x</Text>
+      <Settings>internal_resolution_scale = 4</Settings>
+    </Option>
+    <Option>
+      <Text>*6x</Text>
+      <Settings>internal_resolution_scale = 6</Settings>
+    </Option>
+    <Option>
+      <Text>8x</Text>
+      <Settings>internal_resolution_scale = 8</Settings>
+    </Option>
+  </Setting>
+
+</ConfigSpec>

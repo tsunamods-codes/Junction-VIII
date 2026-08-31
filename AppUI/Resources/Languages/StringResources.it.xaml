@@ -1169,6 +1169,8 @@ Vuoi applicare questa modifica e riprovare?</system:String>
    <system:String x:Key="BrazilianPortuguese">Portoghese Brasiliano</system:String>
     <system:String x:Key="Italian">Italiano</system:String>
 
+    <system:String x:Key="SimplifiedChinese">Cinese semplificato</system:String>
+
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
 
     <system:String x:Key="SetInGameControls">Imposta Controlli di Gioco</system:String>

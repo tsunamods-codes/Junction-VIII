@@ -1178,6 +1178,8 @@ Möchten Sie die Einstellung übernehmen und es erneut versuchen?</system:String
     <!--DEV NOTE: STRINGS BELOW ADDED 4/29/20-->
     <system:String x:Key="Italian">Italienisch</system:String>
 
+    <system:String x:Key="SimplifiedChinese">Vereinfachtes Chinesisch</system:String>
+
     <system:String x:Key="SetInGameControls">Spielsteuerung festlegen</system:String>
     <system:String x:Key="Keyboard">TASTATUR</system:String>
     <system:String x:Key="Controller">CONTROLLER</system:String>
