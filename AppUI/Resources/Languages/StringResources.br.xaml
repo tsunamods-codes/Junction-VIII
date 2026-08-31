@@ -1171,6 +1171,8 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
     <system:String x:Key="Italian">Italiano</system:String>
 
+    <system:String x:Key="SimplifiedChinese">Chinês Simplificado</system:String>
+
     <system:String x:Key="SetInGameControls">Ajustar Controles do Jogo</system:String>
     <system:String x:Key="Keyboard">Teclado</system:String>
     <system:String x:Key="Controller">Controle</system:String>

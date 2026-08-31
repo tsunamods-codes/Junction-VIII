@@ -657,6 +657,7 @@
         SomethingWentWrongWhileDisablingDEP,
         App4GBPatchRequired,
         App4GBPatchApplied,
-        ModShaders
+        ModShaders,
+        SimplifiedChinese
     }
 }

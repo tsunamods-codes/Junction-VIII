@@ -1156,6 +1156,8 @@ Do you want to apply the setting and try again?</system:String>
     <system:String x:Key="BrazilianPortuguese">Brazilian Portuguese</system:String>
     <system:String x:Key="Italian">Italian</system:String>
 
+    <system:String x:Key="SimplifiedChinese">簡体中国語</system:String>
+
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
 
     <system:String x:Key="SetInGameControls">Set In-Game Controls</system:String>

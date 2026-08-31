@@ -1165,6 +1165,8 @@ Voulez-vous appliquer ce réglage et essayer à nouveau ?</system:String>
     <system:String x:Key="BrazilianPortuguese">Portugais brésilien</system:String>
     <system:String x:Key="Italian">Italien</system:String>
 
+    <system:String x:Key="SimplifiedChinese">Chinois simplifié</system:String>
+
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
 
     <system:String x:Key="SetInGameControls">Contrôles en Jeu</system:String>
