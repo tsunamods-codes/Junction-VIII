@@ -794,7 +794,7 @@ Infine, puoi impostare il percorso alla cartella Movies in 'Impostazioni General
     <system:String x:Key="FailedToCreateBackupOfFf8ConfigExe">copia di backup di FF8Config.exe non riuscita. Annullo ...</system:String>
 
     <system:String x:Key="VerifyingEAXUnifiedIsInstalled">Verifico che EAXUnified sia installato ...</system:String>
-    <system:String x:Key="InstallingEAXUnified">eax.dll non trovato, installo EAXUnified. Potrebbe comparire una richiesta UAC, accettala per continuare ...</system:String>
+    <system:String x:Key="InstallingEAXUnified">eax.dll non trovato, installo EAXUnified ...</system:String>
     <system:String x:Key="FailedToInstallEAXUnified">installazione di EAXUnified non riuscita. Annullo ...</system:String>
 
     <system:String x:Key="CheckingAProfileIsActive">Controllo sia attivo un profilo ...</system:String>

@@ -184,7 +184,7 @@ namespace AppUI.Classes
                 }
 
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingEAXUnifiedIsInstalled));
-                if (!File.Exists(GameConverter.GetEAXSystemDllPath()))
+                if (!File.Exists(converter.GetEAXDllPath()))
                 {
                     Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.InstallingEAXUnified)}");
                     if (!converter.EnsureEAXUnifiedInstalled())

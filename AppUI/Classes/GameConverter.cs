@@ -108,42 +108,31 @@ namespace AppUI.Classes
         }
 
         /// <summary>
-        /// Returns the path to the system's eax.dll (32-bit, since FF8 is a 32-bit game) regardless of OS bitness.
+        /// Returns the path to the game-local EAX replacement.
         /// </summary>
-        public static string GetEAXSystemDllPath()
+        public string GetEAXDllPath()
         {
-            string systemFolder = Environment.Is64BitOperatingSystem
-                ? Environment.GetFolderPath(Environment.SpecialFolder.SystemX86) // SysWOW64
-                : Environment.GetFolderPath(Environment.SpecialFolder.System); // System32
-
-            return Path.Combine(systemFolder, "eax.dll");
+            return Path.Combine(InstallPath, "creative_eax.dll");
         }
 
         /// <summary>
-        /// Silently installs EAXUnified if eax.dll is not already present on the system.
+        /// Extracts eax.dll from EAXUnified.exe into the game directory.
         /// </summary>
         public bool EnsureEAXUnifiedInstalled()
         {
-            if (File.Exists(GetEAXSystemDllPath())) return true;
-
             string installerPath = Path.Combine(Sys.PathToPatchedExeFolder, "EAXUnified.exe");
+            string targetPath = GetEAXDllPath();
 
             try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo(installerPath)
-                {
-                    Arguments = "/s /v/qn",
-                    UseShellExecute = true,
-                    Verb = "runas", // writes to the Windows system folder, requires elevation
-                    CreateNoWindow = true,
-                };
+                if (!Directory.Exists(InstallPath) || !File.Exists(installerPath)) return false;
+                if (File.Exists(targetPath)) return true;
 
-                using (Process proc = Process.Start(startInfo))
-                {
-                    proc.WaitForExit();
-                }
+                byte[] installerData = File.ReadAllBytes(installerPath);
+                if (!EaxUnifiedExtractor.TryExtract(installerData, out byte[] eaxData)) return false;
 
-                return File.Exists(GetEAXSystemDllPath());
+                File.WriteAllBytes(targetPath, eaxData);
+                return true;
             }
             catch (Exception ex)
             {
@@ -164,7 +153,7 @@ namespace AppUI.Classes
         public static string GetSteamExePath()
         {
             string ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath32Bit, "SteamExe", "") as string;
-            
+
             if (ret == null) ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "SteamExe", "") as string;
 
             return ret.Replace("/","\\");
@@ -334,7 +323,7 @@ namespace AppUI.Classes
         }
 
         /// <summary>
-        /// Checks all files, folders, and sub-folders for signs of pirated files 
+        /// Checks all files, folders, and sub-folders for signs of pirated files
         /// </summary>
         /// <param name="folderPath"> folder to loop over and check </param>
         private bool DirectoryHasPirates(string folderPath)
@@ -576,7 +565,7 @@ namespace AppUI.Classes
 
         /// <summary>
         /// Verifies a FF8 install is a Full/Max install by checking if specific files are in the game dir.
-        /// They will automatically be copied from discs if not found. 
+        /// They will automatically be copied from discs if not found.
         /// Returns false if failed to find/copy all files
         /// </summary>
         /// <returns> Returns true if all files found and/or copied; false otherwise </returns>
