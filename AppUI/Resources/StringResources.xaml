@@ -1181,6 +1181,8 @@ Do you want to apply the setting and try again?</system:String>
     <!--DEV NOTE: STRINGS BELOW ADDED 4/29/20-->
     <system:String x:Key="Italian">Italian</system:String>
 
+    <system:String x:Key="SimplifiedChinese">Simplified Chinese</system:String>
+
     <system:String x:Key="SetInGameControls">Set In-Game Controls</system:String>
     <system:String x:Key="Keyboard">Keyboard</system:String>
     <system:String x:Key="Controller">Controller</system:String>

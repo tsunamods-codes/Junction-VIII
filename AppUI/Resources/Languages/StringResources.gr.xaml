@@ -1171,6 +1171,8 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     <system:String x:Key="BrazilianPortuguese">Πορτογαλικά της Βραζιλίας</system:String>
     <system:String x:Key="Italian">ιταλικός</system:String>
 
+    <system:String x:Key="SimplifiedChinese">Απλοποιημένα Κινέζικα</system:String>
+
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
 
     <system:String x:Key="SetInGameControls">Ορισμός Στοιχείων Ελέγχου Εντός Παιχνιδιού</system:String>
