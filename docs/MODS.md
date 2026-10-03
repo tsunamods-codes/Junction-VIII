@@ -134,15 +134,17 @@ Use one or more `<GameLanguage>` elements to whitelist languages. Separate multi
 | `ES` | Spanish |
 | `IT` | Italian |
 | `JA` | Japanese |
+| `ANY` | Any game language (wildcard) |
 
 For example:
 
 ```xml
 <GameLanguage>EN</GameLanguage>
 <GameLanguage>FR, DE</GameLanguage>
+<GameLanguage>ANY</GameLanguage>
 ```
 
-When the element is absent or contains no codes, the mod defaults to `EN`. The language selector is available for the Remastered and GOG editions; other editions use English. A mod that does not list the selected language cannot be activated; its activation control is disabled in My Mods. Existing active mods can still be deactivated. Language compatibility also applies when a mod activation would pull in a required mod.
+`ANY` is a wildcard that matches every selected game language and is intended for mods that support all languages. When the element is absent or contains no codes, the mod defaults to `EN`. The language selector is available for the Remastered and GOG editions; other editions use English. A mod that does not list the selected language cannot be activated; its activation control is disabled in My Mods. Existing active mods can still be deactivated. Language compatibility also applies when a mod activation would pull in a required mod. `ANY` is metadata only and is not a selectable game language.
 
 ## Configuration Options
 

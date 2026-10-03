@@ -64,6 +64,7 @@ namespace AppCore
         public const string Spanish = "es";
         public const string Italian = "it";
         public const string Japanese = "ja";
+        public const string Any = "ANY";
 
         public static string Normalize(string language)
         {
@@ -110,8 +111,9 @@ namespace AppCore
                 return selectedLanguage == "EN";
             }
 
-            return supportedLanguages.Any(supportedLanguage => string.Equals(
-                supportedLanguage?.Trim(), selectedLanguage, StringComparison.InvariantCultureIgnoreCase));
+            return supportedLanguages.Any(supportedLanguage =>
+                string.Equals(supportedLanguage?.Trim(), Any, StringComparison.InvariantCultureIgnoreCase)
+                || string.Equals(supportedLanguage?.Trim(), selectedLanguage, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }
