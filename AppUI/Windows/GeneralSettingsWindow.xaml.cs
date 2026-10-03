@@ -4,7 +4,6 @@ using AppUI.Classes;
 using AppUI.ViewModels;
 using System.IO;
 using System.Windows;
-using System.Diagnostics;
 
 namespace AppUI.Windows
 {
@@ -22,8 +21,6 @@ namespace AppUI.Windows
         private FFNxDriverUpdater FFNxUpdater = new FFNxDriverUpdater();
 
         private ReShadeUpdater ReShadeUpdater = new ReShadeUpdater();
-
-        private bool PathChanged = false;
 
         public GeneralSettingsWindow()
         {
@@ -45,21 +42,6 @@ namespace AppUI.Windows
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             bool settingsSaved = ViewModel.SaveSettings(true);
-
-            if (PathChanged)
-            {
-                MessageDialogViewModel mdvm = MessageDialogWindow.Show(ResourceHelper.Get(StringKey.Ff8ExePathChanged),
-                                             ResourceHelper.Get(StringKey.Ff8ExePathChanged).Split(",")[0],
-                                             MessageBoxButton.YesNo,
-                                             MessageBoxImage.Warning);
-
-                if (mdvm.Result == MessageBoxResult.Yes)
-                {
-                    string exePath = Process.GetCurrentProcess().MainModule.FileName;
-                    Process.Start(exePath);
-                    System.Windows.Application.Current.Shutdown();
-                }
-            }
 
             if (settingsSaved)
             {
@@ -99,12 +81,6 @@ namespace AppUI.Windows
                 }
 
                 ViewModel.FF8ExePathInput = exePath;
-            }
-
-            string original = Sys.Settings.FF8Exe;
-            if ((original != null || original != "") && original != exePath)
-            {
-                PathChanged = true;
             }
         }
 

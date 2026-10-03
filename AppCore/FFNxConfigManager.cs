@@ -1,4 +1,5 @@
-﻿using Iros.Workshop;
+﻿using AppCore;
+using Iros.Workshop;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -128,7 +129,7 @@ namespace Iros.Workshop.ConfigSettings
 
         public bool HasKey(string key)
         {
-            return _toml.ContainsKey(key);
+            return _toml != null && _toml.ContainsKey(key);
         }
 
         public void Save()
@@ -245,6 +246,12 @@ namespace Iros.Workshop.ConfigSettings
             _toml["direct_mode_path"] = "direct";
             _toml["override_path"] = "override";
             _toml["trace_all"] = debug;
+
+            if (Sys.Settings.FF8InstalledVersion == FF8Version.Remastered || Sys.Settings.FF8InstalledVersion == FF8Version.GOG)
+            {
+                string selectedLanguage = GameLanguage.Normalize(Sys.Settings.GameLaunchSettings?.SelectedGameLanguage);
+                _toml["game_language"] = GameLanguage.GetFFNxLanguageId(selectedLanguage);
+            }
         }
 
         public void ResetToJunctionVIIIDefaults()

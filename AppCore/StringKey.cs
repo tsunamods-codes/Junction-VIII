@@ -657,6 +657,14 @@
         SomethingWentWrongWhileDisablingDEP,
         App4GBPatchRequired,
         App4GBPatchApplied,
-        ModShaders
+        ModShaders,
+        GameLanguageEnglish,
+        GameLanguageFrench,
+        GameLanguageGerman,
+        GameLanguageSpanish,
+        GameLanguageItalian,
+        GameLanguageJapanese,
+        GameLanguageHeader,
+        ShowOnlyLanguageCompatibleItems
     }
 }

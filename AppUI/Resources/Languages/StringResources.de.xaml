@@ -155,6 +155,14 @@
 
     <system:String x:Key="ShowGameLauncher">Launcher starten</system:String>
     <system:String x:Key="ShowGameLauncherTooltip">Zeigt beim Starten von FF8 das Fenster des Spiel-Launchers für eine detaillierte Ausgabe des Startvorgangs an.</system:String>
+    <system:String x:Key="GameLanguageEnglish">Englisch</system:String>
+    <system:String x:Key="GameLanguageFrench">Französisch</system:String>
+    <system:String x:Key="GameLanguageGerman">Deutsch</system:String>
+    <system:String x:Key="GameLanguageSpanish">Spanisch</system:String>
+    <system:String x:Key="GameLanguageItalian">Italienisch</system:String>
+    <system:String x:Key="GameLanguageJapanese">Japanisch</system:String>
+    <system:String x:Key="GameLanguageHeader">Spielsprache</system:String>
+    <system:String x:Key="ShowOnlyLanguageCompatibleItems">Nur Einträge anzeigen, die mit der ausgewählten Spielsprache kompatibel sind</system:String>
 
     <system:String x:Key="ControlsLabel">Steuerung:</system:String>
 

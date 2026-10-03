@@ -62,8 +62,19 @@ namespace AppUI.ViewModels
         private int _voiceVolumeValue;
         private int _ambientVolumeValue;
         private int _movieVolumeValue;
+        private string _selectedGameLanguage;
 
         private IDirectMusic _directMusic;
+
+        private readonly List<KeyValuePair<string, string>> _gameLanguageOptions = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>(GameLanguage.English, ResourceHelper.Get(StringKey.GameLanguageEnglish)),
+            new KeyValuePair<string, string>(GameLanguage.French, ResourceHelper.Get(StringKey.GameLanguageFrench)),
+            new KeyValuePair<string, string>(GameLanguage.German, ResourceHelper.Get(StringKey.GameLanguageGerman)),
+            new KeyValuePair<string, string>(GameLanguage.Spanish, ResourceHelper.Get(StringKey.GameLanguageSpanish)),
+            new KeyValuePair<string, string>(GameLanguage.Italian, ResourceHelper.Get(StringKey.GameLanguageItalian)),
+            new KeyValuePair<string, string>(GameLanguage.Japanese, ResourceHelper.Get(StringKey.GameLanguageJapanese)),
+        };
 
         #endregion
 
@@ -122,6 +133,44 @@ namespace AppUI.ViewModels
             {
                 _isShowLauncherChecked = value;
                 NotifyPropertyChanged();
+            }
+        }
+
+        public Visibility GameLanguageSelectorVisibility
+        {
+            get
+            {
+                return GameLauncher.IsLanguageSelectorSupportedEdition() ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public string SelectedGameLanguage
+        {
+            get
+            {
+                return _selectedGameLanguage;
+            }
+            set
+            {
+                _selectedGameLanguage = GameLanguage.Normalize(value);
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(SelectedGameLanguageOption));
+            }
+        }
+
+        public KeyValuePair<string, string> SelectedGameLanguageOption
+        {
+            get
+            {
+                return GameLanguageOptions.FirstOrDefault(option => option.Key == SelectedGameLanguage);
+            }
+        }
+
+        public List<KeyValuePair<string, string>> GameLanguageOptions
+        {
+            get
+            {
+                return _gameLanguageOptions;
             }
         }
 
@@ -426,7 +475,7 @@ namespace AppUI.ViewModels
             SelectedSoundDevice = ResourceHelper.Get(StringKey.LoadingDevices);
             InitSoundDevicesAsync();
 
-            if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam) Sys.FFNxConfig.Reload();
+            if (Sys.Settings.FF8InstalledVersion != FF8Version.Original2K) Sys.FFNxConfig.Reload();
 
             InitMidiDevices();
             LoadSettings(Sys.Settings.GameLaunchSettings);
@@ -457,6 +506,14 @@ namespace AppUI.ViewModels
 
             AutoUpdatePathChecked = launchSettings.AutoUpdateDiscPath;
             IsShowLauncherChecked = launchSettings.ShowLauncherWindow;
+            bool gameLanguageIsAutomatic = GameLauncher.IsLanguageSelectorSupportedEdition()
+                                           && Sys.FFNxConfig.HasKey("game_language")
+                                           && Sys.FFNxConfig.Get("game_language") == "0";
+            SelectedGameLanguage = !GameLauncher.IsLanguageSelectorSupportedEdition()
+                                   || string.IsNullOrWhiteSpace(launchSettings.SelectedGameLanguage)
+                                   || gameLanguageIsAutomatic
+                ? GameLanguage.English
+                : launchSettings.SelectedGameLanguage;
 
             SetSelectedSoundDeviceFromSettings(launchSettings);
             SetSelectedMidiDeviceFromSettings();
@@ -590,6 +647,10 @@ namespace AppUI.ViewModels
 
                 Sys.Settings.GameLaunchSettings.AutoUpdateDiscPath = AutoUpdatePathChecked;
                 Sys.Settings.GameLaunchSettings.ShowLauncherWindow = IsShowLauncherChecked;
+                if (GameLauncher.IsLanguageSelectorSupportedEdition())
+                {
+                    Sys.Settings.GameLaunchSettings.SelectedGameLanguage = SelectedGameLanguage;
+                }
 
                 Sys.Settings.GameLaunchSettings.SelectedSoundDevice = SoundDeviceGuids[SelectedSoundDevice];
                 Sys.Settings.GameLaunchSettings.SelectedMidiDevice = MidiDeviceIDs[SelectedMidiDevice];
@@ -601,7 +662,7 @@ namespace AppUI.ViewModels
                 SetMidiDeviceInRegistry();
                 RegistryHelper.CommitTransaction();
 
-                if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam) Sys.FFNxConfig.Save();
+                if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam || GameLauncher.IsLanguageSelectorSupportedEdition()) Sys.FFNxConfig.Save();
 
                 Sys.SaveSettings();
 

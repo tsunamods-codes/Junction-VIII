@@ -3,6 +3,7 @@
   The original developer is Iros <irosff@outlook.com>
 */
 
+using AppCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Iros.Workshop
             Tags = new List<string>();
             Requirements = new List<ModRequirement>();
             Patches = new List<ModPatch>();
+            GameLanguageEntries = new List<string>();
             LatestVersion = new ModVersion()
             {
                 CompatibleGameVersions = GameVersions.All,
@@ -45,6 +47,12 @@ namespace Iros.Workshop
         public string SourceCatalogUrl { get; set; }
 
         public List<string> Tags { get; set; }
+        [System.Xml.Serialization.XmlElement("GameLanguage")]
+        public List<string> GameLanguageEntries { get; set; }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public List<string> GameLanguages => GameLanguage.ParseSupportedLanguages(GameLanguageEntries);
+
         [System.Xml.Serialization.XmlElement("Patch")]
         public List<ModPatch> Patches { get; set; }
         [System.Xml.Serialization.XmlElement("Requirement")]
@@ -118,6 +126,7 @@ namespace Iros.Workshop
                 Link = modToCopy.Link,
                 DonationLink = modToCopy.DonationLink,
                 Tags = modToCopy.Tags?.ToList(),
+                GameLanguageEntries = modToCopy.GameLanguageEntries?.ToList(),
                 Name = modToCopy.Name,
                 MetaVersion = modToCopy.MetaVersion,
                 SourceCatalogName = modToCopy.SourceCatalogName,

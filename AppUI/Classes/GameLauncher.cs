@@ -80,6 +80,25 @@ namespace AppUI.Classes
 
         private static Process ff8Proc;
 
+        internal static bool IsLanguageSelectorSupportedEdition()
+        {
+            switch (Sys.Settings.FF8InstalledVersion)
+            {
+                case FF8Version.Remastered:
+                case FF8Version.GOG:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        internal static string GetSelectedGameLanguage()
+        {
+            return IsLanguageSelectorSupportedEdition()
+                ? GameLanguage.Normalize(Sys.Settings.GameLaunchSettings?.SelectedGameLanguage)
+                : GameLanguage.English;
+        }
+
         public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false, bool launchChocobo = false)
         {
             bool runAsVanilla = false;
