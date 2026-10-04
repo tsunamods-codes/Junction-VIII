@@ -1188,6 +1188,7 @@ Por último, puedes seleccionar la ruta de las cinemáticas en 'Opciones general
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
     <system:String x:Key="Italian">Italiano</system:String>
 	
+    <system:String x:Key="SimplifiedChinese">Chino simplificado</system:String>
     <system:String x:Key="SetInGameControls">Ajustar controles dentro del juego</system:String>
     <system:String x:Key="Keyboard">Teclado</system:String>
     <system:String x:Key="Controller">Mando</system:String>
