@@ -66,6 +66,8 @@ namespace AppCore
         public const string Japanese = "ja";
         public const string Any = "ANY";
 
+        public static bool BypassLanguageCompatibility { get; set; }
+
         public static string Normalize(string language)
         {
             switch (language?.Trim().ToLowerInvariant())
@@ -105,6 +107,11 @@ namespace AppCore
 
         public static bool IsSupportedBy(IEnumerable<string> supportedLanguages, string language)
         {
+            if (BypassLanguageCompatibility)
+            {
+                return true;
+            }
+
             string selectedLanguage = ToModXmlCode(language);
             if (supportedLanguages == null || !supportedLanguages.Any())
             {
