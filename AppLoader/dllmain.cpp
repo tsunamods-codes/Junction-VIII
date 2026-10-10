@@ -159,14 +159,15 @@ HANDLE WINAPI _CreateFile2(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwSh
 {
     HANDLE ret = nullptr;
 
-    if (exports.CreateFile2)
+    if (exports.CreateFileW && !inDotNetCode)
     {
-        if (!inDotNetCode)
-        {
-            inDotNetCode = true;
-            ret = exports.CreateFile2(lpFileName, dwDesiredAccess, dwShareMode, dwCreationDisposition, pCreateExParams);
-            inDotNetCode = false;
-        }
+        inDotNetCode = true;
+        ret = exports.CreateFileW(lpFileName, dwDesiredAccess, dwShareMode,
+            pCreateExParams ? pCreateExParams->lpSecurityAttributes : nullptr,
+            dwCreationDisposition,
+            (pCreateExParams ? pCreateExParams->dwFileAttributes : 0) | (pCreateExParams ? pCreateExParams->dwFileFlags : 0),
+            pCreateExParams ? pCreateExParams->hTemplateFile : nullptr);
+        inDotNetCode = false;
     }
 
     if (ret == nullptr)

@@ -1,5 +1,4 @@
 X(CreateFileA)
-X(CreateFile2)
 X(CreateFileW)
 X(ReadFile)
 X(FindFirstFileW)
