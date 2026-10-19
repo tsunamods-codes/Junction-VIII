@@ -290,7 +290,7 @@
       <Version>13.0.4</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>6.2.1</Version>
+      <Version>6.2.2</Version>
     </PackageReference>
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="SharpDX.DirectInput">
