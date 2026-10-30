@@ -1,4 +1,4 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
 using AppCore;
 using AppUI.Windows;
 using IniParser;
@@ -19,6 +19,7 @@ namespace AppUI.Classes
 {
     public class ReShadeUpdater
     {
+        private static readonly string ReShadeCachePath = Path.Combine(Path.GetTempPath(), "ReShade");
         private FileVersionInfo _currentReShadeVersion = null;
 
         private string GetUpdateInfoPath()
@@ -180,10 +181,9 @@ namespace AppUI.Classes
                         {
                             foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
                             {
-                                entry.WriteToDirectory(Sys.PathToReShadeFolder, new ExtractionOptions()
-                                {
+                                entry.WriteToDirectory(Sys.PathToReShadeFolder, new ExtractionOptions() {
                                     ExtractFullPath = true,
-                                    Overwrite = true,
+                                    Overwrite = true
                                 });
                             }
                         }
@@ -214,6 +214,9 @@ namespace AppUI.Classes
         {
             if (File.Exists(Sys.PathToReShade))
             {
+                if (Directory.Exists(ReShadeCachePath))
+                    Directory.Delete(ReShadeCachePath, true);
+
                 // ================================================================================================
                 // Always cleanup these files if present, to avoid conflict with various mods
                 // ================================================================================================
@@ -225,7 +228,6 @@ namespace AppUI.Classes
                 { "opengl32.dll", false },
                 { Path.GetFileName(Sys.PathToReShade), false }
             };
-
 
                 string entryPath = "";
                 bool entryDeleteRecursive = false;
@@ -270,7 +272,7 @@ namespace AppUI.Classes
             if (File.Exists(Sys.PathToReShade))
             {
                 // -- ReShade32.dll
-                switch (Sys.FFNxConfig.Get("renderer_backend"))
+                switch(Sys.FFNxConfig.Get("renderer_backend"))
                 {
                     // DirectX 11
                     case "0":
@@ -336,7 +338,7 @@ namespace AppUI.Classes
             if (!data.Sections.ContainsSection("OVERLAY")) data.Sections.AddSection("OVERLAY");
 
             data["GENERAL"]["EffectSearchPaths"] = @".\reshade-shaders\Shaders\**";
-            data["GENERAL"]["IntermediateCachePath"] = $"{Path.GetTempPath()}\\ReShade";
+            data["GENERAL"]["IntermediateCachePath"] = ReShadeCachePath;
             data["GENERAL"]["NoDebugInfo"] = "1";
             data["GENERAL"]["NoEffectCache"] = "0";
             data["GENERAL"]["NoReloadOnInit"] = "0";
