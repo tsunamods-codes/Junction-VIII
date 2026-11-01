@@ -224,6 +224,16 @@ namespace AppUI
             }
         }
 
+        private void menuPlayOptions_Opened(object sender, RoutedEventArgs e)
+        {
+            Visibility chocoboVisibility = Sys.Settings.FF8InstalledVersion is FF8Version.Remastered or FF8Version.GOG
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            menuPlayWithChocobo.Visibility = chocoboVisibility;
+            menuPlayWithChocoboSeparator.Visibility = chocoboVisibility;
+        }
+
         private void menuPlayOptions_Closed(object sender, RoutedEventArgs e)
         {
             ViewModel.IsPlayToggleButtonEnabled = true;
