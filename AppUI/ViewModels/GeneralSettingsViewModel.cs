@@ -572,6 +572,9 @@ namespace AppUI.ViewModels
             }
 
             Sys.Settings.FF8Exe = FF8ExePathInput;
+            AutoDetectSystemPaths(Sys.Settings);
+            FF8ExePathInput = Sys.Settings.FF8Exe;
+            Sys.FFNxConfig.Reload();
 
             string oldLibraryLocation = Sys.Settings.LibraryLocation;
             string newLibraryLocation = LibraryPathInput;

@@ -1827,7 +1827,9 @@ namespace AppUI.ViewModels
 
         internal void ShowGeneralSettingsWindow()
         {
+            string previousGameExe = Sys.Settings.FF8Exe;
             FF8Version previousGameVersion = Sys.Settings.FF8InstalledVersion;
+            FFNxUpdateChannelOptions previousFFNxUpdateChannel = Sys.Settings.FFNxUpdateChannel;
             GeneralSettingsWindow settingsWindow = new GeneralSettingsWindow()
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
@@ -1836,7 +1838,12 @@ namespace AppUI.ViewModels
 
             if (didSave.GetValueOrDefault(false))
             {
-                GeneralSettingsViewModel.AutoDetectSystemPaths(Sys.Settings);
+                if (!string.Equals(previousGameExe, Sys.Settings.FF8Exe, StringComparison.OrdinalIgnoreCase) ||
+                    previousGameVersion != Sys.Settings.FF8InstalledVersion ||
+                    previousFFNxUpdateChannel != Sys.Settings.FFNxUpdateChannel)
+                {
+                    FFNxUpdateVersion = null;
+                }
 
                 if (previousGameVersion != Sys.Settings.FF8InstalledVersion)
                 {

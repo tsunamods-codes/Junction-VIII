@@ -378,8 +378,10 @@ namespace AppUI.Windows
 
         private void btnFFNxCheckForUpdate_Click(object sender, RoutedEventArgs e)
         {
-            FFNxUpdater.CheckForUpdates(Sys.Settings.FFNxUpdateChannel, true);
-            ViewModel.SaveSettings();
+            if (ViewModel.SaveSettings())
+            {
+                FFNxUpdater.CheckForUpdates(Sys.Settings.FFNxUpdateChannel, true);
+            }
         }
 
         private void btnJ8CheckForUpdate_Click(object sender, RoutedEventArgs e)
