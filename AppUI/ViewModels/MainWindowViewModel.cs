@@ -1243,30 +1243,13 @@ namespace AppUI.ViewModels
         internal static bool CheckAllowedActivate(Guid modID)
         {
             InstalledItem mod = Sys.Library.GetItem(modID);
-            InstalledVersion inst = mod.LatestInstalled;
-            string mfile = Path.Combine(Sys.Settings.LibraryLocation, inst.InstalledLocation);
-            bool hasCode;
+            bool hasCode = false;
             var modInfo = mod.GetModInfo();
 
             if (!GameLanguage.IsSupportedBy(modInfo?.GameLanguages, GameLauncher.GetSelectedGameLanguage()))
             {
                 return false;
             }
-
-            if (mfile.EndsWith(".iroj", StringComparison.InvariantCultureIgnoreCase))
-            {
-                using (var arc = new AppWrapper.IrosArc(mfile))
-                {
-                    hasCode = arc.AllFolderNames().Any(s => s.EndsWith("hext", StringComparison.InvariantCultureIgnoreCase));
-                }
-            }
-            else if (Directory.Exists(mfile))
-            {
-                hasCode = Directory.GetDirectories(mfile, "*", System.IO.SearchOption.AllDirectories)
-                                   .Any(s => s.EndsWith("hext", StringComparison.InvariantCultureIgnoreCase));
-            }
-            else
-                hasCode = false;
 
             if (modInfo != null)
             {
@@ -1278,34 +1261,14 @@ namespace AppUI.ViewModels
 
             if (!hasCode) return true;
 
-
-            if (Sys.IsRunningAppAsAdministrator() && Sys.Settings.HasOption(GeneralOptions.WarnAboutModCode))
+            // Invoke the message on the Dispatcher UI thread since this could be called from background threads.
+            return App.Current.Dispatcher.Invoke(() =>
             {
-                // invoke the message on the Dispatcher UI Thread since this could be called from background threads
-                return App.Current.Dispatcher.Invoke(() =>
-                {
-                    string msg = String.Format(ResourceHelper.Get(StringKey.ThisModContainsDataThatCouldHarm), mod.CachedDetails.Name);
+                string msg = String.Format(ResourceHelper.Get(StringKey.ThisModContainsDataThatCouldHarm), mod.CachedDetails.Name);
 
-                    AllowModToRunWindow warningWindow = new AllowModToRunWindow(msg);
-                    warningWindow.ShowDialog();
-
-                    if (warningWindow.ViewModel.IsChecked)
-                    {
-                        // set settings to turn off warning
-                        Sys.Settings.RemoveOption(GeneralOptions.WarnAboutModCode);
-                        Sys.SaveSettings();
-                    }
-
-                    if (warningWindow.ViewModel.YesRadioButtonIsChecked)
-                    {
-                        return true;
-                    }
-
-                    return false;
-                });
-            }
-
-            return true;
+                AllowModToRunWindow warningWindow = new AllowModToRunWindow(msg);
+                return warningWindow.ShowDialog() == true && warningWindow.ViewModel.YesRadioButtonIsChecked;
+            });
         }
 
         internal void DoSearch()

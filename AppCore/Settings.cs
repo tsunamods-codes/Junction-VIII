@@ -34,7 +34,7 @@ namespace Iros.Workshop {
         OpenIrosLinksWithJ8,
         OpenModFilesWithJ8,
         ShowJ8InFileExplorerContextMenu,
-        WarnAboutModCode,
+        WarnAboutModCode, // Retained for compatibility with existing settings; code warnings are mandatory.
         AutoUpdateMods,
         AutoSortMods
     }
@@ -169,7 +169,6 @@ namespace Iros.Workshop {
             defaultSettings.Options.Add(GeneralOptions.AutoSortMods);
             defaultSettings.Options.Add(GeneralOptions.AutoImportMods);
             defaultSettings.Options.Add(GeneralOptions.AutoActiveNewMods);
-            defaultSettings.Options.Add(GeneralOptions.WarnAboutModCode);
             defaultSettings.Options.Add(GeneralOptions.OpenIrosLinksWithJ8);
             defaultSettings.Options.Add(GeneralOptions.OpenModFilesWithJ8);
             defaultSettings.Options.Add(GeneralOptions.CheckForUpdates);
