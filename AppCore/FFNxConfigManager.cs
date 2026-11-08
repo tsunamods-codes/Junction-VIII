@@ -84,7 +84,7 @@ namespace Iros.Workshop.ConfigSettings
                     }
                 case Int64 i:
                     {
-                        _toml[key] = Int64.Parse(value);
+                        _toml[key] = ParseIntegerSetting(value);
                         break;
                     }
             }
@@ -124,12 +124,17 @@ namespace Iros.Workshop.ConfigSettings
                     }
                 case Int64 i:
                     {
-                        if (i != Int64.Parse(value)) return false;
+                        if (i != ParseIntegerSetting(value)) return false;
                         break;
                     }
             }
 
             return true;
+        }
+
+        private static long ParseIntegerSetting(string value)
+        {
+            return bool.TryParse(value, out bool booleanValue) ? (booleanValue ? 1L : 0L) : Int64.Parse(value);
         }
 
         public bool HasKey(string key)
