@@ -278,6 +278,8 @@ Use GUIDs in `<OrderConstraints>` to express preferred relative order. `Before` 
 
 Each child under `<FFNxConfig>` names an existing key in `FFNx.toml`. Scalar children use text values; children with nested elements provide an array of values. Junction VIII only applies a setting if that key exists in the user's FFNx configuration.
 
+Integer settings also accept `false` as `0` and `true` as `1` (case-insensitive).
+
 ```xml
 <FFNxConfig>
   <example_boolean_key>true</example_boolean_key>
