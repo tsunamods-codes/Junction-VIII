@@ -131,24 +131,6 @@ namespace AppWrapper {
                 if (_profile.MonitorVars != null)
                     new System.Threading.Thread(MonitorThread) { IsBackground = true }.Start(_profile);
 
-                foreach (string LL in _profile.Mods.SelectMany(m => m.GetLoadLibraries())) {
-                    DebugLogger.WriteLine($"Loading library DLL {LL}");
-                    NativeLibrary.Load(LL);
-                }
-
-                foreach (var mod in _profile.Mods) {
-                    foreach (string LA in mod.GetLoadAssemblies()) {
-                        DebugLogger.WriteLine($"Loading assembly DLL {LA}");
-                        var asm = System.Reflection.Assembly.LoadFrom(LA);
-                        try {
-                            string path = mod.BaseFolder;
-                            asm.GetType("_JunctionVIII.Main")
-                                .GetMethod("Init", new[] { typeof(RuntimeMod) })
-                                .Invoke(null, new object[] { mod });
-                        } catch { }
-                    }
-                }
-
                 DebugLogger.WriteLine($"\nLoading hext patches:");
 
                 foreach (var mod in _profile.Mods.AsEnumerable().Reverse()) {
@@ -201,6 +183,46 @@ namespace AppWrapper {
                 }
 
                 DebugLogger.WriteLine($"\nWrapper startup complete.");
+            } catch (Exception e) {
+                DebugLogger.WriteLine(e.ToString());
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Called by AppLoader once the file hooks are active: hext patches are applied and every mod file is mapped,
+        /// so a DLL can already read files of any active mod while it loads.
+        /// </summary>
+        public static void LoadCode()
+        {
+            if (_profile == null) return;
+
+            try {
+                DebugLogger.WriteLine($"\nLoading code:");
+
+                foreach (string LL in _profile.Mods.SelectMany(m => m.GetLoadLibraries())) {
+                    DebugLogger.WriteLine($">> Loading library DLL {LL}");
+                    try {
+                        NativeLibrary.Load(LL);
+                    } catch (Exception ex) {
+                        DebugLogger.WriteLine("   - Error loading library: " + ex.Message);
+                    }
+                }
+
+                foreach (var mod in _profile.Mods) {
+                    foreach (string LA in mod.GetLoadAssemblies()) {
+                        DebugLogger.WriteLine($">> Loading assembly DLL {LA}");
+                        try {
+                            var asm = System.Reflection.Assembly.LoadFrom(LA);
+                            asm.GetType("_JunctionVIII.Main")
+                                ?.GetMethod("Init", new[] { typeof(RuntimeMod) })
+                                ?.Invoke(null, new object[] { mod });
+                        } catch (Exception ex) {
+                            DebugLogger.WriteLine("   - Error loading assembly: " + ex.Message);
+                        }
+                    }
+                }
+
                 DebugLogger.WriteLine($"\nListening for game actions...");
             } catch (Exception e) {
                 DebugLogger.WriteLine(e.ToString());
