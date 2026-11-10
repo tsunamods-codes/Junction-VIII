@@ -215,6 +215,18 @@ Conditions can refer to mod configuration options or the selected game language.
 
 The condition is evaluated when the runtime profile is built for launch. Supported values are `EN`, `FR`, `DE`, `ES`, `IT`, and `JA`; `ANY` and `*` match every language.
 
+A condition can also check whether another mod is active in the profile, by its ID. This lets a mod ship the files it needs to work next to another mod, and use them only when that mod is enabled:
+
+```xml
+<ModFolder Folder="WithOtherMod">
+  <ActiveWhen>
+    <Mod>11111111-2222-3333-4444-555555555555</Mod>
+  </ActiveWhen>
+</ModFolder>
+```
+
+`Mod` is true while that mod is enabled, wherever it sits in the load order, and can be combined with `And`, `Or` and `Not` like the other conditions. Which of the two mods wins a file both of them ship still follows the load order.
+
 ## Runtime-Conditioned Folders
 
 `<Conditional Folder="...">` is for selecting assets based on values read from game memory or runtime state. Its child condition nodes must include an `ApplyTo` attribute naming the game-relative path they control. The condition types are `And`, `Or`, `Not`, and `RuntimeVar`.
@@ -311,6 +323,17 @@ Replace these example keys with keys present in the target FFNx version's `FFNx.
 ```
 
 Use the loader mechanism required by the component you are shipping; these entries are not interchangeable.
+
+The path may point into any sub-folder of the package, both for unpacked folders and `.iroj` archives; `/` and `\` are both accepted. When the path is inside a `ModFolder` or `Conditional` folder, the DLL follows that folder's `ActiveWhen` at game start: it is loaded only when the folder is active, so an option can turn a DLL on or off the same way it does for other files. A DLL outside every such folder is always loaded with the mod. For example, this DLL is loaded only when `ExtraFeature` is `1`:
+
+```xml
+<ModFolder Folder="Options\ExtraFeature">
+  <ActiveWhen>
+    <Option>ExtraFeature = 1</Option>
+  </ActiveWhen>
+</ModFolder>
+<LoadLibrary>Options/ExtraFeature/native/extra.dll</LoadLibrary>
+```
 
 Declaring any `LoadLibrary`, `LoadAssembly`, `LoadPlugin`, or `LoadPrograms` entry triggers the mandatory code warning on each activation, regardless of whether the mod also contains HEXT patches. This warning applies even without administrator privileges and cannot be disabled.
 

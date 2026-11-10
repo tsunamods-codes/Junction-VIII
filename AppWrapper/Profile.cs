@@ -167,13 +167,50 @@ namespace AppWrapper
             BaseFolder = folder;
             Conditionals = conditionalFolders.ToList();
             ExtraFolders = extraFolders.ToList();
-            LoadLibraries = modInfo.LoadLibraries.ToList();
-            LoadAssemblies = modInfo.LoadAssemblies.ToList();
-            LoadPlugins = modInfo.LoadPlugins.ToList();
+
+            // A DLL may sit in any sub-folder of the mod. When that sub-folder is a ModFolder or a
+            // Conditional folder, the DLL follows the folder: it is loaded only while the folder is active.
+            List<string> declaredFolders = modInfo.ModFolders.Select(f => f.Folder)
+                .Concat(modInfo.Conditionals.Select(c => c.Folder))
+                .ToList();
+            List<string> activeFolders = ExtraFolders
+                .Concat(Conditionals.Select(c => c.Folder))
+                .ToList();
+            LoadLibraries = KeepDllsOfActiveFolders(modInfo.LoadLibraries, declaredFolders, activeFolders);
+            LoadAssemblies = KeepDllsOfActiveFolders(modInfo.LoadAssemblies, declaredFolders, activeFolders);
+            LoadPlugins = KeepDllsOfActiveFolders(modInfo.LoadPlugins, declaredFolders, activeFolders);
             LoadPrograms = modInfo.LoadPrograms.ToList();
             FFNxConfig = modInfo.FFNxConfig;
             Variables = modInfo.Variables;
 
+        }
+
+        /// <summary>
+        /// Turns a package-relative path into the form used by .iroj archives: backslashes, no leading ".\" or "\".
+        /// </summary>
+        private static string NormalizeModPath(string path)
+        {
+            string result = (path ?? String.Empty).Trim().Replace('/', '\\');
+            while (result.StartsWith(".\\")) result = result.Substring(2);
+            return result.Trim('\\');
+        }
+
+        private static bool IsInFolder(string normalizedPath, string folder)
+        {
+            string normalizedFolder = NormalizeModPath(folder);
+            return normalizedFolder.Length > 0
+                && normalizedPath.StartsWith(normalizedFolder + "\\", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Keeps the DLLs that are outside every ModFolder/Conditional folder, and the ones inside at least one active folder.
+        /// </summary>
+        private static List<string> KeepDllsOfActiveFolders(IEnumerable<string> dlls, List<string> declaredFolders, List<string> activeFolders)
+        {
+            return dlls
+                .Select(NormalizeModPath)
+                .Where(dll => !declaredFolders.Any(f => IsInFolder(dll, f)) || activeFolders.Any(f => IsInFolder(dll, f)))
+                .ToList();
         }
 
         /// <summary>
@@ -196,8 +233,25 @@ namespace AppWrapper
             return true;
         }
 
+        /// <summary>
+        /// Path of an archive file once extracted under <paramref name="libpath"/>, keeping its sub-folders.
+        /// Returns null when the file would land outside <paramref name="libpath"/>.
+        /// </summary>
+        private static string GetExtractPath(string libpath, string archivePath)
+        {
+            string root = System.IO.Path.GetFullPath(libpath).TrimEnd('\\') + "\\";
+            string full = System.IO.Path.GetFullPath(System.IO.Path.Combine(root, archivePath));
+            if (!full.StartsWith(root, StringComparison.InvariantCultureIgnoreCase))
+            {
+                DebugLogger.WriteLine($"      Refusing to extract {archivePath}: outside of {libpath}");
+                return null;
+            }
+            return full;
+        }
+
         private void WriteIfNecessary(string path, byte[] data)
         {
+            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
             if (System.IO.File.Exists(path))
             {
                 byte[] exist = System.IO.File.ReadAllBytes(path);
@@ -230,7 +284,8 @@ namespace AppWrapper
                             .Where(s => s.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                             )
                         {
-                            string loc = System.IO.Path.Combine(libpath, dll);
+                            string loc = GetExtractPath(libpath, dll);
+                            if (loc == null) continue;
                             WriteIfNecessary(loc, _archive.GetBytes(dll));
                             if (dlls.Contains(dll, StringComparer.InvariantCultureIgnoreCase)) saved.Add(loc);
                         }
@@ -240,8 +295,15 @@ namespace AppWrapper
                 {
                     foreach (string LL in dlls)
                     {
-                        string path = System.IO.Path.Combine(libpath, LL);
-                        WriteIfNecessary(path, _archive.GetBytes(LL));
+                        byte[] data = _archive.GetBytes(LL);
+                        if (data == null)
+                        {
+                            DebugLogger.WriteLine($"      {LL} not found in archive {BaseFolder}");
+                            continue;
+                        }
+                        string path = GetExtractPath(libpath, LL);
+                        if (path == null) continue;
+                        WriteIfNecessary(path, data);
                         saved.Add(path);
                     }
                 }
@@ -286,7 +348,8 @@ namespace AppWrapper
                                                    .Where(s => Path.GetDirectoryName(s).Equals(dirPath, StringComparison.InvariantCultureIgnoreCase))
                                                    .Where(s => fileExtensions.Any(ext => s.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase))))
                     {
-                        string tempLibPath = Path.Combine(libpath, dll);
+                        string tempLibPath = GetExtractPath(libpath, dll);
+                        if (tempLibPath == null) continue;
                         WriteIfNecessary(tempLibPath, _archive.GetBytes(dll));
                         saved.Add(new ProgramInfo()
                         {
@@ -482,9 +545,9 @@ namespace AppWrapper
             {
                 _children = source.SelectNodes("*").Cast<XmlNode>().Select(n => Create(n)).ToList();
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
             {
-                return _children.All(a => a.IsActive(check, checkGameLanguage));
+                return _children.All(a => a.IsActive(check, checkGameLanguage, checkMod));
             }
         }
         public class Or : ActiveWhen
@@ -496,9 +559,9 @@ namespace AppWrapper
             {
                 _children = source.SelectNodes("*").Cast<XmlNode>().Select(n => Create(n)).ToList();
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
             {
-                return _children.Any(a => a.IsActive(check, checkGameLanguage));
+                return _children.Any(a => a.IsActive(check, checkGameLanguage, checkMod));
             }
         }
         public class Not : ActiveWhen
@@ -514,9 +577,9 @@ namespace AppWrapper
             {
                 _child = Create(source.SelectSingleNode("*"));
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
             {
-                return !_child.IsActive(check, checkGameLanguage);
+                return !_child.IsActive(check, checkGameLanguage, checkMod);
             }
         }
         public class Option : ActiveWhen
@@ -528,7 +591,7 @@ namespace AppWrapper
             {
                 Condition = source.InnerText;
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
             {
                 return check(Condition);
             }
@@ -543,9 +606,28 @@ namespace AppWrapper
                 Condition = source.InnerText.Trim();
             }
 
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
             {
                 return checkGameLanguage(Condition);
+            }
+        }
+
+        /// <summary>
+        /// True while the mod whose ID is given is active in the profile, whatever its place in the load order:
+        /// <![CDATA[<ActiveWhen><Mod>bdd7d71d-8ffd-4aa5-93c1-bf5ae182ad66</Mod></ActiveWhen>]]>
+        /// </summary>
+        public class Mod : ActiveWhen
+        {
+            public string Condition { get; set; }
+
+            protected override void Load(XmlNode source)
+            {
+                Condition = source.InnerText.Trim();
+            }
+
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            {
+                return checkMod(Condition);
             }
         }
 
@@ -559,10 +641,11 @@ namespace AppWrapper
             _types["Not"] = () => new Not();
             _types["Option"] = () => new Option();
             _types["GameLanguage"] = () => new GameLanguage();
+            _types["Mod"] = () => new Mod();
         }
 
         protected abstract void Load(System.Xml.XmlNode source);
-        public abstract bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage);
+        public abstract bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod);
 
         private static ActiveWhen Create(System.Xml.XmlNode source)
         {
@@ -598,6 +681,10 @@ namespace AppWrapper
             else if (this is ActiveWhen.GameLanguage)
             {
                 writer.WriteElementString("GameLanguage", (this as GameLanguage).Condition);
+            }
+            else if (this is ActiveWhen.Mod)
+            {
+                writer.WriteElementString("Mod", (this as Mod).Condition);
             }
             else if (this is ActiveWhen.Not)
             {
