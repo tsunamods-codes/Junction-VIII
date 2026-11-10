@@ -190,9 +190,9 @@ namespace AppWrapper {
         }
 
         /// <summary>
-        /// Called by AppLoader once the file hooks are active, so a DLL can read mod files while it loads.
+        /// Called by AppLoader once the file hooks are active. Loads mod code here so a DLL can read mod files while it loads.
         /// </summary>
-        public static void LoadCode()
+        public static void OnAfterHook()
         {
             if (_profile == null) return;
 

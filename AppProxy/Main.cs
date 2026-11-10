@@ -12,7 +12,7 @@ namespace AppProxy
 
         private static MethodInfo? _mRun = null;
         private static MethodInfo? _mShutdown = null;
-        private static MethodInfo? _mLoadCode = null;
+        private static MethodInfo? _mOnAfterHook = null;
         private static MethodInfo? _mHCreateFileA = null;
         private static MethodInfo? _mHCreateFileW = null;
         private static MethodInfo? _mHReadFile = null;
@@ -34,7 +34,7 @@ namespace AppProxy
         public struct HostExports
         {
             public delegate* unmanaged<void> Shutdown;
-            public delegate* unmanaged<void> LoadCode;
+            public delegate* unmanaged<void> OnAfterHook;
             public delegate* unmanaged<byte*, uint, uint, void*, uint, uint, void*, void*> CreateFileA;
             public delegate* unmanaged<ushort*, uint, uint, void*, uint, uint, void*, void*> CreateFileW;
             public delegate* unmanaged<void*, void*, uint, uint*, void*, int> ReadFile;
@@ -80,7 +80,7 @@ namespace AppProxy
                 _exports = (HostExports*)exports;
 
                 _exports->Shutdown = &Shutdown;
-                _exports->LoadCode = &LoadCode;
+                _exports->OnAfterHook = &OnAfterHook;
                 _exports->CreateFileA = &HCreateFileA;
                 _exports->CreateFileW = &HCreateFileW;
                 _exports->ReadFile = &HReadFile;
@@ -105,7 +105,7 @@ namespace AppProxy
                 {
                     _mRun = t.GetMethod("Run", BindingFlags.Static | BindingFlags.Public);
                     _mShutdown = t.GetMethod("Shutdown", BindingFlags.Static | BindingFlags.Public);
-                    _mLoadCode = t.GetMethod("LoadCode", BindingFlags.Static | BindingFlags.Public);
+                    _mOnAfterHook = t.GetMethod("OnAfterHook", BindingFlags.Static | BindingFlags.Public);
                     _mHCreateFileA = t.GetMethod("HCreateFileA", BindingFlags.Static | BindingFlags.Public);
                     _mHCreateFileW = t.GetMethod("HCreateFileW", BindingFlags.Static | BindingFlags.Public);
                     _mHReadFile = t.GetMethod("HReadFile", BindingFlags.Static | BindingFlags.Public);
@@ -136,11 +136,11 @@ namespace AppProxy
         }
 
         [UnmanagedCallersOnly]
-        public static void LoadCode()
+        public static void OnAfterHook()
         {
             try
             {
-                if (_mLoadCode != null) _mLoadCode.Invoke(null, null);
+                if (_mOnAfterHook != null) _mOnAfterHook.Invoke(null, null);
             }
             catch (Exception ex)
             {
@@ -159,7 +159,7 @@ namespace AppProxy
                 lib = null;
 
                 _exports->Shutdown = null;
-                _exports->LoadCode = null;
+                _exports->OnAfterHook = null;
                 _exports->CreateFileA = null;
                 _exports->CreateFileW = null;
                 _exports->ReadFile = null;

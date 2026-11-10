@@ -60,7 +60,7 @@ static inline void trim(std::string& s) {
 struct host_exports
 {
     void (*Shutdown)();
-    void (*LoadCode)();
+    void (*OnAfterHook)();
 #define X(n) decltype(&n) n;
 #include "host_exports.x.h"
 #undef X
@@ -662,8 +662,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
             // ------------------------------------
             DetourTransactionCommit();
 
-            // Load mod code now that the hooks are active, so it can read mod files while loading
-            if (exports.LoadCode) exports.LoadCode();
+            // Hooks are active: run the post-hook step (loads mod code, which can now read mod files)
+            if (exports.OnAfterHook) exports.OnAfterHook();
 
             PLOGI << "AppLoader started successfully";
 
