@@ -1191,6 +1191,11 @@ Möchten Sie die Einstellung übernehmen und es erneut versuchen?</system:String
     <system:String x:Key="Italian">Italienisch</system:String>
 
     <system:String x:Key="SimplifiedChinese">Vereinfachtes Chinesisch</system:String>
+    <system:String x:Key="GameLanguageModsWillBeDisabled">Diese aktiven Mods geben die Sprache „{0}“ nicht als unterstützt an und werden deaktiviert.
+Spielsprache trotzdem ändern?</system:String>
+    <system:String x:Key="GameLanguageInstallTranslationMod">Die Steam-2013-Version enthält nur Englisch. Für die Sprache „{0}“ installiere FF8 ILP (International Language Patch) aus dem Katalog. Bis dahin bleibt das Spiel auf Englisch.</system:String>
+    <system:String x:Key="GameLanguageEnableTranslationMod">Die Steam-2013-Version enthält nur Englisch. FF8 ILP (International Language Patch) stellt die Sprache „{0}“ bereit.
+FF8 ILP jetzt aktivieren?</system:String>
     <system:String x:Key="SetInGameControls">Spielsteuerung festlegen</system:String>
     <system:String x:Key="Keyboard">TASTATUR</system:String>
     <system:String x:Key="Controller">CONTROLLER</system:String>

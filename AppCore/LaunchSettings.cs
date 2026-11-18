@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Iros.Workshop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -67,6 +68,41 @@ namespace AppCore
         public const string Any = "ANY";
 
         public static bool BypassLanguageCompatibility { get; set; }
+
+        /// <summary>
+        /// The editions where the player picks the game language. Remastered and GOG ship every language;
+        /// Steam 2013 ships English only, and a language mod (FF8 ILP) translates it to the others.
+        /// </summary>
+        public static bool IsSelectableFor(FF8Version version)
+        {
+            return version == FF8Version.Steam || version == FF8Version.Remastered || version == FF8Version.GOG;
+        }
+
+        /// <summary>
+        /// The game ships the selected language itself (Remastered, GOG); on Steam 2013 a language mod provides it.
+        /// </summary>
+        public static bool IsShippedBy(FF8Version version)
+        {
+            return version == FF8Version.Remastered || version == FF8Version.GOG;
+        }
+
+        /// <summary>
+        /// FF8 ILP (International Language Patch): the mod that translates Steam 2013 to the other languages.
+        /// </summary>
+        public static readonly Guid Steam2013TranslationModID = new Guid("3d7436a1-2cd7-4503-821a-910b0f7aa7e3");
+
+        /// <summary>
+        /// The language picked in the launch settings, or English on an edition without the choice.
+        /// </summary>
+        public static string Selected
+        {
+            get
+            {
+                return IsSelectableFor(Sys.Settings.FF8InstalledVersion)
+                    ? Normalize(Sys.Settings.GameLaunchSettings?.SelectedGameLanguage)
+                    : English;
+            }
+        }
 
         public static string Normalize(string language)
         {

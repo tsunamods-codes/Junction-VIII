@@ -1879,10 +1879,77 @@ namespace AppUI.ViewModels
 
             GameLaunchSettingsWindow launchSettingsWindow = new GameLaunchSettingsWindow();
             Guid? selectedModId = MyMods.GetSelectedMod()?.InstallInfo?.ModID;
+            string previousLanguage = GameLauncher.GetSelectedGameLanguage();
             launchSettingsWindow.ShowDialog();
+            string language = GameLauncher.GetSelectedGameLanguage();
+            if (language != previousLanguage)
+            {
+                if (ConfirmModsUnsupportedByGameLanguage(language))
+                {
+                    OfferTranslationMod(language);
+                }
+                else
+                {
+                    Sys.Settings.GameLaunchSettings.SelectedGameLanguage = previousLanguage;
+                    Sys.SaveSettings();
+                }
+            }
             MyMods.DeactivateModsUnsupportedByCurrentGameLanguage();
             CatalogMods.RefreshGameLanguageAvailability();
             MyMods.ReloadModListFromUIThread(selectedModId, SearchText, CheckedCategories, CheckedTags);
+        }
+
+        /// <summary>
+        /// Before a new game language disables the active mods that do not list it, name them and let the
+        /// player keep the previous language instead. True to go on with the new language.
+        /// </summary>
+        private static bool ConfirmModsUnsupportedByGameLanguage(string language)
+        {
+            List<string> unsupportedMods = Sys.ActiveProfile?.ActiveItems?
+                .Select(item => Sys.Library.GetItem(item.ModID))
+                .Where(mod => mod != null && !AppCore.GameLanguage.IsSupportedBy(mod.GetModInfo()?.GameLanguages, language))
+                .Select(mod => mod.CachedDetails?.Name ?? mod.ModID.ToString())
+                .ToList() ?? new List<string>();
+
+            if (unsupportedMods.Count == 0)
+            {
+                return true;
+            }
+
+            string prompt = string.Format(ResourceHelper.Get(StringKey.GameLanguageModsWillBeDisabled), GameLauncher.GetGameLanguageName(language));
+            return MessageDialogWindow.Show(prompt, string.Join("\n", unsupportedMods), ResourceHelper.Get(StringKey.GameLanguageHeader),
+                                            MessageBoxButton.YesNo, MessageBoxImage.Warning).Result == MessageBoxResult.Yes;
+        }
+
+        /// <summary>
+        /// Steam 2013 only contains English: another language needs FF8 ILP. Offer to enable it, or say to install it.
+        /// </summary>
+        private void OfferTranslationMod(string language)
+        {
+            if (language == AppCore.GameLanguage.English || AppCore.GameLanguage.IsShippedBy(Sys.Settings.FF8InstalledVersion))
+            {
+                return;
+            }
+
+            Guid translationMod = AppCore.GameLanguage.Steam2013TranslationModID;
+            if (Sys.ActiveProfile?.ActiveItems?.Any(item => item.ModID == translationMod) ?? false)
+            {
+                return;
+            }
+
+            string languageName = GameLauncher.GetGameLanguageName(language);
+            if (Sys.Library.GetItem(translationMod) == null)
+            {
+                MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.GameLanguageInstallTranslationMod), languageName),
+                                         ResourceHelper.Get(StringKey.GameLanguageHeader), MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.GameLanguageEnableTranslationMod), languageName),
+                                         ResourceHelper.Get(StringKey.GameLanguageHeader), MessageBoxButton.YesNo, MessageBoxImage.Question).Result == MessageBoxResult.Yes)
+            {
+                MyMods.ToggleActivateMod(translationMod, reloadList: false);
+            }
         }
 
         internal void ShowCatalogCreationTool()
