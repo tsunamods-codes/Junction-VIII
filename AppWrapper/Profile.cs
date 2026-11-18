@@ -545,9 +545,9 @@ namespace AppWrapper
             {
                 _children = source.SelectNodes("*").Cast<XmlNode>().Select(n => Create(n)).ToList();
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption)
             {
-                return _children.All(a => a.IsActive(check, checkGameLanguage, checkMod));
+                return _children.All(a => a.IsActive(check, checkGameLanguage, checkMod, checkModOption));
             }
         }
         public class Or : ActiveWhen
@@ -559,9 +559,9 @@ namespace AppWrapper
             {
                 _children = source.SelectNodes("*").Cast<XmlNode>().Select(n => Create(n)).ToList();
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption)
             {
-                return _children.Any(a => a.IsActive(check, checkGameLanguage, checkMod));
+                return _children.Any(a => a.IsActive(check, checkGameLanguage, checkMod, checkModOption));
             }
         }
         public class Not : ActiveWhen
@@ -577,23 +577,41 @@ namespace AppWrapper
             {
                 _child = Create(source.SelectSingleNode("*"));
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption)
             {
-                return !_child.IsActive(check, checkGameLanguage, checkMod);
+                return !_child.IsActive(check, checkGameLanguage, checkMod, checkModOption);
             }
         }
+        /// <summary>
+        /// Compares an option of this mod, or with the Mod attribute an option of another active mod:
+        /// <![CDATA[<ActiveWhen><Option Mod="bdd7d71d-8ffd-4aa5-93c1-bf5ae182ad66">Language = 4</Option></ActiveWhen>]]>
+        /// </summary>
         public class Option : ActiveWhen
         {
             [XmlElement("Option")]
             public string Condition { get; set; }
 
+            /// <summary>
+            /// ID of the mod whose option is read; empty for an option of this mod.
+            /// </summary>
+            public string ModID { get; set; }
+
             protected override void Load(XmlNode source)
             {
                 Condition = source.InnerText;
+                ModID = source.Attributes?["Mod"]?.Value.Trim();
             }
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption)
             {
-                return check(Condition);
+                return string.IsNullOrEmpty(ModID) ? check(Condition) : checkModOption(ModID, Condition);
+            }
+
+            internal void WriteElement(XmlWriter writer)
+            {
+                writer.WriteStartElement("Option");
+                if (!string.IsNullOrEmpty(ModID)) writer.WriteAttributeString("Mod", ModID);
+                writer.WriteString(Condition);
+                writer.WriteEndElement();
             }
         }
 
@@ -606,7 +624,7 @@ namespace AppWrapper
                 Condition = source.InnerText.Trim();
             }
 
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption)
             {
                 return checkGameLanguage(Condition);
             }
@@ -625,7 +643,7 @@ namespace AppWrapper
                 Condition = source.InnerText.Trim();
             }
 
-            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod)
+            public override bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption)
             {
                 return checkMod(Condition);
             }
@@ -645,7 +663,7 @@ namespace AppWrapper
         }
 
         protected abstract void Load(System.Xml.XmlNode source);
-        public abstract bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod);
+        public abstract bool IsActive(Func<string, bool> check, Func<string, bool> checkGameLanguage, Func<string, bool> checkMod, Func<string, string, bool> checkModOption);
 
         private static ActiveWhen Create(System.Xml.XmlNode source)
         {
@@ -676,7 +694,7 @@ namespace AppWrapper
         {
             if (this is ActiveWhen.Option)
             {
-                writer.WriteElementString("Option", (this as Option).Condition);
+                (this as Option).WriteElement(writer);
             }
             else if (this is ActiveWhen.GameLanguage)
             {
@@ -761,56 +779,16 @@ namespace AppWrapper
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("Folder", Folder);
-            if (ActiveWhen is ActiveWhen.Option)
+            if (ActiveWhen is ActiveWhen.Option option && string.IsNullOrEmpty(option.ModID))
             {
-                // ActiveWhen is treated as an attribute when it is just an Option
-                writer.WriteAttributeString("ActiveWhen", (ActiveWhen as ActiveWhen.Option).Condition);
+                // ActiveWhen is treated as an attribute when it is just an Option of this mod
+                writer.WriteAttributeString("ActiveWhen", option.Condition);
             }
             else
             {
                 // ActiveWhen is an xml element
                 writer.WriteStartElement("ActiveWhen");
-
-                if (ActiveWhen is ActiveWhen.Not)
-                {
-                    writer.WriteStartElement("Not");
-
-                    ActiveWhen child = (ActiveWhen as ActiveWhen.Not).Child;
-                    child.WriteXml(writer);
-
-                    writer.WriteEndElement();
-                }
-                else if (ActiveWhen is ActiveWhen.GameLanguage)
-                {
-                    writer.WriteElementString("GameLanguage", (ActiveWhen as ActiveWhen.GameLanguage).Condition);
-                }
-                else if (ActiveWhen is ActiveWhen.And)
-                {
-                    writer.WriteStartElement("And");
-
-                    List<ActiveWhen> children = (ActiveWhen as ActiveWhen.And).Children;
-
-                    foreach (var child in children)
-                    {
-                        child.WriteXml(writer);
-                    }
-
-                    writer.WriteEndElement();
-                }
-                else if (ActiveWhen is ActiveWhen.Or)
-                {
-                    writer.WriteStartElement("Or");
-
-                    List<ActiveWhen> children = (ActiveWhen as ActiveWhen.Or).Children;
-
-                    foreach (var child in children)
-                    {
-                        child.WriteXml(writer);
-                    }
-
-                    writer.WriteEndElement();
-                }
-
+                ActiveWhen?.WriteXml(writer);
                 writer.WriteEndElement();
             }
         }
