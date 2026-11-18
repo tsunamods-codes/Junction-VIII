@@ -257,7 +257,7 @@ namespace Iros.Workshop.ConfigSettings
             _toml["override_path"] = "override";
             _toml["trace_all"] = debug;
 
-            if (Sys.Settings.FF8InstalledVersion == FF8Version.Remastered || Sys.Settings.FF8InstalledVersion == FF8Version.GOG)
+            if (GameLanguage.IsSelectableFor(Sys.Settings.FF8InstalledVersion))
             {
                 string selectedLanguage = GameLanguage.Normalize(Sys.Settings.GameLaunchSettings?.SelectedGameLanguage);
                 _toml["game_language"] = GameLanguage.GetFFNxLanguageId(selectedLanguage);

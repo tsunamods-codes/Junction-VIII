@@ -82,21 +82,25 @@ namespace AppUI.Classes
 
         internal static bool IsLanguageSelectorSupportedEdition()
         {
-            switch (Sys.Settings.FF8InstalledVersion)
-            {
-                case FF8Version.Remastered:
-                case FF8Version.GOG:
-                    return true;
-                default:
-                    return false;
-            }
+            return GameLanguage.IsSelectableFor(Sys.Settings.FF8InstalledVersion);
         }
 
         internal static string GetSelectedGameLanguage()
         {
-            return IsLanguageSelectorSupportedEdition()
-                ? GameLanguage.Normalize(Sys.Settings.GameLaunchSettings?.SelectedGameLanguage)
-                : GameLanguage.English;
+            return GameLanguage.Selected;
+        }
+
+        internal static string GetGameLanguageName(string language)
+        {
+            switch (GameLanguage.Normalize(language))
+            {
+                case GameLanguage.French: return ResourceHelper.Get(StringKey.GameLanguageFrench);
+                case GameLanguage.German: return ResourceHelper.Get(StringKey.GameLanguageGerman);
+                case GameLanguage.Spanish: return ResourceHelper.Get(StringKey.GameLanguageSpanish);
+                case GameLanguage.Italian: return ResourceHelper.Get(StringKey.GameLanguageItalian);
+                case GameLanguage.Japanese: return ResourceHelper.Get(StringKey.GameLanguageJapanese);
+                default: return ResourceHelper.Get(StringKey.GameLanguageEnglish);
+            }
         }
 
         public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false, bool launchChocobo = false)

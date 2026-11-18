@@ -1184,6 +1184,11 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     <system:String x:Key="Italian">ιταλικός</system:String>
 
     <system:String x:Key="SimplifiedChinese">Απλοποιημένα Κινέζικα</system:String>
+    <system:String x:Key="GameLanguageModsWillBeDisabled">Αυτά τα ενεργά mods δεν δηλώνουν υποστήριξη για τη γλώσσα «{0}» και θα απενεργοποιηθούν.
+Αλλαγή της γλώσσας του παιχνιδιού παρ' όλα αυτά;</system:String>
+    <system:String x:Key="GameLanguageInstallTranslationMod">Η έκδοση Steam 2013 περιέχει μόνο αγγλικά. Για τη γλώσσα «{0}», εγκαταστήστε το FF8 ILP (International Language Patch) από τον κατάλογο. Μέχρι τότε το παιχνίδι παραμένει στα αγγλικά.</system:String>
+    <system:String x:Key="GameLanguageEnableTranslationMod">Η έκδοση Steam 2013 περιέχει μόνο αγγλικά. Το FF8 ILP (International Language Patch) παρέχει τη γλώσσα «{0}».
+Ενεργοποίηση του FF8 ILP τώρα;</system:String>
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
 
     <system:String x:Key="SetInGameControls">Ορισμός Στοιχείων Ελέγχου Εντός Παιχνιδιού</system:String>

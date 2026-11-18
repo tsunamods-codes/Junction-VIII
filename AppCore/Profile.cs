@@ -222,13 +222,7 @@ namespace Iros.Workshop {
 
         private bool IsGameLanguageActive(string language)
         {
-            bool supportsLanguageSelection = Sys.Settings.FF8InstalledVersion == FF8Version.Remastered
-                || Sys.Settings.FF8InstalledVersion == FF8Version.GOG;
-            string selectedLanguage = supportsLanguageSelection
-                ? GameLanguage.Normalize(Sys.Settings.GameLaunchSettings?.SelectedGameLanguage)
-                : GameLanguage.English;
-
-            return GameLanguage.MatchesLanguage(language, selectedLanguage);
+            return GameLanguage.MatchesLanguage(language, GameLanguage.Selected);
         }
 
         public AppWrapper.RuntimeMod GetRuntime(AppWrapper.LoaderContext context) {

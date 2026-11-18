@@ -1169,6 +1169,11 @@ Do you want to apply the setting and try again?</system:String>
     <system:String x:Key="Italian">Italian</system:String>
 
     <system:String x:Key="SimplifiedChinese">簡体中国語</system:String>
+    <system:String x:Key="GameLanguageModsWillBeDisabled">これらの有効なModは「{0}」への対応を宣言していないため、無効になります。
+それでもゲーム言語を変更しますか？</system:String>
+    <system:String x:Key="GameLanguageInstallTranslationMod">Steam 2013版には英語しか含まれていません。「{0}」で遊ぶには、カタログからFF8 ILP (International Language Patch) をインストールしてください。それまではゲームは英語のままです。</system:String>
+    <system:String x:Key="GameLanguageEnableTranslationMod">Steam 2013版には英語しか含まれていません。FF8 ILP (International Language Patch) が「{0}」を提供します。
+今すぐFF8 ILPを有効にしますか？</system:String>
     <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/29/20-->
 
     <system:String x:Key="SetInGameControls">Set In-Game Controls</system:String>

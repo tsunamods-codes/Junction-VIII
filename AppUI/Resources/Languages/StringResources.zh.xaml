@@ -1193,6 +1193,11 @@ Junction VIII 可以自动修复此问题。只需插入一张游戏光盘并重
     <system:String x:Key="Italian">意大利语</system:String>
 
     <system:String x:Key="SimplifiedChinese">简体中文</system:String>
+    <system:String x:Key="GameLanguageModsWillBeDisabled">以下已启用的模组未声明支持“{0}”，将被禁用。
+仍要更改游戏语言吗？</system:String>
+    <system:String x:Key="GameLanguageInstallTranslationMod">Steam 2013 版仅包含英语。要使用“{0}”，请从目录安装 FF8 ILP (International Language Patch)。在此之前，游戏仍为英语。</system:String>
+    <system:String x:Key="GameLanguageEnableTranslationMod">Steam 2013 版仅包含英语。FF8 ILP (International Language Patch) 提供“{0}”。
+现在启用 FF8 ILP 吗？</system:String>
 
     <system:String x:Key="SetInGameControls">设置游戏内的按键映射</system:String>
     <system:String x:Key="Keyboard">键盘</system:String>

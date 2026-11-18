@@ -1193,6 +1193,11 @@ Por último, puedes seleccionar la ruta de las cinemáticas en 'Opciones general
     <system:String x:Key="Italian">Italiano</system:String>
 	
     <system:String x:Key="SimplifiedChinese">Chino simplificado</system:String>
+    <system:String x:Key="GameLanguageModsWillBeDisabled">Estos mods activos no indican el idioma «{0}» como compatible y se desactivarán.
+¿Cambiar el idioma del juego de todos modos?</system:String>
+    <system:String x:Key="GameLanguageInstallTranslationMod">La edición Steam 2013 solo contiene inglés. Para el idioma «{0}», instala FF8 ILP (International Language Patch) desde el catálogo. Mientras tanto, el juego seguirá en inglés.</system:String>
+    <system:String x:Key="GameLanguageEnableTranslationMod">La edición Steam 2013 solo contiene inglés. FF8 ILP (International Language Patch) proporciona el idioma «{0}».
+¿Activar FF8 ILP ahora?</system:String>
     <system:String x:Key="SetInGameControls">Ajustar controles dentro del juego</system:String>
     <system:String x:Key="Keyboard">Teclado</system:String>
     <system:String x:Key="Controller">Mando</system:String>

@@ -506,7 +506,8 @@ namespace AppUI.ViewModels
 
             AutoUpdatePathChecked = launchSettings.AutoUpdateDiscPath;
             IsShowLauncherChecked = launchSettings.ShowLauncherWindow;
-            bool gameLanguageIsAutomatic = GameLauncher.IsLanguageSelectorSupportedEdition()
+            // FFNx picks the language itself (0) only where the game ships every language
+            bool gameLanguageIsAutomatic = GameLanguage.IsShippedBy(Sys.Settings.FF8InstalledVersion)
                                            && Sys.FFNxConfig.HasKey("game_language")
                                            && Sys.FFNxConfig.Get("game_language") == "0";
             SelectedGameLanguage = !GameLauncher.IsLanguageSelectorSupportedEdition()
