@@ -166,24 +166,30 @@ namespace Iros.Workshop {
         private static List<string> _comparisonL = _comparison.ToList();
 
         private bool IsConfigActive(string spec) {
+            return IsConfigActive(spec, optionID =>
+            {
+                if (optionID.StartsWith("ffnx_", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var key = optionID.Substring(5);
+                    if (Sys.FFNxConfig.HasKey(key)) return new ProfileSetting() { ID = key, Value = int.Parse(Sys.FFNxConfig.Get(key)) };
+                    return new ProfileSetting();
+                }
+                return Settings.Find(c => c.ID.Equals(optionID, StringComparison.InvariantCultureIgnoreCase));
+            });
+        }
+
+        /// <summary>
+        /// Compares the setting <paramref name="findSetting"/> returns for the option named in <paramref name="spec"/>; false when it returns null.
+        /// </summary>
+        private static bool IsConfigActive(string spec, Func<string, ProfileSetting> findSetting) {
             if (String.IsNullOrWhiteSpace(spec)) return true;
 
             string[] parts = spec.Split(_comparison, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2) return false;
             parts = new[] { parts[0].Trim(), spec.Substring(parts[0].Length, spec.Length - parts[1].Length - parts[0].Length), parts[1].Trim() };
 
-            var conf = new ProfileSetting();
-
-            if (parts[0].StartsWith("ffnx_", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var key = parts[0].Substring(5);
-                if (Sys.FFNxConfig.HasKey(key)) conf = new ProfileSetting() { ID = key, Value = int.Parse(Sys.FFNxConfig.Get(key)) };
-            }
-            else
-            {
-                conf = Settings.Find(c => c.ID.Equals(parts[0], StringComparison.InvariantCultureIgnoreCase));
-                if (conf == null) return false;
-            }
+            var conf = findSetting(parts[0]);
+            if (conf == null) return false;
 
             int val;
             if (!int.TryParse(parts[2], out val)) return false;
@@ -208,7 +214,32 @@ namespace Iros.Workshop {
 
         private bool IsActive(AppWrapper.ActiveWhen aw) {
             if (aw == null) return true;
-            return aw.IsActive(IsConfigActive, IsGameLanguageActive, IsOtherModActive);
+            return aw.IsActive(IsConfigActive, IsGameLanguageActive, IsOtherModActive, IsOtherModOptionActive);
+        }
+
+        /// <summary>
+        /// ActiveWhen Option with a Mod attribute: false unless the mod of this ID is in the profile and enabled;
+        /// then compares its option like an Option of this mod. An option never configured has its mod.xml default.
+        /// </summary>
+        private static bool IsOtherModOptionActive(string modID, string spec)
+        {
+            if (!Guid.TryParse(modID, out Guid id)) return false;
+            ProfileItem other = Sys.ActiveProfile?.ActiveItems?.FirstOrDefault(item => item.ModID.Equals(id));
+            if (other == null) return false;
+
+            return IsConfigActive(spec, optionID =>
+                other.Settings?.Find(s => s.ID.Equals(optionID, StringComparison.InvariantCultureIgnoreCase))
+                ?? GetDefaultSetting(id, optionID));
+        }
+
+        private static ProfileSetting GetDefaultSetting(Guid modID, string optionID)
+        {
+            InstalledItem mod = Sys.Library.GetItem(modID);
+            if (mod?.LatestInstalled == null) return null;
+
+            ConfigOption option = mod.GetModInfo()?.Options
+                .FirstOrDefault(o => o.ID.Equals(optionID, StringComparison.InvariantCultureIgnoreCase));
+            return option == null ? null : new ProfileSetting() { ID = option.ID, Value = option.Default };
         }
 
         /// <summary>

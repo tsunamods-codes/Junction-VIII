@@ -227,6 +227,18 @@ A condition can also check whether another mod is active in the profile, by its 
 
 `Mod` is true while that mod is enabled, wherever it sits in the load order, and can be combined with `And`, `Or` and `Not` like the other conditions. Which of the two mods wins a file both of them ship still follows the load order.
 
+An `Option` with a `Mod` attribute reads a configuration option of that other mod, so a mod can follow a choice the player made there:
+
+```xml
+<ModFolder Folder="WithOtherModChoice2">
+  <ActiveWhen>
+    <Option Mod="11111111-2222-3333-4444-555555555555">Choice=2</Option>
+  </ActiveWhen>
+</ModFolder>
+```
+
+It is false while that mod is not enabled. Otherwise it compares the option the same way as an option of the mod itself; an option the player never changed counts as its `Default` in that mod's `mod.xml`. Options are matched by their `ID`, so a mod that reads another mod's option relies on that ID staying the same.
+
 ## Runtime-Conditioned Folders
 
 `<Conditional Folder="...">` is for selecting assets based on values read from game memory or runtime state. Its child condition nodes must include an `ApplyTo` attribute naming the game-relative path they control. The condition types are `And`, `Or`, `Not`, and `RuntimeVar`.
