@@ -136,26 +136,13 @@
   <!--Allow Mod To Run Window-->
   <system:String x:Key="NoDontActivateThisMod">Não, não ative esse mod</system:String>
   <system:String x:Key="YesActivateThisMod">Sim, ative esse mod</system:String>
-  <system:String x:Key="DontAskAgainForAnyMods"
-    >Não perguntar de novo para QUALQUER mod</system:String>
 
   <!--Game Launcher Settings Window-->
   <system:String x:Key="OptionsHeader" xml:space="preserve"> Opções </system:String>
-  <system:String x:Key="AutoMountDisc">Auto-Montar Disco de Jogo</system:String>
-  <system:String x:Key="AutoMountDiscTooltip"
-    >Auto-montar ISO do disco do jogo ao inicializar. Windows 8 e adiante apenas. Se em Windows 7 ou antes, será preciso inserir o disco ou montar a ISO manualmente.</system:String>
-
-  <system:String x:Key="AutoDismountDisc">Auto-Desmontar Disco de Jogo</system:String>
-  <system:String x:Key="AutoDismountDiscTooltip"
-    >Auto-desmontar ISO do disco do jogo ao fechar. Windows 8 e adiante apenas. Se em Windows 7 ou antes, será preciso ejetar o disco ou desmontar a ISO manualmente.</system:String>
 
   <system:String x:Key="AutoUpdatePath">Auto-Atualizar Caminho de Disco</system:String>
-  <system:String x:Key="AutoUpdatePathTooltip"
-    >Detecta se letra de drive do disco foi alterada e auto-atualiza o jogo para apontar ao novo local.</system:String>
 
   <system:String x:Key="ShowGameLauncher">Mostrar Launcher do Jogo</system:String>
-  <system:String x:Key="ShowGameLauncherTooltip"
-    >Mostra a janela do Launcher quando inicializar FF8 pra obter informações detalhadas do processo de inicialização.</system:String>
   <system:String x:Key="GameLanguageEnglish">Inglês</system:String>
   <system:String x:Key="GameLanguageFrench">Francês</system:String>
   <system:String x:Key="GameLanguageGerman">Alemão</system:String>
@@ -166,104 +153,38 @@
   <system:String x:Key="ShowOnlyLanguageCompatibleItems"
     >Mostrar apenas itens compatíveis com o idioma de jogo selecionado</system:String>
 
-  <system:String x:Key="ControlsLabel">Controles:</system:String>
-
-  <system:String x:Key="SaveControlsTooltip"
-    >Salvar sua configuração de controles atual.</system:String>
   <system:String x:Key="DeleteControlsTooltip"
     >Deletar a configuração personalizada de controles selecionada.</system:String>
 
-  <system:String x:Key="CompatibilityHeader" xml:space="preserve"> Compatibilidade </system:String>
-  <system:String x:Key="HighDpiScalingFix">Correção de escala para alto DPI</system:String>
-  <system:String x:Key="HighDpiScalingFixTooltip"
-    >Pode corrigir a tela do jogo ficar cortada e/ou não centrada. Use com dispositivos de alto DPI. Você pode também mudar suas configurações de vídeo para 100% Escala.</system:String>
-
-  <system:String
-    x:Key="ImportMoviesHeader"
-    xml:space="preserve"> Importar Filmes de Disco </system:String>
   <system:String x:Key="Import">Importar</system:String>
-  <system:String x:Key="ImportTooltip">Importar filmes ausentes do disco.</system:String>
 
   <system:String
     x:Key="AudioDeviceHeader"
     xml:space="preserve"> Dispositivo de Saída de Áudio </system:String>
   <system:String x:Key="SoundDeviceLabel">Dispositivo de Som:</system:String>
-  <system:String x:Key="SoundDeviceTooltip"
-    >Selecione um dispositivo de saída de áudio para FF8.</system:String>
-
-  <system:String x:Key="TestSoundTooltip"
-    >Testar o dispositivo de som e volume musical selecionados. Som de teste fornecido Enrico Deiana.</system:String>
-  <system:String x:Key="TestLeftSoundTooltip"
-    >Testar o dispositivo de som e volume musical selecionados para o canal Esquerdo. Som de teste fornecido por Enrico Deiana.</system:String>
-  <system:String x:Key="TestRightSoundTooltip"
-    >Testar o dispositivo de som e volume musical selecionados para o canal Direito. Som de teste fornecido por Enrico Deiana.</system:String>
 
   <system:String x:Key="MidiDeviceLabel">Dispositivo MIDI:</system:String>
   <system:String x:Key="MidiDataLabel">Dados MIDI:</system:String>
-  <system:String x:Key="MidiDeviceTooltip"
-    >Selecione um dispositivo de saída de midi para FF8.</system:String>
 
   <system:String x:Key="SFXVolumeLabel">Volume dos efeitos sonoros:</system:String>
-  <system:String x:Key="SFXVolumeTooltip"
-    >Ajustar o volume dos efeitos sonoros do jogo.</system:String>
 
   <system:String x:Key="MusicVolumeLabel">Volume da Música:</system:String>
-  <system:String x:Key="MusicVolumeTooltip">Ajustar o volume da música do jogo.</system:String>
 
   <system:String x:Key="VoiceVolumeLabel">Voice Volume:</system:String>
-  <system:String x:Key="VoiceVolumeTooltip">Set the in-game voice volume.</system:String>
 
   <system:String x:Key="AmbientVolumeLabel">Ambient Volume:</system:String>
-  <system:String x:Key="AmbientVolumeTooltip">Set the in-game ambient volume.</system:String>
 
   <system:String x:Key="MovieVolumeLabel">Movie Volume:</system:String>
-  <system:String x:Key="MovieVolumeTooltip">Set the in-game movie volume.</system:String>
 
   <system:String x:Key="LogVolumeControl">Controle de Volume Logarítmico</system:String>
-  <system:String x:Key="LogVolumeControlTooltip"
-    >Desmarque essa opção se acha que o volume não está sendo modulado naturalmente.</system:String>
 
   <system:String x:Key="ReverseSpeakers">Inverter saídas</system:String>
-  <system:String x:Key="ReverseSpeakersTooltip"
-    >Troca canais esquerdo e direitos quando marcado.</system:String>
-
-  <system:String
-    x:Key="GraphicsDriverHeader"
-    xml:space="preserve"> Opções de Driver Gráfico </system:String>
-  <system:String x:Key="RendererLabel">Renderizador:</system:String>
-  <system:String x:Key="RendererTooltip"
-    >Seleciona o driver gráfico a ser usado com FF8. Mods só funcionarão com a opção 'Driver de Jogo J8 Personalizado'</system:String>
-
-  <system:String x:Key="QuarterScreen">Modo Janela</system:String>
-  <system:String x:Key="QuarterScreenTooltip"
-    >Inicializa o jogo em modo janela. Só aplicável quando utilizando 'Renderizador de Software' ou 'Aceleração de Hardware Direct3D'.</system:String>
-
-  <system:String x:Key="FullScreen">Tela Cheia</system:String>
-  <system:String x:Key="FullScreenTooltip"
-    >LInicializa o jogo em modo Tela Cheia. Só aplicável quando utilizando 'Renderizador de Software' ou 'Aceleração de Hardware Direct3D'.</system:String>
-
-  <system:String x:Key="HardwareGraphicsTooltip"
-    >Configura a opção a ser utilizada para Aceleração de Hardware. Só aplicável quando utilizando 'Aceleração de Hardware Direct3D'.</system:String>
 
   <system:String
     x:Key="ProgramsToRunHeader"
     xml:space="preserve"> Programas a Rodar Antes de FF8: </system:String>
   <system:String x:Key="ProgramNameHint">Digite caminho completo do programa a rodar</system:String>
   <system:String x:Key="ProgramArgsHint">Digite argumentos do programa</system:String>
-
-  <system:String x:Key="AddProgramTooltip"
-    >Adicionar programa a ser rodado antes de inicializar FF8.</system:String>
-  <system:String x:Key="RemoveProgramTooltip">Remover programa selecionado.</system:String>
-  <system:String x:Key="EditProgramTooltip"
-    >Editar programa e argumentos selecionados.</system:String>
-  <system:String x:Key="MoveProgramUpTooltip"
-    >Mover programa selecionado pra cima na lista. Clique-direito para mover pro topo.</system:String>
-  <system:String x:Key="MoveProgramDownTooltip"
-    >Mover programa selecionado pra baixo na lista. Clique-direito para mover pro fundo.</system:String>
-  <system:String x:Key="BrowseProgramTooltip">Procurar programa pra rodar</system:String>
-
-  <system:String x:Key="ResetLauncherDefaultsTooltip"
-    >Resetar configurações do Launcher do Jogo aos valores padrões.</system:String>
 
   <!--Catalog Creation Window-->
   <system:String x:Key="CreateMod">Criar Mod</system:String>
@@ -578,9 +499,6 @@ Clique em 'Cancelar' para parar o processo.</system:String>
     >Mods have been moved to the new library location.</system:String>
   <system:String x:Key="FailedToMoveModsToNewLibrary"
     >Failed to move mods to the new library location. Check the logs for details.</system:String>
-  <system:String x:Key="MissingTexturesPath"
-    >Caminho de Texturas (Aali OpenGL) ausente.</system:String>
-  <system:String x:Key="MissingMoviePath">Caminho de Filmes ausente.</system:String>
   <system:String x:Key="LibraryPathCannotBeGameOrApp"
     >Library path can not be the same used by the Game or Junction VIII. Use the default path or pick any other one that is none of them.</system:String>
 
@@ -756,12 +674,6 @@ Clique em 'Cancelar' para parar o processo.</system:String>
   <!--ConfigureGLWindow.xaml.cs Strings-->
   <system:String x:Key="FailedToReadRequiredSpecXmlFile"
     >Não foi possível ler o arquivo spec xml necessário para exibir configurações. A janela precisa fechar.</system:String>
-  <system:String x:Key="WillDeleteEverythingUnder">Irá deletar tudo em</system:String>
-  <system:String x:Key="PathToCacheFolderDoesNotExist"
-    >Caminho da pasta de cache não existe.</system:String>
-  <system:String x:Key="TextureCacheCleared">Cache de texturas apagado!</system:String>
-  <system:String x:Key="FailedToClearTextureCache"
-    >Não foi possível apagar cache de texturas</system:String>
   <system:String x:Key="GameDriverSettingsSaved"
     >Configurações de driver de jogos salvas!</system:String>
   <system:String x:Key="CouldNotWriteToJ8GameDriverCfg"
@@ -772,9 +684,6 @@ Clique em 'Cancelar' para parar o processo.</system:String>
     >Configurações de Driver de Jogo restauradas ao padrão. Clique em 'Salvar' para salvar alterações.</system:String>
 
   <!--GameLaunchSettingsWindow.xaml.cs Strings-->
-  <system:String x:Key="SelectProgramToRemove">Selecione um programa para remover.</system:String>
-  <system:String x:Key="SelectProgramToEdit">Selecione um programa para editar.</system:String>
-  <system:String x:Key="SelectProgramToMove">Selecione um programa para remover.</system:String>
   <system:String x:Key="SelectProgramToRunSuchAs"
     >Selecione um programa para rodar como um .exe ou um script</system:String>
 
@@ -793,7 +702,6 @@ Clique em 'Cancelar' para parar o processo.</system:String>
     >Ativar Mods Recém-Instalados Automaticamente</system:String>
   <system:String x:Key="ImportModsFromLibraryAutomatically"
     >Importar Mods Da Biblioteca Automaticamente</system:String>
-  <system:String x:Key="WarnWhenModContainsCode">Avisar Quando Mod Contém Código</system:String>
   <system:String x:Key="AutoSortModsByDefault">Auto Sort Mods By Default</system:String>
   <system:String x:Key="AutoUpdateModsByDefault">Auto Atualizar Mods Por Padrão</system:String>
   <system:String x:Key="IgnoreModCompatibilityRestrictions"
@@ -821,18 +729,10 @@ Clique em 'Cancelar' para parar o processo.</system:String>
   <system:String x:Key="Url">Url</system:String>
 
   <system:String x:Key="ErrorIncorrectExe">Erro - Exe Incorreto</system:String>
-  <system:String x:Key="ThisExeIsUsedForSteamReleaseFailedToCopyExe"
-    >Este exe é utilizado na edição Steam de FF8, que é incompatível com Junction VIII. O ff8.exe do patch 1.02 não pôde ser copiado e não pôde ser auto-selecionado pra você.</system:String>
-  <system:String x:Key="ThisExeIsUsedForSteamReleaseCopiedSelectedForYou"
-    >Este exe é utilizado na edição Steam de FF8, que é incompatível com Junction VIII. O ff8.exe do patch 1.02 foi {0} pra você para assegurar o funcionamento de Junction VIII.</system:String>
-  <system:String x:Key="Selected">selecionado</system:String>
-  <system:String x:Key="CopiedAndSelected">copiado e selecionado</system:String>
   <system:String x:Key="ThisExeIsUsedForConfiguringFf8Settings"
     >Este exe é utilizado nas configurações de FF8 e não é o exe do jogo correto. Por favor selecione um arquivo EXE de FF8 diferente.</system:String>
 
   <system:String x:Key="SelectFf8Exe">Selecione FF8.exe</system:String>
-  <system:String x:Key="SelectMoviesFolder">Selecione Pasta de Filmes</system:String>
-  <system:String x:Key="SelectTexturesFolder">Selecione Pasta de Texturas</system:String>
   <system:String x:Key="SelectJunctionVIIILibraryFolder"
     >Selecione Pasta de Biblioteca Junction VIII</system:String>
 
@@ -900,8 +800,6 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     >Verificando se jogo instalado é compatível ...</system:String>
   <system:String x:Key="ErrorCodeYarr"
     >Falha na verificação de integridade do arquivo EXE/DLL. Reinstale a partir do CD ou use a opção "Verificar meus arquivos" para reparar o problema.</system:String>
-  <system:String x:Key="VerifyingGameIsNotInstalledInProtectedFolder"
-    >Verificando se jogo não está instalado em pasta protegida ...</system:String>
 
   <system:String
     x:Key="Ff8IsCurrentlyInstalledInASystemFolder"
@@ -911,9 +809,7 @@ Gostaria de automaticamente copiar sua instalação para C:\Games\Final Fantasy 
 
   <system:String x:Key="CanNotContinueDueToFf8nstalledInProtectedFolder"
     >Não foi possível continuar devido a FF8 ser instalado numa pasta protegida. Abortando...</system:String>
-  <system:String x:Key="CannotContinue">Impossível Continuar!</system:String>
 
-  <system:String x:Key="CopyingGameFilesTo">copiando arquivos de jogo para</system:String>
   <system:String x:Key="FailedToCopyFf8To">Não foi possível copiar FF8 para</system:String>
 
   <system:String x:Key="VerifyingGameIsMaxInstall"
@@ -926,43 +822,14 @@ Junction VIII pode reparar isto para você automaticamente. Apenas insira um dos
 
   <system:String x:Key="CreatingMissingRequiredDirectories"
     >Criando diretórios ausentes necessários ...</system:String>
-  <system:String x:Key="VerifyingAdditionalFilesForBattleAndKernelFoldersExist"
-    >Verificando se arquivos adicionais das pastas 'battle' e 'kernel' existem ...</system:String>
-  <system:String x:Key="FailedToVerifyCopyMissingAdditionalFiles"
-    >Não foi possível verificar/copiar arquivos adicionais ausentes. Abortando...</system:String>
-
-  <system:String x:Key="VerifyingAllMovieFilesExist"
-    >Verificando se todos os arquivos de filmes existem ...</system:String>
-  <system:String x:Key="CouldNotFindAllMovieFilesAt"
-    >não pôde achar todos os arquivos de filmes em</system:String>
-  <system:String x:Key="AllFilesFoundAt">todos os arquivos foram achados em</system:String>
-  <system:String x:Key="UpdatingMoviePathSetting"
-    >Atualizando configuração de caminho de filmes.</system:String>
-  <system:String x:Key="AttemptingToCopyMovieFiles"
-    >tentando copiar arquivos de filmes ...</system:String>
-
-  <system:String x:Key="MovieFilesAreMissing">Arquivos de filmes faltando!</system:String>
-  <system:String
-    x:Key="InOrderToSeeInGameMoviesYouWillNeedMessage"
-    xml:space="preserve">Para assistir os filmes in-game, será preciso baixar e ativar um mod de filmes.
-
-Alternativamente, você pode importar seus arquivos de filmes do disco indo até Configurações>Launcher de Jogo... > Importar Filmes de Disco.
-
-Por último, você pode ajustar seu caminho de filmes em 'Configurações Gerais' para apontar á pasta 'FF8\Movies' do seu disco de jogo, mas você terá que mudar de discos enquanto o jogo roda.</system:String>
 
   <system:String x:Key="VerifyingMusicFilesExist"
     >Verificando se arquivos de músicas existem ...</system:String>
-  <system:String x:Key="CouldNotFindAllMusicFilesAt"
-    >não pôde achar todos os arquivos de músicas em</system:String>
-  <system:String x:Key="AttemptingToCopyMusicFiles"
-    >tentando copiar arquivos de  músicas ...</system:String>
 
   <system:String x:Key="VerifyingLatestGameDriverIsInstalled"
     >Verificando se o mais recente driver de jogo está instalado ...</system:String>
   <system:String x:Key="SomethingWentWrongTryingToDetectGameDriver"
     >Algo deu errado ao tentar detectar/instalar driver de jogo. Abortando ...</system:String>
-  <system:String x:Key="VerifyingGameDriverShadersFoldersExist"
-    >Verificando se pasta de shaders do driver de jogo existe ...</system:String>
 
   <system:String x:Key="VerifyingFf8Exe">Verificando ff8 exe ...</system:String>
   <system:String x:Key="VerifyingFf8LauncherExe">Verifying FF8_Launcher exe ...</system:String>
@@ -1013,23 +880,11 @@ Por último, você pode ajustar seu caminho de filmes em 'Configurações Gerais
   <system:String x:Key="LookingForGameDisc">Procurando disco de jogo ...</system:String>
   <system:String x:Key="FoundGameDiscAt">Disco de jogo encontrado em</system:String>
   <system:String x:Key="FailedToFindGameDisc">Disco de jogo não encontrado ...</system:String>
-  <system:String x:Key="OsDoesNotSupportAutoMounting"
-    >SO não suporta a montagem automática de disco virtual. Você deve montar um disco virtual chamado FF8DISC1.ISO, inserir um drive USB chamado FF8DISC1, ou renomear um disco rígido para FF8DISC1 ...</system:String>
-  <system:String x:Key="AutoMountingVirtualGameDisc"
-    >Montando disco virtual automaticamente ...</system:String>
-  <system:String x:Key="FailedToAutoMountVirtualDiscAt"
-    >Não foi possível montar o disco virtual automaticamente em</system:String>
-  <system:String x:Key="LookingForGameDiscAfterMounting"
-    >Procurando disco de jogo após a montagem ...</system:String>
-  <system:String x:Key="FailedToFindGameDiscAfterAutoMounting"
-    >Não foi possível encontrar disco de jogo após a montagem automática ...</system:String>
 
   <system:String x:Key="UserRequestedToPlayWithNoModsLaunchingGameAsVanilla"
     >Usuário decidiu jogar o jogo sem mods. Inicializando com as configurações padrão ...</system:String>
   <system:String x:Key="NoModsActivatedLaunchingGameAsVanilla"
     >Nenhum mod foi ativado. Inicializando com as configurações padrão ...</system:String>
-  <system:String x:Key="SelectedRendererIsNotSetToCustomLaunchingGameAsVanilla"
-    >Renderizador Selecionado não é associado a 'Driver de Jogo J8 Personalizado'. Inicializando com as configurações padrão ...</system:String>
 
   <system:String x:Key="CreatingRuntimeProfile">Criando Perfil de Execução ...</system:String>
   <system:String x:Key="FailedToCreateRuntimeProfileForActiveMods"
@@ -1063,20 +918,6 @@ Por último, você pode ajustar seu caminho de filmes em 'Configurações Gerais
 
   <system:String x:Key="ErrorFailedToStartGame"
     >Erro - Não foi Possível Iniciar o Jogo</system:String>
-  <system:String
-    x:Key="FailedToInjectWithEasyHookMessage"
-    xml:space="preserve">Não foi possível injetar com AppLoader após múltiplas tentativas. Isso é geralmente corrigível ativando a 'Correção Código 5' nas Configurações de Launcher de Jogo.
-
-Você quer aplicar essa configuração e tentar de novo?</system:String>
-
-  <system:String x:Key="SettingCompatibilityFixAndTryingAgain"
-    >Ativando correção de compatibilidade e tentando de novo ...</system:String>
-  <system:String x:Key="StillFailedToInjectWithEasyHookAborting"
-    >Ainda não foi possível injetar com AppLoader mesmo com a correção de compatibilidade. Abortando ...</system:String>
-  <system:String x:Key="FailedToInjectWithEasyHookAfterSettingFlags"
-    >Injeção com AppLoader falhou mesmo depois de configurar as flags de compatibilidade</system:String>
-  <system:String x:Key="UserChoseNotToSetCompatibilityFix"
-    >usuário escolheu não usar correção de compatibilidade. Abortando ...</system:String>
 
   <system:String x:Key="GettingFf8Proc">Achando processo FF8 ...</system:String>
   <system:String x:Key="FailedToGetFf8Proc"
@@ -1087,29 +928,20 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
     >Não foi possível começar processo de registro de depuração</system:String>
 
   <system:String x:Key="StartingProgramsForMods">Executando programas de mods ...</system:String>
-  <system:String x:Key="StartingPluginsForMods">Executando plugins de mods ...</system:String>
   <system:String x:Key="SettingUpFf8ExeToStopPluginsAndModPrograms"
     >Configurando FF8 .exe para fechar programas de plugins e mods após saída ...</system:String>
 
   <system:String x:Key="StoppingOtherProgramsForMods"
     >Parando outros programas de mods inicializados por J8 ...</system:String>
-  <system:String x:Key="AutoUnmountingGameDisc">Auto desmontando disco de jogo ...</system:String>
 
   <system:String x:Key="WaitingForFf8ExeToRespond"
     >Esperando FF8 .exe responder ({0} segundos no máximo) ...</system:String>
   <system:String x:Key="ExceptionOccurredWhileTryingToStart"
     >Exceção ocorreu ao tentar iniciar FF8 ...</system:String>
 
-  <system:String x:Key="PluginAdded">plugin adicionado</system:String>
-  <system:String x:Key="StartingPlugin">inicializando plugin</system:String>
-
-  <system:String x:Key="FailedToGetListOfRuntimeMods"
-    >Não foi possível ver lista de Mods de Execução devido a um mod com variável ausente</system:String>
   <system:String x:Key="AddingPathsToMonitor">adicionando caminhos ao monitor ...</system:String>
 
-  <system:String x:Key="DetectedToBeOlderVersion">detectado como versão mais antiga</system:String>
   <system:String x:Key="Copied">copiado</system:String>
-  <system:String x:Key="SkippedCopying">pulou copiar</system:String>
 
   <system:String x:Key="AnExceptionOccurredTryingToStartFf8At"
     >Uma exceção ocorreu ao tentar inicializar FF8 em</system:String>
@@ -1146,12 +978,6 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
 
   <system:String x:Key="ApplyingChangedValuesToRegistry"
     >Aplicando valores alterados ao registro ...</system:String>
-  <system:String x:Key="ApplyingCompatibilityFlagsInRegistry"
-    >Aplicando flags de compatibilidade ao registro (se houverem) ...</system:String>
-  <system:String x:Key="CompatibilityFlagsFoundDeleting"
-    >encontradas flags de compatibilidade - deletando</system:String>
-  <system:String x:Key="HighDpiFixSetToTrueApplyingCompatibilityFlag"
-    >Correção de Alto DPI habilitada - aplicando flag de compatibilidade HIGHDPIAWARE ao registro</system:String>
 
   <system:String x:Key="UsingControlConfigurationFile"
     >usando arquivo de configuração de controles</system:String>
@@ -1184,39 +1010,13 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
     >impossível copiar arquivo fonte porque ele está ausente em</system:String>
   <system:String x:Key="CopyingFileFrom">copiando arquivo de</system:String>
 
-  <system:String x:Key="CannotCheckIfLatestDriverIsInstalledDueToMissingFile"
-    >impossível verificar se driver mais recente está instalado devido a arquivo ausente</system:String>
-  <system:String x:Key="GameDriverDllFileIsUpToDate"
-    >Arquivo FFNx.dll está atualizado.</system:String>
-  <system:String x:Key="BackingUpExistingGameDriverTo"
-    >copiando driver de jogo existente para</system:String>
-  <system:String x:Key="BackingUpExistingGameDriverCfgTo"
-    >copiando .cfg de driver de jogo existente para</system:String>
-  <system:String x:Key="GameDriverCfgFileMissingCopyingDefaultFrom"
-    >Arquivo FFNx.toml está faltando. Copiando padrão de</system:String>
-  <system:String x:Key="CannotCreateDefaultCfgDueToMissingFile"
-    >impossível criar .cfg padrão devido a arquivo ausente</system:String>
-  <system:String x:Key="BackingUpExistingShadersFolderTo"
-    >copiando pasta 'shaders' existente para</system:String>
-  <system:String x:Key="CopyingContentsOf">copiando conteúdos de</system:String>
   <system:String x:Key="DirectoryMissingCreating">diretório ausente. Criando</system:String>
   <system:String x:Key="OldGameConverterRegistryKeysFoundBackingUp"
     >Chaves de registro velhas do Conversor de Jogo encontradas. Realizando backup de arquivos e chaves de conversor velhas ...</system:String>
 
-  <system:String x:Key="MissingShadersNolightFolderCreatingDirectory"
-    >pasta de shaders/nolight ausente. Criando diretório ...</system:String>
-  <system:String x:Key="MissingShadersComplexMultiShaderFolderCreatingDirectory"
-    >pasta de shaders/ComplexMultiShader_Nvidia ausente. Criando diretório ...</system:String>
-  <system:String x:Key="MissingShadersFolderCreatingDirectory"
-    >pasta de shaders ausente. Copiando de Resources/Game Driver/ ...</system:String>
-  <system:String x:Key="MissingShadersFilesCopyingFrom"
-    >arquivo de shader ausente: {0}. Copiando de {1} ...</system:String>
-
   <!--UpdateChecker Class Strings-->
   <system:String x:Key="CheckingForUpdatesUsingChannel"
     >Verificação de atualizações usando o canal</system:String>
-  <system:String x:Key="FailedToCheckForUpdatesAt"
-    >Não foi possível procurar atualizações em</system:String>
 
   <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/5/20-->
   <!--DEV NOTE TO REMOVE: STRINGS BELOW ADDED 4/5/20-->
@@ -1243,9 +1043,6 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
   <system:String x:Key="Installed">Instalado</system:String>
   <system:String x:Key="Updated">Atualizado</system:String>
   <system:String x:Key="ErrorUpdating">Erro ao atualizar</system:String>
-
-  <system:String x:Key="FailedToGetModInfoDueToMissingVariable"
-    >AVISO: não foi possível recuperar informação do mod devido á falta de uma variável problemática</system:String>
 
   <system:String x:Key="TheFollowingModsWereNotFoundInstalledAndHaveBeenRemoved"
     >O(s) seguinte(s) mod(s) não foram encontrados instalados e foram removidos do perfil</system:String>
@@ -1330,7 +1127,6 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
     >Carregar um arquivo catalog.xml para editar</system:String>
   <system:String x:Key="AddModToCatalog">Adicionar mod ao catálogo</system:String>
   <system:String x:Key="ImportModFromModXmlOrIro">Importar mod de mod.xml ou .iroj</system:String>
-  <system:String x:Key="CatalogName">Nome de Catálogo:</system:String>
   <system:String x:Key="SaveCatalogXml">Salvar Catalog .xml</system:String>
   <system:String x:Key="SelectCatalogXmlToLoad">Selecionar catalog.xml para Carregar</system:String>
   <system:String x:Key="SelectModXmlOrIroFileToLoad"
@@ -1353,16 +1149,10 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
 
   <system:String x:Key="ClickToSelectFf8ExeFile"
     >Clique para selecionar seu arquivo FF8.exe</system:String>
-  <system:String x:Key="ClickToSelectWhereYourMovieFolderIs"
-    >Clique para selecionar o local da sua pasta de filmes</system:String>
-  <system:String x:Key="ClickToSelectWhereTexturesAreStored"
-    >Clique para selecionar aonde armazenar texturas</system:String>
   <system:String x:Key="ClickToSelectWhereYourModLibraryIs"
     >Clique para selecionar o local de sua Biblioteca de Mods</system:String>
 
   <system:String x:Key="FF8ExeLabel">FF8 Exe:</system:String>
-  <system:String x:Key="MoviesLabel">Filmes:</system:String>
-  <system:String x:Key="TexturesLabel">Texturas:</system:String>
   <system:String x:Key="LibraryLabel">Biblioteca:</system:String>
 
   <system:String x:Key="AddSubscriptionURL">Adicionar URL de Inscrição</system:String>
@@ -1544,7 +1334,6 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
 
   <system:String x:Key="StartingPS4ControllerService"
     >Inicializando Serviço de Controle de PS4 ...</system:String>
-  <system:String x:Key="ServiceAlreadyRunning">serviço já está rodando ...</system:String>
 
   <system:String x:Key="RetryInstallTooltip">Tentar Instalar Mod Novamente</system:String>
 
@@ -1560,14 +1349,7 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
   <system:String x:Key="TriggerDpadSupportTooltip"
     >Habilitar suporte para DPad e gatilhos no jogo. (Desabilite caso use uma ferramente de mapeamento de terceiros)</system:String>
 
-  <system:String x:Key="MountDiscWithPowershell">Montar Disco Com PowerShell</system:String>
-  <system:String x:Key="MountDiscWithWinCDEmu">Montar Disco Com WinCDEmu</system:String>
-  <system:String x:Key="DoNotMount">Não montar automaticamente Disco</system:String>
-
   <system:String x:Key="LoadingDevices">Carregando Aparelhos ...</system:String>
-
-  <system:String x:Key="MountOptionToolTip"
-    >Selecione como montar o disco de jogo virtual FF8DISC1. Windows 7 só pode usar a opção 'Montar Disco Com WinCDEmu'.</system:String>
 
   <system:String x:Key="ControlsMenuItemText">Controles...</system:String>
 
@@ -1577,8 +1359,6 @@ Você quer aplicar essa configuração e tentar de novo?</system:String>
   <!--DEV NOTE: STRINGS BELOW ADDED 7/11/20-->
   <system:String x:Key="VerifyingEnglishGameFilesExist"
     >Verificando se arquivos de jogo em Inglês existem ...</system:String>
-  <system:String x:Key="FoundLanguageInstalledCreatingEnglishGameFiles"
-    >Linguagem instalada encontrada: {0} Criando arquivos de jogo em Inglês...</system:String>
   <system:String x:Key="ErrorOnlyEnglishLanguageSupported"
     >ERROR: Only English language is supported. Consider installing FF8 in English (US) on Steam.</system:String>
   <system:String x:Key="ExtractingLGPFiles">Extraindo arquivos .lgp ...</system:String>
