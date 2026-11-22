@@ -1,18 +1,18 @@
-﻿using AppCore;
-using Iros.Workshop;
-using AppUI.Classes;
-using AppUI.ViewModels;
-using AppUI.Windows;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.IO;
+using AppCore;
+using AppUI.Classes;
+using AppUI.ViewModels;
+using AppUI.Windows;
+using Iros.Workshop;
 
 namespace AppUI
 {
@@ -61,16 +61,23 @@ namespace AppUI
             }
             else if (Sys.Settings.UserColumnSettings.MyModsColumns == null)
             {
-                Sys.Settings.UserColumnSettings.MyModsColumns = ColumnSettings.GetDefaultSettings().MyModsColumns;
+                Sys.Settings.UserColumnSettings.MyModsColumns = ColumnSettings
+                    .GetDefaultSettings()
+                    .MyModsColumns;
             }
             else if (Sys.Settings.UserColumnSettings.BrowseCatalogColumns == null)
             {
-                Sys.Settings.UserColumnSettings.BrowseCatalogColumns = ColumnSettings.GetDefaultSettings().BrowseCatalogColumns;
+                Sys.Settings.UserColumnSettings.BrowseCatalogColumns = ColumnSettings
+                    .GetDefaultSettings()
+                    .BrowseCatalogColumns;
             }
 
             ctrlMyMods.ApplyColumnSettings(Sys.Settings.UserColumnSettings.MyModsColumns);
             ctrlCatalog.ApplyColumnSettings(Sys.Settings.UserColumnSettings.BrowseCatalogColumns);
-            ctrlCatalog.SetSortColumn(Sys.Settings.UserColumnSettings.SortColumn, (ListSortDirection)Sys.Settings.UserColumnSettings.SortDirection);
+            ctrlCatalog.SetSortColumn(
+                Sys.Settings.UserColumnSettings.SortColumn,
+                (ListSortDirection)Sys.Settings.UserColumnSettings.SortDirection
+            );
         }
 
         /// <summary>
@@ -81,7 +88,10 @@ namespace AppUI
         {
             if (Sys.Settings.MainWindow != null)
             {
-                var loc = new System.Drawing.Point((int)Sys.Settings.MainWindow.X, (int)Sys.Settings.MainWindow.Y);
+                var loc = new System.Drawing.Point(
+                    (int)Sys.Settings.MainWindow.X,
+                    (int)Sys.Settings.MainWindow.Y
+                );
 
                 if (Screen.AllScreens.Any(s => s.Bounds.Contains(loc)))
                 {
@@ -106,14 +116,24 @@ namespace AppUI
 
             if (Sys.IsImporting)
             {
-                MessageDialogWindow.Show(ResourceHelper.Get(StringKey.CannotExitWhileImporting), ResourceHelper.Get(StringKey.Warning), MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageDialogWindow.Show(
+                    ResourceHelper.Get(StringKey.CannotExitWhileImporting),
+                    ResourceHelper.Get(StringKey.Warning),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
                 e.Cancel = true;
                 return;
             }
 
             if (ViewModel.CatalogMods.DownloadList.Count > 0)
             {
-                var result = MessageDialogWindow.Show(ResourceHelper.Get(StringKey.AreYouSureYouWantToExitPendingDownloads), ResourceHelper.Get(StringKey.ConfirmExit), MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageDialogWindow.Show(
+                    ResourceHelper.Get(StringKey.AreYouSureYouWantToExitPendingDownloads),
+                    ResourceHelper.Get(StringKey.ConfirmExit),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
 
                 if (result.Result == MessageBoxResult.No)
                 {
@@ -128,7 +148,7 @@ namespace AppUI
                 Y = (int)System.Windows.Application.Current.MainWindow.Top,
                 W = (int)ActualWidth,
                 H = (int)ActualHeight,
-                State = WindowState
+                State = WindowState,
             };
 
             Sys.Settings.UserColumnSettings.MyModsColumns = ctrlMyMods.GetColumnSettings();
@@ -187,6 +207,7 @@ namespace AppUI
         {
             btnTools.IsEnabled = true;
         }
+
         private void menuHelp_Closed(object sender, RoutedEventArgs e)
         {
             btnTools.IsEnabled = true;
@@ -210,7 +231,16 @@ namespace AppUI
 
         private void menuPlayVariableDump_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageDialogWindow.Show(ResourceHelper.Get(StringKey.AreYouSureYouWantToPlayDebugWarning), ResourceHelper.Get(StringKey.Warning), MessageBoxButton.YesNo, MessageBoxImage.Warning).Result == MessageBoxResult.Yes)
+            if (
+                MessageDialogWindow
+                    .Show(
+                        ResourceHelper.Get(StringKey.AreYouSureYouWantToPlayDebugWarning),
+                        ResourceHelper.Get(StringKey.Warning),
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning
+                    )
+                    .Result == MessageBoxResult.Yes
+            )
             {
                 ViewModel.LaunchGame(variableDump: true, debugLogging: false);
             }
@@ -218,7 +248,16 @@ namespace AppUI
 
         private void menuPlayDebugLog_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageDialogWindow.Show(ResourceHelper.Get(StringKey.AreYouSureYouWantToPlayDebugWarning), ResourceHelper.Get(StringKey.Warning), MessageBoxButton.YesNo, MessageBoxImage.Warning).Result == MessageBoxResult.Yes)
+            if (
+                MessageDialogWindow
+                    .Show(
+                        ResourceHelper.Get(StringKey.AreYouSureYouWantToPlayDebugWarning),
+                        ResourceHelper.Get(StringKey.Warning),
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning
+                    )
+                    .Result == MessageBoxResult.Yes
+            )
             {
                 ViewModel.LaunchGame(variableDump: false, debugLogging: true);
             }
@@ -226,7 +265,9 @@ namespace AppUI
 
         private void menuPlayOptions_Opened(object sender, RoutedEventArgs e)
         {
-            Visibility chocoboVisibility = Sys.Settings.FF8InstalledVersion is FF8Version.Remastered or FF8Version.GOG
+            Visibility chocoboVisibility = Sys.Settings.FF8InstalledVersion
+                is FF8Version.Remastered
+                    or FF8Version.GOG
                 ? Visibility.Collapsed
                 : Visibility.Visible;
 
@@ -282,11 +323,15 @@ namespace AppUI
         {
             if (ViewModel.SelectedTabIndex == (int)global::AppUI.ViewModels.TabIndex.MyMods)
             {
-                ViewModel.MyMods.ShowOnlyLanguageCompatibleItems = !ViewModel.MyMods.ShowOnlyLanguageCompatibleItems;
+                ViewModel.MyMods.ShowOnlyLanguageCompatibleItems = !ViewModel
+                    .MyMods
+                    .ShowOnlyLanguageCompatibleItems;
             }
             else
             {
-                ViewModel.CatalogMods.ShowOnlyLanguageCompatibleItems = !ViewModel.CatalogMods.ShowOnlyLanguageCompatibleItems;
+                ViewModel.CatalogMods.ShowOnlyLanguageCompatibleItems = !ViewModel
+                    .CatalogMods
+                    .ShowOnlyLanguageCompatibleItems;
             }
         }
 
@@ -317,7 +362,8 @@ namespace AppUI
 
             double tabHeaderRightEdge = tabBrowseCatalog
                 .TransformToAncestor(tabCtrlMain)
-                .Transform(new Point(tabBrowseCatalog.ActualWidth, 0)).X;
+                .Transform(new Point(tabBrowseCatalog.ActualWidth, 0))
+                .X;
             Thickness currentMargin = TsunamodsSupport.Margin;
 
             if (Math.Abs(currentMargin.Left - tabHeaderRightEdge) > 0.1)
@@ -326,7 +372,8 @@ namespace AppUI
                     tabHeaderRightEdge,
                     currentMargin.Top,
                     currentMargin.Right,
-                    currentMargin.Bottom);
+                    currentMargin.Bottom
+                );
             }
         }
 
@@ -350,12 +397,19 @@ namespace AppUI
             ViewModel.UpdateBackgroundImage(newImage);
         }
 
-        private void ThemeSettings_BackgroundPropsChanged(System.Windows.HorizontalAlignment horizontalAlignment, System.Windows.VerticalAlignment verticalAlignment, System.Windows.Media.Stretch stretch)
+        private void ThemeSettings_BackgroundPropsChanged(
+            System.Windows.HorizontalAlignment horizontalAlignment,
+            System.Windows.VerticalAlignment verticalAlignment,
+            System.Windows.Media.Stretch stretch
+        )
         {
             ViewModel.UpdateBackgroundProps(horizontalAlignment, verticalAlignment, stretch);
         }
 
-        private void tabCtrlMain_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void tabCtrlMain_SelectionChanged(
+            object sender,
+            System.Windows.Controls.SelectionChangedEventArgs e
+        )
         {
             int tabSelectedIndex = tabCtrlMain.SelectedIndex;
 
@@ -487,7 +541,9 @@ namespace AppUI
 
         private void TsunamodsSupport_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo("https://download.tsunamods.com/?id=16")
+            ProcessStartInfo startInfo = new ProcessStartInfo(
+                "https://download.tsunamods.com/?id=16"
+            )
             {
                 UseShellExecute = true,
             };
@@ -506,19 +562,19 @@ namespace AppUI
             switch (Sys.Settings.FF8InstalledVersion)
             {
                 case FF8Version.Steam:
-                    path = Directory.EnumerateDirectories(GameConverter.GetSteamFF8UserPath(), "user_*").First();
+                    path = Directory
+                        .EnumerateDirectories(GameConverter.GetSteamFF8UserPath(), "user_*")
+                        .First();
                     break;
                 case FF8Version.Remastered:
                 case FF8Version.GOG:
                     string remasteredPath = GameConverter.GetRemasteredFF8UserPath();
-                    if (!string.IsNullOrEmpty(remasteredPath)) path = remasteredPath;
+                    if (!string.IsNullOrEmpty(remasteredPath))
+                        path = remasteredPath;
                     break;
             }
 
-            ProcessStartInfo startInfo = new ProcessStartInfo(path)
-            {
-                UseShellExecute = true,
-            };
+            ProcessStartInfo startInfo = new ProcessStartInfo(path) { UseShellExecute = true };
             Process.Start(startInfo);
         }
     }

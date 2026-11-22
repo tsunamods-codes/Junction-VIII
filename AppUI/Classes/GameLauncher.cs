@@ -1,15 +1,4 @@
-﻿using AppCore;
-using AppWrapper;
-using AsmResolver.PE.File;
-using Iros;
-using Iros.Workshop;
-using Microsoft.Win32;
-using AppUI.Windows;
-using AppUI.ViewModels;
-using SharpCompress.Archives;
-using SharpCompress.Archives.Zip;
-using SharpCompress.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -18,6 +7,17 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
+using AppCore;
+using AppUI.ViewModels;
+using AppUI.Windows;
+using AppWrapper;
+using AsmResolver.PE.File;
+using Iros;
+using Iros.Workshop;
+using Microsoft.Win32;
+using SharpCompress.Archives;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
 using Profile = Iros.Workshop.Profile;
 
 namespace AppUI.Classes
@@ -26,7 +26,7 @@ namespace AppUI.Classes
     {
         SoftwareRenderer = 0,
         D3DHardwareAccelerated = 1,
-        CustomDriver = 3
+        CustomDriver = 3,
     }
 
     /// <summary>
@@ -51,8 +51,11 @@ namespace AppUI.Classes
             }
         }
 
-        private Dictionary<string, Process> _alsoLaunchProcesses = new Dictionary<string, Process>(StringComparer.InvariantCultureIgnoreCase);
-        private Dictionary<AppWrapper.ProgramInfo, Process> _sideLoadProcesses = new Dictionary<AppWrapper.ProgramInfo, Process>();
+        private Dictionary<string, Process> _alsoLaunchProcesses = new Dictionary<string, Process>(
+            StringComparer.InvariantCultureIgnoreCase
+        );
+        private Dictionary<AppWrapper.ProgramInfo, Process> _sideLoadProcesses =
+            new Dictionary<AppWrapper.ProgramInfo, Process>();
 
         private ControllerInterceptor _controllerInterceptor;
 
@@ -61,7 +64,6 @@ namespace AppUI.Classes
 
         public delegate void OnLaunchCompleted(bool wasSuccessful);
         public event OnLaunchCompleted LaunchCompleted;
-
 
         public string DriveLetter { get; set; }
         public bool DidMountVirtualDisc { get; set; }
@@ -72,11 +74,12 @@ namespace AppUI.Classes
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         private const int SW_FORCEMINIMIZE = 11;
+
         [DllImport("User32")]
         private static extern int ShowWindow(int hwnd, int nCmdShow);
 
         [DllImport("user32.dll", EntryPoint = "FindWindow")]
-        private extern static IntPtr FindWindow(string lpClassName, string lpWindowName);
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         private static Process ff8Proc;
 
@@ -99,7 +102,12 @@ namespace AppUI.Classes
                 : GameLanguage.English;
         }
 
-        public static async Task<bool> LaunchGame(bool varDump, bool debug, bool launchWithNoMods = false, bool launchChocobo = false)
+        public static async Task<bool> LaunchGame(
+            bool varDump,
+            bool debug,
+            bool launchWithNoMods = false,
+            bool launchChocobo = false
+        )
         {
             bool runAsVanilla = false;
             string vanillaMsg = "";
@@ -117,7 +125,16 @@ namespace AppUI.Classes
             {
                 case AppWrapper.Win32.DEP_SYSTEM_POLICY_TYPE.DEPPolicyAlwaysOn:
                 case AppWrapper.Win32.DEP_SYSTEM_POLICY_TYPE.DEPPolicyOptOut:
-                    if (MessageDialogWindow.Show(ResourceHelper.Get(StringKey.DoYouWantToDisableDEP), ResourceHelper.Get(StringKey.DEPDetected), MessageBoxButton.YesNo, MessageBoxImage.Warning).Result == MessageBoxResult.Yes)
+                    if (
+                        MessageDialogWindow
+                            .Show(
+                                ResourceHelper.Get(StringKey.DoYouWantToDisableDEP),
+                                ResourceHelper.Get(StringKey.DEPDetected),
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning
+                            )
+                            .Result == MessageBoxResult.Yes
+                    )
                     {
                         string fileName = Path.Combine(Sys.PathToTempFolder, "fixdep.bat");
 
@@ -135,7 +152,7 @@ namespace AppUI.Classes
                             {
                                 CreateNoWindow = false,
                                 UseShellExecute = true,
-                                Verb = "runas"
+                                Verb = "runas",
                             };
 
                             // Launch process, wait and then save exit code
@@ -144,16 +161,25 @@ namespace AppUI.Classes
                                 temp.WaitForExit();
                             }
 
-                            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.SystemDEPDisabledPleaseReboot), NLog.LogLevel.Info);
+                            Instance.RaiseProgressChanged(
+                                ResourceHelper.Get(StringKey.SystemDEPDisabledPleaseReboot),
+                                NLog.LogLevel.Info
+                            );
                         }
                         catch (Exception)
                         {
-                            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.SomethingWentWrongWhileDisablingDEP), NLog.LogLevel.Error);
+                            Instance.RaiseProgressChanged(
+                                ResourceHelper.Get(StringKey.SomethingWentWrongWhileDisablingDEP),
+                                NLog.LogLevel.Error
+                            );
                         }
                     }
                     else
                     {
-                        Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CannotContinueWithDEPEnabled), NLog.LogLevel.Warn);
+                        Instance.RaiseProgressChanged(
+                            ResourceHelper.Get(StringKey.CannotContinueWithDEPEnabled),
+                            NLog.LogLevel.Warn
+                        );
                     }
                     return false;
             }
@@ -161,10 +187,15 @@ namespace AppUI.Classes
             //
             // Ensure FFNx is installed correctly
             //
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingLatestGameDriverIsInstalled));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.VerifyingLatestGameDriverIsInstalled)
+            );
             if (!FFNxDriverUpdater.IsAlreadyInstalled())
             {
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.SomethingWentWrongTryingToDetectGameDriver), NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.SomethingWentWrongTryingToDetectGameDriver),
+                    NLog.LogLevel.Error
+                );
                 return false;
             }
 
@@ -172,24 +203,40 @@ namespace AppUI.Classes
             if (IsFF8Running())
             {
                 string title = ResourceHelper.Get(StringKey.Ff8IsAlreadyRunning);
-                string message = ResourceHelper.Get(StringKey.Ff8IsAlreadyRunningDoYouWantToForceClose);
+                string message = ResourceHelper.Get(
+                    StringKey.Ff8IsAlreadyRunningDoYouWantToForceClose
+                );
 
                 Instance.RaiseProgressChanged($"\t{title}", NLog.LogLevel.Warn);
 
-                var result = MessageDialogWindow.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageDialogWindow.Show(
+                    message,
+                    title,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
                 if (result.Result == MessageBoxResult.Yes)
                 {
-                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.ForceClosingAllInstancesFf8)}", NLog.LogLevel.Info);
+                    Instance.RaiseProgressChanged(
+                        $"\t{ResourceHelper.Get(StringKey.ForceClosingAllInstancesFf8)}",
+                        NLog.LogLevel.Info
+                    );
 
                     if (!ForceKillFF8())
                     {
-                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCloseProcess)} {Path.GetFileName(Sys.Settings.FF8Exe)}. {ResourceHelper.Get(StringKey.Aborting)}", NLog.LogLevel.Error);
+                        Instance.RaiseProgressChanged(
+                            $"\t{ResourceHelper.Get(StringKey.FailedToCloseProcess)} {Path.GetFileName(Sys.Settings.FF8Exe)}. {ResourceHelper.Get(StringKey.Aborting)}",
+                            NLog.LogLevel.Error
+                        );
                         return false;
                     }
                 }
             }
 
-            if (Sys.Settings.FF8InstalledVersion == FF8Version.Remastered || Sys.Settings.FF8InstalledVersion == FF8Version.GOG)
+            if (
+                Sys.Settings.FF8InstalledVersion == FF8Version.Remastered
+                || Sys.Settings.FF8InstalledVersion == FF8Version.GOG
+            )
             {
                 // The Remastered release ships without ff8.exe, which mods still expect in the game directory
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingFf8Exe));
@@ -197,28 +244,45 @@ namespace AppUI.Classes
                 {
                     if (!converter.CopyFF8ExeToGame())
                     {
-                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCopyFf8Exe)}", NLog.LogLevel.Error);
+                        Instance.RaiseProgressChanged(
+                            $"\t{ResourceHelper.Get(StringKey.FailedToCopyFf8Exe)}",
+                            NLog.LogLevel.Error
+                        );
                         return false;
                     }
                 }
 
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingEAXUnifiedIsInstalled));
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.VerifyingEAXUnifiedIsInstalled)
+                );
                 if (!File.Exists(converter.GetEAXDllPath()))
                 {
-                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.InstallingEAXUnified)}");
+                    Instance.RaiseProgressChanged(
+                        $"\t{ResourceHelper.Get(StringKey.InstallingEAXUnified)}"
+                    );
                     if (!converter.EnsureEAXUnifiedInstalled())
                     {
-                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToInstallEAXUnified)}", NLog.LogLevel.Error);
+                        Instance.RaiseProgressChanged(
+                            $"\t{ResourceHelper.Get(StringKey.FailedToInstallEAXUnified)}",
+                            NLog.LogLevel.Error
+                        );
                         return false;
                     }
                 }
             }
 
-            Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.CheckingFf8ExeExistsAt)} {Sys.Settings.FF8Exe} ...");
+            Instance.RaiseProgressChanged(
+                $"{ResourceHelper.Get(StringKey.CheckingFf8ExeExistsAt)} {Sys.Settings.FF8Exe} ..."
+            );
             if (!File.Exists(Sys.Settings.FF8Exe))
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FileNotFoundAborting)}", NLog.LogLevel.Error);
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.Ff8ExeNotFoundYouMayNeedToConfigure));
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.FileNotFoundAborting)}",
+                    NLog.LogLevel.Error
+                );
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.Ff8ExeNotFoundYouMayNeedToConfigure)
+                );
                 return false;
             }
 
@@ -227,11 +291,26 @@ namespace AppUI.Classes
             //
             if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
             {
-                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.CheckingFF8SteamInstalledCorrectly)}...");
-                if (!Path.Exists(GameConverter.GetSteamFF8UserPath()) || Directory.EnumerateDirectories(GameConverter.GetSteamFF8UserPath(), "user_*").Count() <= 0)
+                Instance.RaiseProgressChanged(
+                    $"{ResourceHelper.Get(StringKey.CheckingFF8SteamInstalledCorrectly)}..."
+                );
+                if (
+                    !Path.Exists(GameConverter.GetSteamFF8UserPath())
+                    || Directory
+                        .EnumerateDirectories(GameConverter.GetSteamFF8UserPath(), "user_*")
+                        .Count() <= 0
+                )
                 {
-                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FF8SteamNotInstalledCorrectly)}", NLog.LogLevel.Warn);
-                    var result = MessageDialogWindow.Show(ResourceHelper.Get(StringKey.FF8SteamNotInstalledCorrectly), "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    Instance.RaiseProgressChanged(
+                        $"\t{ResourceHelper.Get(StringKey.FF8SteamNotInstalledCorrectly)}",
+                        NLog.LogLevel.Warn
+                    );
+                    var result = MessageDialogWindow.Show(
+                        ResourceHelper.Get(StringKey.FF8SteamNotInstalledCorrectly),
+                        "",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
                     if (result.Result == MessageBoxResult.OK)
                     {
                         runAsVanilla = true;
@@ -240,11 +319,18 @@ namespace AppUI.Classes
                 }
             }
 
-            if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam || Sys.Settings.FF8InstalledVersion == FF8Version.Remastered)
+            if (
+                Sys.Settings.FF8InstalledVersion == FF8Version.Steam
+                || Sys.Settings.FF8InstalledVersion == FF8Version.Remastered
+            )
             {
                 var appidPath = Path.Combine(Sys.InstallPath, "steam_appid.txt");
-                var appId = Sys.Settings.FF8InstalledVersion == FF8Version.Remastered ? GameConverter.RemasteredSteamAppId : GameConverter.SteamAppId;
-                if (!File.Exists(appidPath)) File.WriteAllText(appidPath, appId.ToString());
+                var appId =
+                    Sys.Settings.FF8InstalledVersion == FF8Version.Remastered
+                        ? GameConverter.RemasteredSteamAppId
+                        : GameConverter.SteamAppId;
+                if (!File.Exists(appidPath))
+                    File.WriteAllText(appidPath, appId.ToString());
             }
 
             //
@@ -253,50 +339,81 @@ namespace AppUI.Classes
             FFNxDriverUpdater.CleanupUnnecessaryFiles();
             ReShadeUpdater.Cleanup();
 
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingInstalledGameIsCompatible));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.VerifyingInstalledGameIsCompatible)
+            );
             if (converter.IsGamePirated())
             {
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.ErrorCodeYarr), NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.ErrorCodeYarr),
+                    NLog.LogLevel.Error
+                );
                 Logger.Info(FileUtils.ListAllFiles(converter.InstallPath));
                 return false;
             }
 
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CreatingMissingRequiredDirectories));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.CreatingMissingRequiredDirectories)
+            );
             converter.CreateMissingDirectories();
 
             if (Sys.Settings.FF8InstalledVersion == FF8Version.Original2K)
             {
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingGameIsMaxInstall));
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.VerifyingGameIsMaxInstall)
+                );
                 if (!converter.VerifyFullInstallation())
                 {
-                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.YourFf8InstallationFolderIsMissingCriticalFiles), NLog.LogLevel.Error);
+                    Instance.RaiseProgressChanged(
+                        ResourceHelper.Get(
+                            StringKey.YourFf8InstallationFolderIsMissingCriticalFiles
+                        ),
+                        NLog.LogLevel.Error
+                    );
                     return false;
                 }
             }
 
-            string backupFolderPath = Path.Combine(converter.InstallPath, GameConverter.BackupFolderName, DateTime.Now.ToString("yyyyMMddHHmmss"));
+            string backupFolderPath = Path.Combine(
+                converter.InstallPath,
+                GameConverter.BackupFolderName,
+                DateTime.Now.ToString("yyyyMMddHHmmss")
+            );
 
             if (Sys.Settings.FF8InstalledVersion == FF8Version.Original2K)
             {
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingFf8Exe));
-                if (new FileInfo(Sys.Settings.FF8Exe).Name.Equals("ff8.exe", StringComparison.InvariantCultureIgnoreCase))
+                if (
+                    new FileInfo(Sys.Settings.FF8Exe).Name.Equals(
+                        "ff8.exe",
+                        StringComparison.InvariantCultureIgnoreCase
+                    )
+                )
                 {
                     // only compare exes are different if ff8.exe set in Settings (and not something like ff8_bc.exe)
                     if (converter.IsExeDifferent())
                     {
-                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.Ff8ExeDetectedToBeDifferent)}");
+                        Instance.RaiseProgressChanged(
+                            $"\t{ResourceHelper.Get(StringKey.Ff8ExeDetectedToBeDifferent)}"
+                        );
                         if (converter.BackupExe(backupFolderPath))
                         {
                             bool didCopy = converter.CopyFF8ExeToGame();
                             if (!didCopy)
                             {
-                                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCopyFf8Exe)}", NLog.LogLevel.Error);
+                                Instance.RaiseProgressChanged(
+                                    $"\t{ResourceHelper.Get(StringKey.FailedToCopyFf8Exe)}",
+                                    NLog.LogLevel.Error
+                                );
                                 return false;
                             }
                         }
                         else
                         {
-                            Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCreateBackupOfFf8Exe)}", NLog.LogLevel.Error);
+                            Instance.RaiseProgressChanged(
+                                $"\t{ResourceHelper.Get(StringKey.FailedToCreateBackupOfFf8Exe)}",
+                                NLog.LogLevel.Error
+                            );
                             return false;
                         }
                     }
@@ -325,11 +442,16 @@ namespace AppUI.Classes
 
                 if (!string.IsNullOrEmpty(Instance.DriveLetter))
                 {
-                    Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.FoundGameDiscAt)} {Instance.DriveLetter} ...");
+                    Instance.RaiseProgressChanged(
+                        $"{ResourceHelper.Get(StringKey.FoundGameDiscAt)} {Instance.DriveLetter} ..."
+                    );
                 }
                 else
                 {
-                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.FailedToFindGameDisc), NLog.LogLevel.Error);
+                    Instance.RaiseProgressChanged(
+                        ResourceHelper.Get(StringKey.FailedToFindGameDisc),
+                        NLog.LogLevel.Error
+                    );
                     return false;
                 }
 
@@ -345,36 +467,58 @@ namespace AppUI.Classes
             Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CheckingAProfileIsActive));
             if (Sys.ActiveProfile == null)
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.ActiveProfileNotFound)}", NLog.LogLevel.Error);
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CreateAProfileFirstAndTryAgain));
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.ActiveProfileNotFound)}",
+                    NLog.LogLevel.Error
+                );
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.CreateAProfileFirstAndTryAgain)
+                );
                 return false;
             }
 
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CheckingModCompatibilityRequirements));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.CheckingModCompatibilityRequirements)
+            );
             if (!SanityCheckCompatibility())
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedModCompatibilityCheck)}", NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.FailedModCompatibilityCheck)}",
+                    NLog.LogLevel.Error
+                );
                 return false;
             }
 
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CheckingModConstraintsForCompatibility));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.CheckingModConstraintsForCompatibility)
+            );
             if (!SanityCheckSettings())
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedModConstraintCheck)}", NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.FailedModConstraintCheck)}",
+                    NLog.LogLevel.Error
+                );
                 return false;
             }
 
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CheckingModLoadOrderRequirements));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.CheckingModLoadOrderRequirements)
+            );
             if (!VerifyOrdering())
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedModLoadOrderCheck)}", NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.FailedModLoadOrderCheck)}",
+                    NLog.LogLevel.Error
+                );
                 return false;
             }
 
             //
             // Copy input.cfg to FF8
             //
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingFf8InputCfgToFf8Path));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.CopyingFf8InputCfgToFf8Path)
+            );
             bool didCopyCfg = CopyKeyboardInputCfg();
 
             // Copy Reshade
@@ -385,7 +529,9 @@ namespace AppUI.Classes
             //
             if (launchWithNoMods)
             {
-                vanillaMsg = ResourceHelper.Get(StringKey.UserRequestedToPlayWithNoModsLaunchingGameAsVanilla);
+                vanillaMsg = ResourceHelper.Get(
+                    StringKey.UserRequestedToPlayWithNoModsLaunchingGameAsVanilla
+                );
                 runAsVanilla = true;
             }
             else if (Sys.ActiveProfile.ActiveItems.Count == 0)
@@ -404,7 +550,10 @@ namespace AppUI.Classes
 
                 if (runtimeProfile == null)
                 {
-                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCreateRuntimeProfileForActiveMods)}", NLog.LogLevel.Error);
+                    Instance.RaiseProgressChanged(
+                        $"\t{ResourceHelper.Get(StringKey.FailedToCreateRuntimeProfileForActiveMods)}",
+                        NLog.LogLevel.Error
+                    );
                     return false;
                 }
 
@@ -413,7 +562,9 @@ namespace AppUI.Classes
                     //
                     // Copy J8Wrapper* dlls to FF8
                     //
-                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.CopyingEasyHookToFf8PathIfNotFoundOrOlder));
+                    Instance.RaiseProgressChanged(
+                        ResourceHelper.Get(StringKey.CopyingEasyHookToFf8PathIfNotFoundOrOlder)
+                    );
                     CopyJ8WrapperDlls();
                 }
 
@@ -425,7 +576,7 @@ namespace AppUI.Classes
                 Sys.FFNxConfig.OverrideInternalKeys(debug && runtimeProfile != null);
                 foreach (RuntimeMod mod in runtimeProfile.Mods)
                 {
-                    foreach(FFNxFlag flag in mod.FFNxConfig)
+                    foreach (FFNxFlag flag in mod.FFNxConfig)
                     {
                         bool addConfig = true;
 
@@ -433,11 +584,14 @@ namespace AppUI.Classes
                         {
                             foreach (var attr in flag.Attributes)
                             {
-                                foreach(Iros.Workshop.ProfileItem item in Sys.ActiveProfile.ActiveItems)
+                                foreach (
+                                    Iros.Workshop.ProfileItem item in Sys.ActiveProfile.ActiveItems
+                                )
                                 {
-                                    foreach(ProfileSetting setting in item.Settings)
+                                    foreach (ProfileSetting setting in item.Settings)
                                     {
-                                        if (setting.ID == attr.Key && setting.Value != attr.Value) addConfig = false;
+                                        if (setting.ID == attr.Key && setting.Value != attr.Value)
+                                            addConfig = false;
                                     }
                                 }
                             }
@@ -478,9 +632,14 @@ namespace AppUI.Classes
             if (debug && runtimeProfile != null)
             {
                 runtimeProfile.Options |= RuntimeOptions.DetailedLog;
-                runtimeProfile.LogFile = Path.Combine(Path.GetDirectoryName(Sys.Settings.FF8Exe), "log.txt");
+                runtimeProfile.LogFile = Path.Combine(
+                    Path.GetDirectoryName(Sys.Settings.FF8Exe),
+                    "log.txt"
+                );
 
-                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.DebugLoggingSetToTrueDetailedLoggingWillBeWrittenTo)} {runtimeProfile.LogFile} ...");
+                Instance.RaiseProgressChanged(
+                    $"{ResourceHelper.Get(StringKey.DebugLoggingSetToTrueDetailedLoggingWillBeWrittenTo)} {runtimeProfile.LogFile} ..."
+                );
             }
 
             //
@@ -490,28 +649,37 @@ namespace AppUI.Classes
             {
                 if (Sys.Settings.GameLaunchSettings.EnableGamepadPolling)
                 {
-                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.BeginningToPollForGamePadInput));
+                    Instance.RaiseProgressChanged(
+                        ResourceHelper.Get(StringKey.BeginningToPollForGamePadInput)
+                    );
 
                     if (Instance._controllerInterceptor == null)
                     {
                         Instance._controllerInterceptor = new ControllerInterceptor();
                     }
 
-                    await Instance._controllerInterceptor.PollForGamepadInput().ContinueWith((result) =>
-                    {
-                        if (result.IsFaulted)
-                        {
-                            Logger.Error(result.Exception);
-                        }
-                    });
+                    await Instance
+                        ._controllerInterceptor.PollForGamepadInput()
+                        .ContinueWith(
+                            (result) =>
+                            {
+                                if (result.IsFaulted)
+                                {
+                                    Logger.Error(result.Exception);
+                                }
+                            }
+                        );
                 }
             }
             catch (Exception e)
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.ReceivedUnknownError)}: {e.Message} ...", NLog.LogLevel.Warn);
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.ReceivedUnknownError)}: {e.Message} ...",
+                    NLog.LogLevel.Warn
+                );
             }
 
-        LaunchGame:
+            LaunchGame:
             // start FF8 proc as normal and return true when running the game as vanilla
             if (runAsVanilla)
             {
@@ -529,15 +697,22 @@ namespace AppUI.Classes
             //
             try
             {
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.LaunchingAdditionalProgramsToRunIfAny));
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.LaunchingAdditionalProgramsToRunIfAny)
+                );
                 Instance.LaunchAdditionalProgramsToRunPrior();
 
                 RuntimeParams parms = new RuntimeParams
                 {
-                    ProfileFile = Path.Combine(Path.GetDirectoryName(Sys.Settings.FF8Exe), ".J8WrapperProfile")
+                    ProfileFile = Path.Combine(
+                        Path.GetDirectoryName(Sys.Settings.FF8Exe),
+                        ".J8WrapperProfile"
+                    ),
                 };
 
-                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.WritingTemporaryRuntimeProfileFileTo)} {parms.ProfileFile} ...");
+                Instance.RaiseProgressChanged(
+                    $"{ResourceHelper.Get(StringKey.WritingTemporaryRuntimeProfileFileTo)} {parms.ProfileFile} ..."
+                );
 
                 using (FileStream fs = new FileStream(parms.ProfileFile, FileMode.Create))
                     Util.SerializeBinary(runtimeProfile, fs);
@@ -546,7 +721,9 @@ namespace AppUI.Classes
                 // ... The error tends to go away the second time trying but we will try multiple times before failing
                 bool didInject = false;
 
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.AttemptingToInjectWithEasyHook));
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.AttemptingToInjectWithEasyHook)
+                );
 
                 while (!didInject)
                 {
@@ -563,8 +740,12 @@ namespace AppUI.Classes
                         try
                         {
                             ff8Proc.Kill();
-                        }catch { }
-                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.ReceivedUnknownError)}: {e.Message} ...", NLog.LogLevel.Warn);
+                        }
+                        catch { }
+                        Instance.RaiseProgressChanged(
+                            $"\t{ResourceHelper.Get(StringKey.ReceivedUnknownError)}: {e.Message} ...",
+                            NLog.LogLevel.Warn
+                        );
                     }
                 }
 
@@ -574,14 +755,16 @@ namespace AppUI.Classes
                     return false;
                 }
 
-
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.GettingFf8Proc));
 
                 if (ff8Proc == null)
                 {
                     Sys.FFNxConfig.RestoreBackup(true);
 
-                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToGetFf8Proc)}", NLog.LogLevel.Error);
+                    Instance.RaiseProgressChanged(
+                        $"\t{ResourceHelper.Get(StringKey.FailedToGetFf8Proc)}",
+                        NLog.LogLevel.Error
+                    );
                     return false;
                 }
 
@@ -589,7 +772,9 @@ namespace AppUI.Classes
 
                 if (debug)
                 {
-                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.DebugLoggingSetToTrueWiringUpLogFile));
+                    Instance.RaiseProgressChanged(
+                        ResourceHelper.Get(StringKey.DebugLoggingSetToTrueWiringUpLogFile)
+                    );
                     ff8Proc.Exited += (o, e) =>
                     {
                         try
@@ -600,14 +785,17 @@ namespace AppUI.Classes
                             {
                                 WorkingDirectory = Path.GetDirectoryName(runtimeProfile.LogFile),
                                 FileName = runtimeProfile.LogFile,
-                                UseShellExecute = true
+                                UseShellExecute = true,
                             };
                             Process.Start(debugTxtProc);
                         }
                         catch (Exception ex)
                         {
                             Logger.Error(ex);
-                            Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.FailedToStartProcessForDebugLog)}: {ex.Message}", NLog.LogLevel.Error);
+                            Instance.RaiseProgressChanged(
+                                $"{ResourceHelper.Get(StringKey.FailedToStartProcessForDebugLog)}: {ex.Message}",
+                                NLog.LogLevel.Error
+                            );
                         }
                     };
                 }
@@ -617,20 +805,26 @@ namespace AppUI.Classes
                 //
                 if (varDump)
                 {
-                    Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VariableDumpSetToTrueStartingTurboLog));
+                    Instance.RaiseProgressChanged(
+                        ResourceHelper.Get(StringKey.VariableDumpSetToTrueStartingTurboLog)
+                    );
                     StartTurboLogForVariableDump(runtimeProfile);
                 }
 
                 /// sideload programs for mods before starting FF8 because FF8 losing focus while initializing can cause the intro movies to stop playing
                 /// ... Thus we load programs first so they don't steal window focus
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.StartingProgramsForMods));
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.StartingProgramsForMods)
+                );
                 foreach (RuntimeMod mod in runtimeProfile.Mods)
                 {
                     Instance.LaunchProgramsForMod(mod);
                 }
 
                 // wire up process to stop plugins and side processes when proc has exited
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.SettingUpFf8ExeToStopPluginsAndModPrograms));
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.SettingUpFf8ExeToStopPluginsAndModPrograms)
+                );
                 ff8Proc.Exited += (o, e) =>
                 {
                     if (!IsFF8Running() && Instance._controllerInterceptor != null)
@@ -642,7 +836,9 @@ namespace AppUI.Classes
                     // wrapped in try/catch so an unhandled exception when exiting the game does not crash J8
                     try
                     {
-                        Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.StoppingOtherProgramsForMods));
+                        Instance.RaiseProgressChanged(
+                            ResourceHelper.Get(StringKey.StoppingOtherProgramsForMods)
+                        );
                         Instance.StopAllSideProcessesForMods();
                     }
                     catch (Exception ex)
@@ -653,14 +849,15 @@ namespace AppUI.Classes
                     // Did the game crash? If yes, generate a report
                     if (ff8Proc.ExitCode < 0)
                     {
-                        Logger.Error($"FF8.exe Crashed while exiting with code 0x{ff8Proc.ExitCode.ToString("X8")}. Generating report...");
+                        Logger.Error(
+                            $"FF8.exe Crashed while exiting with code 0x{ff8Proc.ExitCode.ToString("X8")}. Generating report..."
+                        );
                         Instance.CollectCrashReport();
                     }
 
                     // Restore FFNx config after the game is closed
                     Sys.FFNxConfig.RestoreBackup(true);
                 };
-            
 
                 // ensure ff8 window is active at end of launching
                 if (ff8Proc.MainWindowHandle != IntPtr.Zero)
@@ -668,7 +865,12 @@ namespace AppUI.Classes
                     int secondsToWait = 120;
                     // setting the ff8 proc as the foreground window makes it the active window and thus can start processing mods (this will usually cause a 'Not Responding...' window when loading a lot of mods)
                     SetForegroundWindow(ff8Proc.MainWindowHandle);
-                    Instance.RaiseProgressChanged(string.Format(ResourceHelper.Get(StringKey.WaitingForFf8ExeToRespond), secondsToWait));
+                    Instance.RaiseProgressChanged(
+                        string.Format(
+                            ResourceHelper.Get(StringKey.WaitingForFf8ExeToRespond),
+                            secondsToWait
+                        )
+                    );
 
                     // after setting as active window, wait to ensure the window loads all mods and becomes responsive
                     DateTime start = DateTime.Now;
@@ -692,8 +894,16 @@ namespace AppUI.Classes
 
                 Logger.Error(e);
 
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.ExceptionOccurredWhileTryingToStart), NLog.LogLevel.Error);
-                MessageDialogWindow.Show(e.ToString(), ResourceHelper.Get(StringKey.ErrorFailedToStartGame), MessageBoxButton.OK, MessageBoxImage.Error);
+                Instance.RaiseProgressChanged(
+                    ResourceHelper.Get(StringKey.ExceptionOccurredWhileTryingToStart),
+                    NLog.LogLevel.Error
+                );
+                MessageDialogWindow.Show(
+                    e.ToString(),
+                    ResourceHelper.Get(StringKey.ErrorFailedToStartGame),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
 
                 return false;
             }
@@ -714,46 +924,70 @@ namespace AppUI.Classes
 
             try
             {
-                runtimeMods = Sys.ActiveProfile.ActiveItems.Select(i => i.GetRuntime(Sys._context))
-                                                           .Where(i => i != null)
-                                                           .ToList();
+                runtimeMods = Sys
+                    .ActiveProfile.ActiveItems.Select(i => i.GetRuntime(Sys._context))
+                    .Where(i => i != null)
+                    .ToList();
             }
             catch (Exception)
             {
                 throw;
             }
 
-
             RuntimeProfile runtimeProfiles = new RuntimeProfile()
             {
-                MonitorPaths = new List<string>() {
-                    Sys.PathToFF8Data,
-                    Sys.PathToFF8Textures,
-                },
+                MonitorPaths = new List<string>() { Sys.PathToFF8Data, Sys.PathToFF8Textures },
                 ModPath = Sys.Settings.LibraryLocation,
                 FF8Path = Sys.InstallPath,
                 gameFiles = Directory.GetFiles(Sys.InstallPath, "*.*", SearchOption.AllDirectories),
-                Mods = runtimeMods
+                Mods = runtimeMods,
             };
 
-            Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.AddingPathsToMonitor)}");
-            runtimeProfiles.MonitorPaths.AddRange(Sys.Settings.ExtraFolders.Where(s => s.Length > 0).Select(s => Path.Combine(Sys.InstallPath, s)));
+            Instance.RaiseProgressChanged(
+                $"\t{ResourceHelper.Get(StringKey.AddingPathsToMonitor)}"
+            );
+            runtimeProfiles.MonitorPaths.AddRange(
+                Sys.Settings.ExtraFolders.Where(s => s.Length > 0)
+                    .Select(s => Path.Combine(Sys.InstallPath, s))
+            );
             return runtimeProfiles;
         }
 
         private static void CopyJ8WrapperDlls()
         {
-            string src = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string src = Path.GetDirectoryName(
+                System.Reflection.Assembly.GetExecutingAssembly().Location
+            );
             string dest = Path.GetDirectoryName(Sys.Settings.FF8Exe);
 
-            File.Copy(Path.Combine(src, "AppProxy.runtimeconfig.json"), Path.Combine(dest, "AppProxy.runtimeconfig.json"), true);
+            File.Copy(
+                Path.Combine(src, "AppProxy.runtimeconfig.json"),
+                Path.Combine(dest, "AppProxy.runtimeconfig.json"),
+                true
+            );
             File.Copy(Path.Combine(src, "AppProxy.dll"), Path.Combine(dest, "AppProxy.dll"), true);
-            File.Copy(Path.Combine(src, "SharpCompress.dll"), Path.Combine(dest, "SharpCompress.dll"), true);
-            File.Copy(Path.Combine(src, "AppWrapper.dll"), Path.Combine(dest, "AppWrapper.dll"), true);
+            File.Copy(
+                Path.Combine(src, "SharpCompress.dll"),
+                Path.Combine(dest, "SharpCompress.dll"),
+                true
+            );
+            File.Copy(
+                Path.Combine(src, "AppWrapper.dll"),
+                Path.Combine(dest, "AppWrapper.dll"),
+                true
+            );
             File.Copy(Path.Combine(src, "AppLoader.dll"), Path.Combine(dest, "dinput.dll"), true);
-            File.Copy(Path.Combine(src, "AppLoader.pdb"), Path.Combine(dest, "AppLoader.pdb"), true);
+            File.Copy(
+                Path.Combine(src, "AppLoader.pdb"),
+                Path.Combine(dest, "AppLoader.pdb"),
+                true
+            );
             File.Copy(Path.Combine(src, "nethost.dll"), Path.Combine(dest, "nethost.dll"), true);
-            File.Copy(Path.Combine(src, "System.Runtime.Serialization.Formatters.dll"), Path.Combine(dest, "System.Runtime.Serialization.Formatters.dll"), true);
+            File.Copy(
+                Path.Combine(src, "System.Runtime.Serialization.Formatters.dll"),
+                Path.Combine(dest, "System.Runtime.Serialization.Formatters.dll"),
+                true
+            );
         }
 
         private static void DeleteJ8WrapperDlls()
@@ -761,7 +995,8 @@ namespace AppUI.Classes
             string dest = Path.GetDirectoryName(Sys.Settings.FF8Exe);
 
             string workshopDir = Path.Combine(dest, "J8Workshop");
-            if (Directory.Exists(workshopDir)) Directory.Delete(workshopDir, true);
+            if (Directory.Exists(workshopDir))
+                Directory.Delete(workshopDir, true);
 
             File.Delete(Path.Combine(dest, "AppProxy.runtimeconfig.json"));
             File.Delete(Path.Combine(dest, "AppProxy.dll"));
@@ -787,7 +1022,9 @@ namespace AppUI.Classes
                 Instance._alsoLaunchProcesses.Remove(turboLogProcName);
             }
 
-            runtimeProfiles.MonitorVars = Sys._context.VarAliases.Select(kv => new Tuple<string, string>(kv.Key, kv.Value)).ToList();
+            runtimeProfiles.MonitorVars = Sys
+                ._context.VarAliases.Select(kv => new Tuple<string, string>(kv.Key, kv.Value))
+                .ToList();
 
             ProcessStartInfo psi = new ProcessStartInfo(turboLogProcName)
             {
@@ -873,7 +1110,10 @@ namespace AppUI.Classes
             }
             catch (Exception ex)
             {
-                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {Sys.Settings.FF8Exe} ...", NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    $"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {Sys.Settings.FF8Exe} ...",
+                    NLog.LogLevel.Error
+                );
                 Logger.Error(ex);
                 return false;
             }
@@ -925,7 +1165,10 @@ namespace AppUI.Classes
             }
             catch (Exception ex)
             {
-                Instance.RaiseProgressChanged($"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {chocoboExe} ...", NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    $"{ResourceHelper.Get(StringKey.AnExceptionOccurredTryingToStartFf8At)} {chocoboExe} ...",
+                    NLog.LogLevel.Error
+                );
                 Logger.Error(ex);
                 return false;
             }
@@ -939,7 +1182,15 @@ namespace AppUI.Classes
                 if (!constraint.Verify(out string msg))
                 {
                     Logger.Warn(msg);
-                    MessageDialogWindow.Show(ResourceHelper.Get(StringKey.ThereWasAnErrorVerifyingModConstraintSeeTheFollowingDetails), msg, ResourceHelper.Get(StringKey.Warning), MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageDialogWindow.Show(
+                        ResourceHelper.Get(
+                            StringKey.ThereWasAnErrorVerifyingModConstraintSeeTheFollowingDetails
+                        ),
+                        msg,
+                        ResourceHelper.Get(StringKey.Warning),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
                     return false;
                 }
 
@@ -951,8 +1202,18 @@ namespace AppUI.Classes
 
             if (changes.Any())
             {
-                Logger.Warn($"{ResourceHelper.Get(StringKey.TheFollowingSettingsHaveBeenChangedToMakeTheseModsCompatible)}\n{String.Join("\n", changes)}");
-                MessageDialogWindow.Show(ResourceHelper.Get(StringKey.TheFollowingSettingsHaveBeenChangedToMakeTheseModsCompatible), String.Join("\n", changes), ResourceHelper.Get(StringKey.Warning), MessageBoxButton.OK, MessageBoxImage.Warning);
+                Logger.Warn(
+                    $"{ResourceHelper.Get(StringKey.TheFollowingSettingsHaveBeenChangedToMakeTheseModsCompatible)}\n{String.Join("\n", changes)}"
+                );
+                MessageDialogWindow.Show(
+                    ResourceHelper.Get(
+                        StringKey.TheFollowingSettingsHaveBeenChangedToMakeTheseModsCompatible
+                    ),
+                    String.Join("\n", changes),
+                    ResourceHelper.Get(StringKey.Warning),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
             }
 
             return true;
@@ -965,14 +1226,19 @@ namespace AppUI.Classes
                 return true; // user has 'ignore compatibility restrictions' set in general settings so just return true
             }
 
-            List<InstalledItem> activeInstalledMods = Sys.ActiveProfile.ActiveItems.Select(pi => Sys.Library.GetItem(pi.ModID)).ToList();
+            List<InstalledItem> activeInstalledMods = Sys
+                .ActiveProfile.ActiveItems.Select(pi => Sys.Library.GetItem(pi.ModID))
+                .ToList();
             var vars = new List<AppWrapper.Variable>();
 
             foreach (InstalledItem item in activeInstalledMods)
             {
                 ModInfo info = item.GetModInfo();
                 var mod = Sys.Library.GetItem(item.ModID);
-                string location = System.IO.Path.Combine(Sys.Settings.LibraryLocation, mod.LatestInstalled.InstalledLocation);
+                string location = System.IO.Path.Combine(
+                    Sys.Settings.LibraryLocation,
+                    mod.LatestInstalled.InstalledLocation
+                );
 
                 if (mod.LatestInstalled.InstalledLocation.EndsWith(".iroj"))
                 {
@@ -984,15 +1250,32 @@ namespace AppUI.Classes
                             doc.Load(arc.GetData("mod.xml"));
                             foreach (XmlNode xmlNode in doc.SelectNodes("/ModInfo/Variable"))
                             {
-                                var currentVar = new AppWrapper.Variable() { Name = xmlNode.Attributes.GetNamedItem("Name").Value, Value = item.ModID.ToString() };
+                                var currentVar = new AppWrapper.Variable()
+                                {
+                                    Name = xmlNode.Attributes.GetNamedItem("Name").Value,
+                                    Value = item.ModID.ToString(),
+                                };
                                 var test = vars.Find(var => var.Name == currentVar.Name);
-                                if (test == null){
+                                if (test == null)
+                                {
                                     vars.Add(currentVar);
                                 }
                                 else
                                 {
                                     //@todo create StringKey resource for unknown incompatible mod
-                                    MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.ModIsNotCompatibleAnotherModVariableUsed), item.CachedDetails.Name, Sys.Library.GetItem(new Guid(test.Value)).CachedDetails.Name, currentVar.Name), ResourceHelper.Get(StringKey.IncompatibleMod));
+                                    MessageDialogWindow.Show(
+                                        string.Format(
+                                            ResourceHelper.Get(
+                                                StringKey.ModIsNotCompatibleAnotherModVariableUsed
+                                            ),
+                                            item.CachedDetails.Name,
+                                            Sys.Library.GetItem(
+                                                new Guid(test.Value)
+                                            ).CachedDetails.Name,
+                                            currentVar.Name
+                                        ),
+                                        ResourceHelper.Get(StringKey.IncompatibleMod)
+                                    );
                                     return false;
                                 }
                             }
@@ -1008,7 +1291,11 @@ namespace AppUI.Classes
                         doc.Load(mfile);
                         foreach (XmlNode xmlNode in doc.SelectNodes("/ModInfo/Variable"))
                         {
-                            var currentVar = new AppWrapper.Variable() { Name = xmlNode.Attributes.GetNamedItem("Name").Value, Value = item.ModID.ToString() };
+                            var currentVar = new AppWrapper.Variable()
+                            {
+                                Name = xmlNode.Attributes.GetNamedItem("Name").Value,
+                                Value = item.ModID.ToString(),
+                            };
                             var test = vars.Find(var => var.Name == currentVar.Name);
                             if (test == null)
                             {
@@ -1016,12 +1303,23 @@ namespace AppUI.Classes
                             }
                             else
                             {
-                                MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.ModIsNotCompatibleAnotherModVariableUsed), item.CachedDetails.Name, Sys.Library.GetItem(new Guid(test.Value)).CachedDetails.Name, currentVar.Name), ResourceHelper.Get(StringKey.IncompatibleMod));
+                                MessageDialogWindow.Show(
+                                    string.Format(
+                                        ResourceHelper.Get(
+                                            StringKey.ModIsNotCompatibleAnotherModVariableUsed
+                                        ),
+                                        item.CachedDetails.Name,
+                                        Sys.Library.GetItem(
+                                            new Guid(test.Value)
+                                        ).CachedDetails.Name,
+                                        currentVar.Name
+                                    ),
+                                    ResourceHelper.Get(StringKey.IncompatibleMod)
+                                );
                                 return false;
                             }
                         }
                     }
-
                 }
 
                 if (info == null)
@@ -1034,12 +1332,31 @@ namespace AppUI.Classes
                     var rInst = activeInstalledMods.Find(i => i.ModID.Equals(req.ModID));
                     if (rInst == null)
                     {
-                        MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.ModRequiresYouToActivateAsWell), item.CachedDetails.Name, req.Description), ResourceHelper.Get(StringKey.MissingRequiredActiveMods));
+                        MessageDialogWindow.Show(
+                            string.Format(
+                                ResourceHelper.Get(StringKey.ModRequiresYouToActivateAsWell),
+                                item.CachedDetails.Name,
+                                req.Description
+                            ),
+                            ResourceHelper.Get(StringKey.MissingRequiredActiveMods)
+                        );
                         return false;
                     }
-                    else if (req.Versions.Any() && !req.Versions.Contains(rInst.LatestInstalled.VersionDetails.Version))
+                    else if (
+                        req.Versions.Any()
+                        && !req.Versions.Contains(rInst.LatestInstalled.VersionDetails.Version)
+                    )
                     {
-                        MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.ModRequiresYouToActivateButYouDoNotHaveCompatibleVersionInstalled), item.CachedDetails.Name, rInst.CachedDetails.Name), ResourceHelper.Get(StringKey.UnsupportedModVersion));
+                        MessageDialogWindow.Show(
+                            string.Format(
+                                ResourceHelper.Get(
+                                    StringKey.ModRequiresYouToActivateButYouDoNotHaveCompatibleVersionInstalled
+                                ),
+                                item.CachedDetails.Name,
+                                rInst.CachedDetails.Name
+                            ),
+                            ResourceHelper.Get(StringKey.UnsupportedModVersion)
+                        );
                         return false;
                     }
                 }
@@ -1052,14 +1369,35 @@ namespace AppUI.Classes
                         continue; //good!
                     }
 
-                    if (forbid.Versions.Any() && forbid.Versions.Contains(rInst.LatestInstalled.VersionDetails.Version))
+                    if (
+                        forbid.Versions.Any()
+                        && forbid.Versions.Contains(rInst.LatestInstalled.VersionDetails.Version)
+                    )
                     {
-                        MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.ModIsNotCompatibleWithTheVersionYouHaveInstalled), item.CachedDetails.Name, rInst.CachedDetails.Name), ResourceHelper.Get(StringKey.IncompatibleMod));
+                        MessageDialogWindow.Show(
+                            string.Format(
+                                ResourceHelper.Get(
+                                    StringKey.ModIsNotCompatibleWithTheVersionYouHaveInstalled
+                                ),
+                                item.CachedDetails.Name,
+                                rInst.CachedDetails.Name
+                            ),
+                            ResourceHelper.Get(StringKey.IncompatibleMod)
+                        );
                         return false;
                     }
                     else
                     {
-                        MessageDialogWindow.Show(string.Format(ResourceHelper.Get(StringKey.ModIsNotCompatibleWithYouWillNeedToDisableIt), item.CachedDetails.Name, rInst.CachedDetails.Name), ResourceHelper.Get(StringKey.IncompatibleMod));
+                        MessageDialogWindow.Show(
+                            string.Format(
+                                ResourceHelper.Get(
+                                    StringKey.ModIsNotCompatibleWithYouWillNeedToDisableIt
+                                ),
+                                item.CachedDetails.Name,
+                                rInst.CachedDetails.Name
+                            ),
+                            ResourceHelper.Get(StringKey.IncompatibleMod)
+                        );
                         return false;
                     }
                 }
@@ -1070,11 +1408,10 @@ namespace AppUI.Classes
 
         internal static bool VerifyOrdering()
         {
-            var details = Sys.ActiveProfile
-                             .ActiveItems
-                             .Select(i => Sys.Library.GetItem(i.ModID))
-                             .Select(ii => new { Mod = ii, Info = ii.GetModInfo() })
-                             .ToDictionary(a => a.Mod.ModID, a => a);
+            var details = Sys
+                .ActiveProfile.ActiveItems.Select(i => Sys.Library.GetItem(i.ModID))
+                .Select(ii => new { Mod = ii, Info = ii.GetModInfo() })
+                .ToDictionary(a => a.Mod.ModID, a => a);
 
             List<string> problems = new List<string>();
 
@@ -1092,7 +1429,15 @@ namespace AppUI.Classes
                 {
                     if (Sys.ActiveProfile.ActiveItems.Skip(i).Any(pi => pi.ModID.Equals(after)))
                     {
-                        problems.Add(string.Format(ResourceHelper.Get(StringKey.ModIsMeantToComeBelowModInTheLoadOrder), details[mod.ModID].Mod.CachedDetails.Name, details[after].Mod.CachedDetails.Name));
+                        problems.Add(
+                            string.Format(
+                                ResourceHelper.Get(
+                                    StringKey.ModIsMeantToComeBelowModInTheLoadOrder
+                                ),
+                                details[mod.ModID].Mod.CachedDetails.Name,
+                                details[after].Mod.CachedDetails.Name
+                            )
+                        );
                     }
                 }
 
@@ -1100,14 +1445,33 @@ namespace AppUI.Classes
                 {
                     if (Sys.ActiveProfile.ActiveItems.Take(i).Any(pi => pi.ModID.Equals(before)))
                     {
-                        problems.Add(string.Format(ResourceHelper.Get(StringKey.ModIsMeantToComeAboveModInTheLoadOrder), details[mod.ModID].Mod.CachedDetails.Name, details[before].Mod.CachedDetails.Name));
+                        problems.Add(
+                            string.Format(
+                                ResourceHelper.Get(
+                                    StringKey.ModIsMeantToComeAboveModInTheLoadOrder
+                                ),
+                                details[mod.ModID].Mod.CachedDetails.Name,
+                                details[before].Mod.CachedDetails.Name
+                            )
+                        );
                     }
                 }
             }
 
             if (problems.Any())
             {
-                if (MessageDialogWindow.Show(ResourceHelper.Get(StringKey.TheFollowingModsWillNotWorkProperlyInTheCurrentOrder), String.Join("\n", problems), ResourceHelper.Get(StringKey.LoadOrderIncompatible), MessageBoxButton.YesNo).Result != MessageBoxResult.Yes)
+                if (
+                    MessageDialogWindow
+                        .Show(
+                            ResourceHelper.Get(
+                                StringKey.TheFollowingModsWillNotWorkProperlyInTheCurrentOrder
+                            ),
+                            String.Join("\n", problems),
+                            ResourceHelper.Get(StringKey.LoadOrderIncompatible),
+                            MessageBoxButton.YesNo
+                        )
+                        .Result != MessageBoxResult.Yes
+                )
                     return false;
             }
 
@@ -1131,18 +1495,34 @@ namespace AppUI.Classes
                 {
                     if (!String.IsNullOrWhiteSpace(cSetting.MyID))
                     {
-                        var setting = pItem.Settings.Find(s => s.ID.Equals(cSetting.MyID, StringComparison.InvariantCultureIgnoreCase));
-                        if ((setting == null) || (setting.Value != cSetting.MyValue)) continue;
+                        var setting = pItem.Settings.Find(s =>
+                            s.ID.Equals(cSetting.MyID, StringComparison.InvariantCultureIgnoreCase)
+                        );
+                        if ((setting == null) || (setting.Value != cSetting.MyValue))
+                            continue;
                     }
 
-                    Iros.Workshop.ProfileItem oItem = Sys.ActiveProfile.ActiveItems.Find(i => i.ModID.Equals(cSetting.ModID));
-                    if (oItem == null) continue;
+                    Iros.Workshop.ProfileItem oItem = Sys.ActiveProfile.ActiveItems.Find(i =>
+                        i.ModID.Equals(cSetting.ModID)
+                    );
+                    if (oItem == null)
+                        continue;
 
                     InstalledItem oInst = Sys.Library.GetItem(cSetting.ModID);
-                    Constraint ct = constraints.Find(c => c.ModID.Equals(cSetting.ModID) && c.Setting.Equals(cSetting.TheirID, StringComparison.InvariantCultureIgnoreCase));
+                    Constraint ct = constraints.Find(c =>
+                        c.ModID.Equals(cSetting.ModID)
+                        && c.Setting.Equals(
+                            cSetting.TheirID,
+                            StringComparison.InvariantCultureIgnoreCase
+                        )
+                    );
                     if (ct == null)
                     {
-                        ct = new Constraint() { ModID = cSetting.ModID, Setting = cSetting.TheirID };
+                        ct = new Constraint()
+                        {
+                            ModID = cSetting.ModID,
+                            Setting = cSetting.TheirID,
+                        };
                         constraints.Add(ct);
                     }
 
@@ -1164,7 +1544,10 @@ namespace AppUI.Classes
 
                 foreach (var setting in info.Options)
                 {
-                    Constraint ct = constraints.Find(c => c.ModID.Equals(pItem.ModID) && c.Setting.Equals(setting.ID, StringComparison.InvariantCultureIgnoreCase));
+                    Constraint ct = constraints.Find(c =>
+                        c.ModID.Equals(pItem.ModID)
+                        && c.Setting.Equals(setting.ID, StringComparison.InvariantCultureIgnoreCase)
+                    );
                     if (ct == null)
                     {
                         ct = new Constraint() { ModID = pItem.ModID, Setting = setting.ID };
@@ -1172,7 +1555,6 @@ namespace AppUI.Classes
                     }
                     ct.Option = setting;
                 }
-
             }
 
             return constraints;
@@ -1196,7 +1578,12 @@ namespace AppUI.Classes
 
             foreach (DriveInfo drive in DriveInfo.GetDrives())
             {
-                if (drive.IsReady && labels.Any(s => s.Equals(drive.VolumeLabel, StringComparison.InvariantCultureIgnoreCase)))
+                if (
+                    drive.IsReady
+                    && labels.Any(s =>
+                        s.Equals(drive.VolumeLabel, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                )
                 {
                     return drive.Name;
                 }
@@ -1225,7 +1612,12 @@ namespace AppUI.Classes
 
             foreach (DriveInfo drive in DriveInfo.GetDrives())
             {
-                if (drive.IsReady && labels.Any(s => s.Equals(drive.VolumeLabel, StringComparison.InvariantCultureIgnoreCase)))
+                if (
+                    drive.IsReady
+                    && labels.Any(s =>
+                        s.Equals(drive.VolumeLabel, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                )
                 {
                     drivesFound.Add(drive.Name);
                 }
@@ -1239,12 +1631,16 @@ namespace AppUI.Classes
         /// </summary>
         public void SetRegistryValues()
         {
-            Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.ApplyingChangedValuesToRegistry));
+            Instance.RaiseProgressChanged(
+                ResourceHelper.Get(StringKey.ApplyingChangedValuesToRegistry)
+            );
 
             RegistryHelper.BeginTransaction();
 
-            string ff8KeyPath = $"{RegistryHelper.GetKeyPath(FF8RegKey.SquareSoftKeyPath)}\\Final Fantasy VIII\\1.00";
-            string virtualStorePath = $"{RegistryHelper.GetKeyPath(FF8RegKey.VirtualStoreKeyPath)}\\Final Fantasy VIII\\1.00";
+            string ff8KeyPath =
+                $"{RegistryHelper.GetKeyPath(FF8RegKey.SquareSoftKeyPath)}\\Final Fantasy VIII\\1.00";
+            string virtualStorePath =
+                $"{RegistryHelper.GetKeyPath(FF8RegKey.VirtualStoreKeyPath)}\\Final Fantasy VIII\\1.00";
 
             string installPath = Path.GetDirectoryName(Sys.Settings.FF8Exe);
             string pathToData = Path.Combine(installPath, @"data\");
@@ -1254,13 +1650,15 @@ namespace AppUI.Classes
                 installPath += @"\";
             }
 
-
             // Add registry key values for paths and drive letter
             SetValueIfChanged(ff8KeyPath, "AppPath", installPath);
             SetValueIfChanged(virtualStorePath, "AppPath", installPath);
 
             // setting the drive letter may not happen if auto update disc path is not set
-            if (Sys.Settings.GameLaunchSettings.AutoUpdateDiscPath && !string.IsNullOrWhiteSpace(DriveLetter))
+            if (
+                Sys.Settings.GameLaunchSettings.AutoUpdateDiscPath
+                && !string.IsNullOrWhiteSpace(DriveLetter)
+            )
             {
                 SetValueIfChanged(ff8KeyPath, "DataDrive", DriveLetter);
                 SetValueIfChanged(virtualStorePath, "DataDrive", DriveLetter);
@@ -1270,18 +1668,41 @@ namespace AppUI.Classes
             SetValueIfChanged(virtualStorePath, "Graphics", 0x00100021, RegistryValueKind.DWord);
 
             Guid graphicsGuidBytes = Guid.Empty;
-            SetValueIfChanged(ff8KeyPath, "GraphicsGUID", graphicsGuidBytes, RegistryValueKind.Binary);
-            SetValueIfChanged(virtualStorePath, "GraphicsGUID", graphicsGuidBytes, RegistryValueKind.Binary);
+            SetValueIfChanged(
+                ff8KeyPath,
+                "GraphicsGUID",
+                graphicsGuidBytes,
+                RegistryValueKind.Binary
+            );
+            SetValueIfChanged(
+                virtualStorePath,
+                "GraphicsGUID",
+                graphicsGuidBytes,
+                RegistryValueKind.Binary
+            );
 
             SetValueIfChanged(ff8KeyPath, "InstallOptions", 0x000000ff, RegistryValueKind.DWord);
-            SetValueIfChanged(virtualStorePath, "InstallOptions", 0x000000ff, RegistryValueKind.DWord);
+            SetValueIfChanged(
+                virtualStorePath,
+                "InstallOptions",
+                0x000000ff,
+                RegistryValueKind.DWord
+            );
 
             // Add registry key values for default MIDI Device if missing from registry
-            if (RegistryHelper.GetValue(ff8KeyPath, "MIDIGUID", null) == null || RegistryHelper.GetValue(virtualStorePath, "MIDIGUID", null) == null)
+            if (
+                RegistryHelper.GetValue(ff8KeyPath, "MIDIGUID", null) == null
+                || RegistryHelper.GetValue(virtualStorePath, "MIDIGUID", null) == null
+            )
             {
                 Guid midiGuidBytes = Sys.Settings.GameLaunchSettings.SelectedMidiDevice;
                 SetValueIfChanged(ff8KeyPath, "MIDIGUID", midiGuidBytes, RegistryValueKind.Binary);
-                SetValueIfChanged(virtualStorePath, "MIDIGUID", midiGuidBytes, RegistryValueKind.Binary);
+                SetValueIfChanged(
+                    virtualStorePath,
+                    "MIDIGUID",
+                    midiGuidBytes,
+                    RegistryValueKind.Binary
+                );
             }
 
             SetValueIfChanged(ff8KeyPath, "MidiOptions", 0x00000001, RegistryValueKind.DWord);
@@ -1289,17 +1710,39 @@ namespace AppUI.Classes
 
             Guid soundGuidBytes = Sys.Settings.GameLaunchSettings.SelectedSoundDevice;
             SetValueIfChanged(ff8KeyPath, "SoundGUID", soundGuidBytes, RegistryValueKind.Binary);
-            SetValueIfChanged(virtualStorePath, "SoundGUID", soundGuidBytes, RegistryValueKind.Binary);
+            SetValueIfChanged(
+                virtualStorePath,
+                "SoundGUID",
+                soundGuidBytes,
+                RegistryValueKind.Binary
+            );
 
             SetValueIfChanged(ff8KeyPath, "SoundOptions", 0x00000000, RegistryValueKind.DWord);
-            SetValueIfChanged(virtualStorePath, "SoundOptions", 0x00000000, RegistryValueKind.DWord);
+            SetValueIfChanged(
+                virtualStorePath,
+                "SoundOptions",
+                0x00000000,
+                RegistryValueKind.DWord
+            );
 
             // Disable compatibility flags
-            string appCompatPath = $"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags";
-            string appCompatPath64 = $"HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags";
+            string appCompatPath =
+                $"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags";
+            string appCompatPath64 =
+                $"HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags";
 
-            SetValueIfChanged(appCompatPath, "{e1af58c2-e896-4640-bb34-d9fa0b8260a3}", 0x00000077, RegistryValueKind.DWord);
-            SetValueIfChanged(appCompatPath64, "{e1af58c2-e896-4640-bb34-d9fa0b8260a3}", 0x00000077, RegistryValueKind.DWord);
+            SetValueIfChanged(
+                appCompatPath,
+                "{e1af58c2-e896-4640-bb34-d9fa0b8260a3}",
+                0x00000077,
+                RegistryValueKind.DWord
+            );
+            SetValueIfChanged(
+                appCompatPath64,
+                "{e1af58c2-e896-4640-bb34-d9fa0b8260a3}",
+                0x00000077,
+                RegistryValueKind.DWord
+            );
 
             RegistryHelper.CommitTransaction();
         }
@@ -1308,7 +1751,12 @@ namespace AppUI.Classes
         /// Update Registry with new value if it has changed from the current value in the Registry.
         /// Logs the changed value.
         /// </summary>
-        private void SetValueIfChanged(string regKeyPath, string regValueName, object newValue, RegistryValueKind valueKind = RegistryValueKind.String)
+        private void SetValueIfChanged(
+            string regKeyPath,
+            string regValueName,
+            object newValue,
+            RegistryValueKind valueKind = RegistryValueKind.String
+        )
         {
             if (RegistryHelper.SetValueIfChanged(regKeyPath, regValueName, newValue, valueKind))
             {
@@ -1316,22 +1764,33 @@ namespace AppUI.Classes
 
                 if (newValue is byte[])
                 {
-                    valueFormatted = newValue == null ? "" : BitConverter.ToString(newValue as byte[]);
+                    valueFormatted =
+                        newValue == null ? "" : BitConverter.ToString(newValue as byte[]);
                 }
 
-                Instance.RaiseProgressChanged($"\t {regKeyPath}::{regValueName} = {valueFormatted}");
+                Instance.RaiseProgressChanged(
+                    $"\t {regKeyPath}::{regValueName} = {valueFormatted}"
+                );
             }
         }
 
         public static bool CopyKeyboardInputCfg()
         {
             Directory.CreateDirectory(Sys.PathToControlsFolder);
-            string pathToCfg = Path.Combine(Sys.PathToControlsFolder, Sys.Settings.GameLaunchSettings.InGameConfigOption);
+            string pathToCfg = Path.Combine(
+                Sys.PathToControlsFolder,
+                Sys.Settings.GameLaunchSettings.InGameConfigOption
+            );
 
-            Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.UsingControlConfigurationFile)} {Sys.Settings.GameLaunchSettings.InGameConfigOption} ...");
+            Instance.RaiseProgressChanged(
+                $"\t{ResourceHelper.Get(StringKey.UsingControlConfigurationFile)} {Sys.Settings.GameLaunchSettings.InGameConfigOption} ..."
+            );
             if (!File.Exists(pathToCfg))
             {
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.InputCfgFileNotFoundAt)} {pathToCfg}", NLog.LogLevel.Warn);
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.InputCfgFileNotFoundAt)} {pathToCfg}",
+                    NLog.LogLevel.Warn
+                );
                 return false;
             }
 
@@ -1340,20 +1799,26 @@ namespace AppUI.Classes
                 string targetFolder = Sys.Settings.FF8InstalledVersion switch
                 {
                     FF8Version.Steam => GameConverter.GetSteamFF8UserPath(),
-                    FF8Version.Remastered or FF8Version.GOG => GameConverter.GetRemasteredFF8StorePath(),
-                    _ => Path.GetDirectoryName(Sys.Settings.FF8Exe)
+                    FF8Version.Remastered or FF8Version.GOG =>
+                        GameConverter.GetRemasteredFF8StorePath(),
+                    _ => Path.GetDirectoryName(Sys.Settings.FF8Exe),
                 };
                 string targetPath = Path.Combine(targetFolder, "ff8input.cfg");
 
                 Directory.CreateDirectory(targetFolder);
 
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.Copying)} {pathToCfg} -> {targetPath} ...");
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.Copying)} {pathToCfg} -> {targetPath} ..."
+                );
                 File.Copy(pathToCfg, targetPath, true);
             }
             catch (Exception e)
             {
                 Logger.Error(e);
-                Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.FailedToCopyCfgFile)}: {e.Message}", NLog.LogLevel.Error);
+                Instance.RaiseProgressChanged(
+                    $"\t{ResourceHelper.Get(StringKey.FailedToCopyCfgFile)}: {e.Message}",
+                    NLog.LogLevel.Error
+                );
                 return false;
             }
 
@@ -1379,7 +1844,8 @@ namespace AppUI.Classes
         {
             bool ret = false;
 
-            string fileName = Sys.Settings.FF8InstalledVersion == FF8Version.Steam ? "chocobo_en" : "chocobo";
+            string fileName =
+                Sys.Settings.FF8InstalledVersion == FF8Version.Steam ? "chocobo_en" : "chocobo";
             ret = Process.GetProcessesByName(fileName).Length > 0;
 
             if (!ret && Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
@@ -1418,7 +1884,6 @@ namespace AppUI.Classes
             }
         }
 
-
         /// <summary>
         /// Kills any currently running process found in <see cref="_sideLoadProcesses"/>
         /// </summary>
@@ -1452,12 +1917,18 @@ namespace AppUI.Classes
             // Cleanup any old report older than 1 day
 
             DirectoryInfo dir = new DirectoryInfo(Sys.PathToCrashReports);
-            FileInfo[] files = dir.GetFiles().Where(file => file.CreationTime < DateTime.Now.AddDays(-1)).ToArray();
-            foreach (FileInfo file in files) file.Delete();
+            FileInfo[] files = dir.GetFiles()
+                .Where(file => file.CreationTime < DateTime.Now.AddDays(-1))
+                .ToArray();
+            foreach (FileInfo file in files)
+                file.Delete();
 
             // Create the new report
 
-            var zipOutPath = Path.Combine(Sys.PathToCrashReports, $"J8CrashReport-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.zip");
+            var zipOutPath = Path.Combine(
+                Sys.PathToCrashReports,
+                $"J8CrashReport-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.zip"
+            );
 
             // Flush logs before saving in order to obtain any possible leftover in memory
             Logger.Factory.Flush(0);
@@ -1485,7 +1956,13 @@ namespace AppUI.Classes
 
                 if (!string.IsNullOrWhiteSpace(saveRootPath) && Directory.Exists(saveRootPath))
                 {
-                    foreach (string file in Directory.EnumerateFiles(saveRootPath, saveFilePattern, SearchOption.AllDirectories))
+                    foreach (
+                        string file in Directory.EnumerateFiles(
+                            saveRootPath,
+                            saveFilePattern,
+                            SearchOption.AllDirectories
+                        )
+                    )
                     {
                         string relativePath = Path.GetRelativePath(saveRootPath, file);
                         archive.AddEntry(Path.Combine("save", relativePath), file);
@@ -1493,21 +1970,29 @@ namespace AppUI.Classes
                 }
 
                 // === FFNx files ===
-                if (File.Exists(Sys.PathToFFNxLog)) archive.AddEntry("FFNx.log", Sys.PathToFFNxLog);
+                if (File.Exists(Sys.PathToFFNxLog))
+                    archive.AddEntry("FFNx.log", Sys.PathToFFNxLog);
                 archive.AddEntry("FFNx.toml", Sys.PathToFFNxToml);
 
                 // === App files ===
                 archive.AddEntry("AppLoader.log", Path.Combine(Sys.InstallPath, "AppLoader.log"));
-                archive.AddEntry("applog.txt", File.Open(Sys.PathToApplog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                archive.AddEntry(
+                    "applog.txt",
+                    File.Open(Sys.PathToApplog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                );
                 archive.AddEntry("settings.xml", Sys.PathToSettings);
 
                 string rt = Path.Combine(Sys.PathToTempFolder, "registry_transaction.bat");
-                if (File.Exists(rt)) archive.AddEntry(Path.GetFileName(rt), rt);
+                if (File.Exists(rt))
+                    archive.AddEntry(Path.GetFileName(rt), rt);
 
                 // Convert profile.xml to profile.txt
                 Profile currentProfile = Util.Deserialize<Profile>(Sys.PathToCurrentProfileFile);
                 IEnumerable<string> profileDetails = currentProfile.GetDetails();
-                File.WriteAllLines(Path.Combine(Sys.PathToTempFolder, "profile.txt"), profileDetails);
+                File.WriteAllLines(
+                    Path.Combine(Sys.PathToTempFolder, "profile.txt"),
+                    profileDetails
+                );
                 archive.AddEntry("profile.txt", Path.Combine(Sys.PathToTempFolder, "profile.txt"));
 
                 // =================================================================================================
@@ -1529,7 +2014,9 @@ namespace AppUI.Classes
             {
                 if (!_sideLoadProcesses.ContainsKey(program))
                 {
-                    Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.StartingProgram)}: {program.PathToProgram}");
+                    Instance.RaiseProgressChanged(
+                        $"\t{ResourceHelper.Get(StringKey.StartingProgram)}: {program.PathToProgram}"
+                    );
                     ProcessStartInfo psi = new ProcessStartInfo()
                     {
                         WorkingDirectory = Path.GetDirectoryName(program.PathToProgram),
@@ -1549,15 +2036,26 @@ namespace AppUI.Classes
 
                     if (program.WaitForWindowToShow)
                     {
-                        Instance.RaiseProgressChanged($"\t\t{ResourceHelper.Get(StringKey.WaitingForProgramToInitializeAndShow)}");
+                        Instance.RaiseProgressChanged(
+                            $"\t\t{ResourceHelper.Get(StringKey.WaitingForProgramToInitializeAndShow)}"
+                        );
 
                         DateTime startTime = DateTime.Now;
 
-                        while (aproc.MainWindowHandle == IntPtr.Zero && mainWindowHandle == IntPtr.Zero)
+                        while (
+                            aproc.MainWindowHandle == IntPtr.Zero && mainWindowHandle == IntPtr.Zero
+                        )
                         {
-                            if (program.WaitTimeOutInSeconds != 0 && DateTime.Now.Subtract(startTime).TotalSeconds > program.WaitTimeOutInSeconds)
+                            if (
+                                program.WaitTimeOutInSeconds != 0
+                                && DateTime.Now.Subtract(startTime).TotalSeconds
+                                    > program.WaitTimeOutInSeconds
+                            )
                             {
-                                Instance.RaiseProgressChanged($"\t\t{string.Format(ResourceHelper.Get(StringKey.TimeoutReachedWaitingForProgramToShow), program.WaitTimeOutInSeconds)}", NLog.LogLevel.Warn);
+                                Instance.RaiseProgressChanged(
+                                    $"\t\t{string.Format(ResourceHelper.Get(StringKey.TimeoutReachedWaitingForProgramToShow), program.WaitTimeOutInSeconds)}",
+                                    NLog.LogLevel.Warn
+                                );
                                 break;
                             }
 
@@ -1569,15 +2067,18 @@ namespace AppUI.Classes
                                 // ... necessary because some programs (Speed Hack) will open multiple processes and the Main Window Handle needs to be found since it is different from the original process started
                                 mainWindowHandle = FindWindow(null, program.WindowTitle);
                             }
-
-                        };
+                        }
+                        ;
                     }
 
                     // force the process to become minimized
                     if (aproc.MainWindowHandle != IntPtr.Zero || mainWindowHandle != IntPtr.Zero)
                     {
                         Logger.Info($"\t\t{ResourceHelper.Get(StringKey.ForceMinimizingProgram)}");
-                        IntPtr handleToMinimize = aproc.MainWindowHandle != IntPtr.Zero ? aproc.MainWindowHandle : mainWindowHandle;
+                        IntPtr handleToMinimize =
+                            aproc.MainWindowHandle != IntPtr.Zero
+                                ? aproc.MainWindowHandle
+                                : mainWindowHandle;
 
                         System.Threading.Thread.Sleep(1500); // add a small delay to ensure the program is showing in taskbar before force minimizing;
                         ShowWindow(handleToMinimize.ToInt32(), SW_FORCEMINIMIZE);
@@ -1587,12 +2088,14 @@ namespace AppUI.Classes
                 {
                     if (!_sideLoadProcesses[program].HasExited)
                     {
-                        Instance.RaiseProgressChanged($"\t{ResourceHelper.Get(StringKey.ProgramAlreadyRunning)}: {program.PathToProgram}", NLog.LogLevel.Warn);
+                        Instance.RaiseProgressChanged(
+                            $"\t{ResourceHelper.Get(StringKey.ProgramAlreadyRunning)}: {program.PathToProgram}",
+                            NLog.LogLevel.Warn
+                        );
                     }
                 }
             }
         }
-
 
         /// <summary>
         /// Starts the processes with the specified arguments that are set in <see cref="Sys.Settings.ProgramsToLaunchPrior"/>.
@@ -1600,7 +2103,11 @@ namespace AppUI.Classes
         internal void LaunchAdditionalProgramsToRunPrior()
         {
             // launch other processes set in settings
-            foreach (ProgramLaunchInfo al in Sys.Settings.ProgramsToLaunchPrior.Where(s => !String.IsNullOrWhiteSpace(s.PathToProgram)))
+            foreach (
+                ProgramLaunchInfo al in Sys.Settings.ProgramsToLaunchPrior.Where(s =>
+                    !String.IsNullOrWhiteSpace(s.PathToProgram)
+                )
+            )
             {
                 try
                 {
@@ -1623,7 +2130,10 @@ namespace AppUI.Classes
                 catch (Exception e)
                 {
                     Logger.Warn(e);
-                    Instance.RaiseProgressChanged($"\t{string.Format(ResourceHelper.Get(StringKey.FailedToStartAdditionalProgram), al.PathToProgram)}", NLog.LogLevel.Warn);
+                    Instance.RaiseProgressChanged(
+                        $"\t{string.Format(ResourceHelper.Get(StringKey.FailedToStartAdditionalProgram), al.PathToProgram)}",
+                        NLog.LogLevel.Warn
+                    );
                 }
             }
         }
@@ -1643,8 +2153,5 @@ namespace AppUI.Classes
         {
             LaunchCompleted?.Invoke(didLaunch);
         }
-
-
-
     }
 }

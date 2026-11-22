@@ -1,9 +1,9 @@
-﻿using AppCore;
-using Iros.Workshop;
+﻿using System.IO;
+using System.Windows;
+using AppCore;
 using AppUI.Classes;
 using AppUI.ViewModels;
-using System.IO;
-using System.Windows;
+using Iros.Workshop;
 
 namespace AppUI.Windows
 {
@@ -15,7 +15,7 @@ namespace AppUI.Windows
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public GeneralSettingsViewModel ViewModel { get; set; }
-        
+
         private UpdateChecker CoreUpdater = new UpdateChecker();
 
         private FFNxDriverUpdater FFNxUpdater = new FFNxDriverUpdater();
@@ -65,18 +65,29 @@ namespace AppUI.Windows
                 initialDir = Path.GetDirectoryName(ViewModel.FF8ExePathInput);
             }
 
-            string exePath = FileDialogHelper.BrowseForFile("*.exe|*.exe", ResourceHelper.Get(StringKey.SelectFf8Exe), initialDir);
+            string exePath = FileDialogHelper.BrowseForFile(
+                "*.exe|*.exe",
+                ResourceHelper.Get(StringKey.SelectFf8Exe),
+                initialDir
+            );
 
             if (!string.IsNullOrEmpty(exePath))
             {
                 FileInfo fileSelected = new FileInfo(exePath);
 
-                if (fileSelected.Name.Equals("FF8Config.exe", System.StringComparison.InvariantCultureIgnoreCase))
+                if (
+                    fileSelected.Name.Equals(
+                        "FF8Config.exe",
+                        System.StringComparison.InvariantCultureIgnoreCase
+                    )
+                )
                 {
-                    MessageDialogWindow.Show(ResourceHelper.Get(StringKey.ThisExeIsUsedForConfiguringFf8Settings),
-                                             ResourceHelper.Get(StringKey.ErrorIncorrectExe),
-                                             MessageBoxButton.OK,
-                                             MessageBoxImage.Error);
+                    MessageDialogWindow.Show(
+                        ResourceHelper.Get(StringKey.ThisExeIsUsedForConfiguringFf8Settings),
+                        ResourceHelper.Get(StringKey.ErrorIncorrectExe),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                     return;
                 }
 
@@ -86,7 +97,10 @@ namespace AppUI.Windows
 
         private void btnLibrary_Click(object sender, RoutedEventArgs e)
         {
-            string folderPath = FileDialogHelper.BrowseForFolder(ResourceHelper.Get(StringKey.SelectJunctionVIIILibraryFolder), ViewModel.LibraryPathInput);
+            string folderPath = FileDialogHelper.BrowseForFolder(
+                ResourceHelper.Get(StringKey.SelectJunctionVIIILibraryFolder),
+                ViewModel.LibraryPathInput
+            );
 
             if (!string.IsNullOrEmpty(folderPath))
             {
@@ -109,7 +123,6 @@ namespace AppUI.Windows
                     txtLibrary.CaretIndex = ViewModel.LibraryPathInput.Length;
                     var rect = txtLibrary.GetRectFromCharacterIndex(txtLibrary.CaretIndex);
                     txtLibrary.ScrollToHorizontalOffset(rect.Right);
-
                 }
 
                 if (!string.IsNullOrWhiteSpace(ViewModel.FF8ExePathInput))
@@ -141,7 +154,9 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.EditSelectedSubscription((lstSubscriptions.SelectedItem as SubscriptionSettingViewModel));
+            ViewModel.EditSelectedSubscription(
+                (lstSubscriptions.SelectedItem as SubscriptionSettingViewModel)
+            );
         }
 
         private void btnRemoveUrl_Click(object sender, RoutedEventArgs e)
@@ -157,7 +172,9 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.RemoveSelectedSubscription((lstSubscriptions.SelectedItem as SubscriptionSettingViewModel));
+            ViewModel.RemoveSelectedSubscription(
+                (lstSubscriptions.SelectedItem as SubscriptionSettingViewModel)
+            );
         }
 
         /// <summary>
@@ -186,7 +203,10 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.MoveSelectedSubscription((lstSubscriptions.SelectedItem as SubscriptionSettingViewModel), +1);
+            ViewModel.MoveSelectedSubscription(
+                (lstSubscriptions.SelectedItem as SubscriptionSettingViewModel),
+                +1
+            );
         }
 
         private void btnMoveUrlUp_Click(object sender, RoutedEventArgs e)
@@ -202,7 +222,10 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.MoveSelectedSubscription((lstSubscriptions.SelectedItem as SubscriptionSettingViewModel), -1);
+            ViewModel.MoveSelectedSubscription(
+                (lstSubscriptions.SelectedItem as SubscriptionSettingViewModel),
+                -1
+            );
         }
 
         /// <summary>
@@ -259,7 +282,10 @@ namespace AppUI.Windows
             ViewModel.ExtraFolderList.Remove((lstExtraFolders.SelectedItem as string));
         }
 
-        private void btnMoveUrlUp_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void btnMoveUrlUp_MouseRightButtonUp(
+            object sender,
+            System.Windows.Input.MouseButtonEventArgs e
+        )
         {
             if (ViewModel.IsSubscriptionPopupOpen)
             {
@@ -272,11 +298,16 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.MoveSelectedSubscription((lstSubscriptions.SelectedItem as SubscriptionSettingViewModel), 0 - lstSubscriptions.SelectedIndex);
-
+            ViewModel.MoveSelectedSubscription(
+                (lstSubscriptions.SelectedItem as SubscriptionSettingViewModel),
+                0 - lstSubscriptions.SelectedIndex
+            );
         }
 
-        private void btnMoveUrlDown_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void btnMoveUrlDown_MouseRightButtonUp(
+            object sender,
+            System.Windows.Input.MouseButtonEventArgs e
+        )
         {
             if (ViewModel.IsSubscriptionPopupOpen)
             {
@@ -289,8 +320,10 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.MoveSelectedSubscription((lstSubscriptions.SelectedItem as SubscriptionSettingViewModel), (ViewModel.SubscriptionList.Count - 1) - lstSubscriptions.SelectedIndex);
-
+            ViewModel.MoveSelectedSubscription(
+                (lstSubscriptions.SelectedItem as SubscriptionSettingViewModel),
+                (ViewModel.SubscriptionList.Count - 1) - lstSubscriptions.SelectedIndex
+            );
         }
 
         private void btnMoveFolderUp_Click(object sender, RoutedEventArgs e)
@@ -315,7 +348,10 @@ namespace AppUI.Windows
             ViewModel.MoveSelectedFolder((lstExtraFolders.SelectedItem as string), +1);
         }
 
-        private void btnMoveFolderUp_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void btnMoveFolderUp_MouseRightButtonUp(
+            object sender,
+            System.Windows.Input.MouseButtonEventArgs e
+        )
         {
             if (lstExtraFolders.SelectedItem == null)
             {
@@ -323,10 +359,16 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.MoveSelectedFolder((lstExtraFolders.SelectedItem as string), 0 - lstExtraFolders.SelectedIndex);
+            ViewModel.MoveSelectedFolder(
+                (lstExtraFolders.SelectedItem as string),
+                0 - lstExtraFolders.SelectedIndex
+            );
         }
 
-        private void btnMoveFolderDown_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void btnMoveFolderDown_MouseRightButtonUp(
+            object sender,
+            System.Windows.Input.MouseButtonEventArgs e
+        )
         {
             if (lstExtraFolders.SelectedItem == null)
             {
@@ -334,7 +376,10 @@ namespace AppUI.Windows
                 return;
             }
 
-            ViewModel.MoveSelectedFolder((lstExtraFolders.SelectedItem as string), (ViewModel.ExtraFolderList.Count - 1) - lstExtraFolders.SelectedIndex);
+            ViewModel.MoveSelectedFolder(
+                (lstExtraFolders.SelectedItem as string),
+                (ViewModel.ExtraFolderList.Count - 1) - lstExtraFolders.SelectedIndex
+            );
         }
 
         private void btnDefaults_Click(object sender, RoutedEventArgs e)
@@ -342,11 +387,15 @@ namespace AppUI.Windows
             ViewModel.ResetToDefaults();
         }
 
-        private void cmbFFNxChannel_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void cmbFFNxChannel_SelectionChanged(
+            object sender,
+            System.Windows.Controls.SelectionChangedEventArgs e
+        )
         {
             if (ViewModel != null)
             {
-                ViewModel.FFNxUpdateChannel = (FFNxUpdateChannelOptions)cmbFFNxChannel.SelectedIndex;
+                ViewModel.FFNxUpdateChannel = (FFNxUpdateChannelOptions)
+                    cmbFFNxChannel.SelectedIndex;
 
                 // Bypass the default save button in order to make the Check for Updates button work instantly
                 Sys.Settings.FFNxUpdateChannel = ViewModel.FFNxUpdateChannel;
@@ -354,12 +403,20 @@ namespace AppUI.Windows
                 // Inform the user about canary being unstable
                 if (Sys.Settings.FFNxUpdateChannel == FFNxUpdateChannelOptions.Canary)
                 {
-                    MessageDialogWindow.Show(ResourceHelper.Get(StringKey.CanaryWarningMessage), ResourceHelper.Get(StringKey.CanaryWarningTitle), System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    MessageDialogWindow.Show(
+                        ResourceHelper.Get(StringKey.CanaryWarningMessage),
+                        ResourceHelper.Get(StringKey.CanaryWarningTitle),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning
+                    );
                 }
             }
         }
 
-        private void cmbJ8Channel_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void cmbJ8Channel_SelectionChanged(
+            object sender,
+            System.Windows.Controls.SelectionChangedEventArgs e
+        )
         {
             if (ViewModel != null)
             {
@@ -371,7 +428,12 @@ namespace AppUI.Windows
                 // Inform the user about canary being unstable
                 if (Sys.Settings.AppUpdateChannel == AppUpdateChannelOptions.Canary)
                 {
-                    MessageDialogWindow.Show(ResourceHelper.Get(StringKey.CanaryWarningMessage), ResourceHelper.Get(StringKey.CanaryWarningTitle), System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    MessageDialogWindow.Show(
+                        ResourceHelper.Get(StringKey.CanaryWarningMessage),
+                        ResourceHelper.Get(StringKey.CanaryWarningTitle),
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning
+                    );
                 }
             }
         }

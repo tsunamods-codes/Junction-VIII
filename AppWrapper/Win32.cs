@@ -12,9 +12,10 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
 
-namespace AppWrapper {
-    public static class Win32 {
-
+namespace AppWrapper
+{
+    public static class Win32
+    {
         public enum DEP_SYSTEM_POLICY_TYPE
         {
             DEPPolicyAlwaysOff = 0,
@@ -28,7 +29,7 @@ namespace AppWrapper {
         {
             Begin = 0,
             Current = 1,
-            End = 2
+            End = 2,
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -64,8 +65,10 @@ namespace AppWrapper {
             public uint nFileSizeLow;
             public uint dwReserved0;
             public uint dwReserved1;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
             public string cFileName;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
             public string cAlternateFileName;
         }
@@ -73,17 +76,18 @@ namespace AppWrapper {
         public enum FINDEX_INFO_LEVELS
         {
             FindExInfoStandard = 0,
-            FindExInfoBasic = 1
+            FindExInfoBasic = 1,
         }
 
         public enum FINDEX_SEARCH_OPS
         {
             FindExSearchNameMatch = 0,
             FindExSearchLimitToDirectories = 1,
-            FindExSearchLimitToDevices = 2
+            FindExSearchLimitToDevices = 2,
         }
 
-        public struct OVERLAPPED {
+        public struct OVERLAPPED
+        {
             public UIntPtr Internal;
             public UIntPtr InternalHigh;
             public uint Offset;
@@ -94,7 +98,7 @@ namespace AppWrapper {
         public enum GET_FILEEX_INFO_LEVELS
         {
             GetFileExInfoStandard,
-            GetFileExMaxInfoLevel
+            GetFileExMaxInfoLevel,
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -113,13 +117,17 @@ namespace AppWrapper {
         // -------------------------------------------------------------------------------------------------------------------------------------------
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        internal delegate void ReadFileCompletionDelegate(int dwErrorCode, int dwNumBytesTransferred, ref OVERLAPPED lpOverlapped);
+        internal delegate void ReadFileCompletionDelegate(
+            int dwErrorCode,
+            int dwNumBytesTransferred,
+            ref OVERLAPPED lpOverlapped
+        );
 
         // -------------------------------------------------------------------------------------------------------------------------------------------
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static internal extern bool CloseHandle(IntPtr hObject);
+        internal static extern bool CloseHandle(IntPtr hObject);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr CreateFileW(
@@ -129,41 +137,70 @@ namespace AppWrapper {
             IntPtr lpSecurityAttributes,
             [MarshalAs(UnmanagedType.U4)] FileMode dwCreationDisposition,
             [MarshalAs(UnmanagedType.U4)] FileAttributes dwFlagsAndAttributes,
-            IntPtr hTemplateFile);
+            IntPtr hTemplateFile
+        );
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool DuplicateHandle(IntPtr hSourceProcessHandle,
-           IntPtr hSourceHandle, IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle,
-           uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
+        internal static extern bool DuplicateHandle(
+            IntPtr hSourceProcessHandle,
+            IntPtr hSourceHandle,
+            IntPtr hTargetProcessHandle,
+            out IntPtr lpTargetHandle,
+            uint dwDesiredAccess,
+            [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle,
+            uint dwOptions
+        );
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static internal extern bool GetFileInformationByHandle(
+        internal static extern bool GetFileInformationByHandle(
             IntPtr hFile,
             out BY_HANDLE_FILE_INFORMATION lpFileInformation
         );
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static internal extern int ReadFile(IntPtr handle, IntPtr bytes, uint numBytesToRead, ref uint numBytesRead, IntPtr overlapped);
+        internal static extern int ReadFile(
+            IntPtr handle,
+            IntPtr bytes,
+            uint numBytesToRead,
+            ref uint numBytesRead,
+            IntPtr overlapped
+        );
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static internal extern int ReadFile(IntPtr handle, IntPtr bytes, uint numBytesToRead, ref uint numBytesRead, ref OVERLAPPED overlapped);
+        internal static extern int ReadFile(
+            IntPtr handle,
+            IntPtr bytes,
+            uint numBytesToRead,
+            ref uint numBytesRead,
+            ref OVERLAPPED overlapped
+        );
 
         [DllImport("kernel32.dll")]
-        static extern bool ReadFileEx(IntPtr hFile, [Out] byte[] lpBuffer,
-           uint nNumberOfBytesToRead, [In] ref System.Threading.NativeOverlapped lpOverlapped,
-           ReadFileCompletionDelegate lpCompletionRoutine);
+        static extern bool ReadFileEx(
+            IntPtr hFile,
+            [Out] byte[] lpBuffer,
+            uint nNumberOfBytesToRead,
+            [In] ref System.Threading.NativeOverlapped lpOverlapped,
+            ReadFileCompletionDelegate lpCompletionRoutine
+        );
 
         [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static internal extern int SetFilePointer(
+        internal static extern int SetFilePointer(
             [In] IntPtr hFile,
             [In] int lDistanceToMove,
             [In] IntPtr lpDistanceToMoveHigh,
-            [In] EMoveMethod dwMoveMethod);
+            [In] EMoveMethod dwMoveMethod
+        );
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static internal extern int WriteFile(IntPtr hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite,
-            out uint lpNumberOfBytesWritten, [In] ref System.Threading.NativeOverlapped lpOverlapped);
+        internal static extern int WriteFile(
+            IntPtr hFile,
+            IntPtr lpBuffer,
+            uint nNumberOfBytesToWrite,
+            out uint lpNumberOfBytesWritten,
+            [In] ref System.Threading.NativeOverlapped lpOverlapped
+        );
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr FindFirstFileExW(
@@ -176,10 +213,7 @@ namespace AppWrapper {
         );
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr FindFirstFileW(
-            string lpFileName,
-            IntPtr lpFindFileData
-        );
+        public static extern IntPtr FindFirstFileW(string lpFileName, IntPtr lpFindFileData);
 
         [DllImport("kernel32", ExactSpelling = true)]
         public static extern DEP_SYSTEM_POLICY_TYPE GetSystemDEPPolicy();
@@ -187,26 +221,27 @@ namespace AppWrapper {
         /// <summary>Checks whether a process is being debugged.</summary>
         /// <remarks>
         /// The "remote" in CheckRemoteDebuggerPresent does not imply that the debugger
-        /// necessarily resides on a different computer; instead, it indicates that the 
+        /// necessarily resides on a different computer; instead, it indicates that the
         /// debugger resides in a separate and parallel process.
         /// <para/>
-        /// Use the IsDebuggerPresent function to detect whether the calling process 
+        /// Use the IsDebuggerPresent function to detect whether the calling process
         /// is running under the debugger.
         /// </remarks>
         [DllImport("Kernel32.dll", SetLastError = true, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CheckRemoteDebuggerPresent(
             IntPtr hProcess,
-            [MarshalAs(UnmanagedType.Bool)] ref bool isDebuggerPresent);
+            [MarshalAs(UnmanagedType.Bool)] ref bool isDebuggerPresent
+        );
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern bool GetFileAttributesExW(
-        string lpFileName,
-        GET_FILEEX_INFO_LEVELS fInfoLevelId,
-        IntPtr lpFileInformation);
+            string lpFileName,
+            GET_FILEEX_INFO_LEVELS fInfoLevelId,
+            IntPtr lpFileInformation
+        );
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool SetLastError(uint dwErrCode);
     }
-
 }

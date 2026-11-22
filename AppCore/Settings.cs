@@ -3,7 +3,6 @@
   The original developer is Iros <irosff@outlook.com>
 */
 
-using AppCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,19 +11,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using AppCore;
 
-namespace Iros.Workshop {
-
+namespace Iros.Workshop
+{
     public enum FF8Version
     {
         Unknown = -1,
         Steam,
         Original2K,
         Remastered,
-        GOG
+        GOG,
     }
 
-    public enum GeneralOptions {
+    public enum GeneralOptions
+    {
         None = 0,
         KeepOldVersions,
         AutoActiveNewMods,
@@ -36,28 +37,30 @@ namespace Iros.Workshop {
         ShowJ8InFileExplorerContextMenu,
         WarnAboutModCode, // Retained for compatibility with existing settings; code warnings are mandatory.
         AutoUpdateMods,
-        AutoSortMods
+        AutoSortMods,
     }
 
     public enum AppUpdateChannelOptions
     {
         Stable = 0,
-        Canary
+        Canary,
     }
 
     public enum FFNxUpdateChannelOptions
     {
         Stable = 0,
-        Canary
+        Canary,
     }
 
     [Flags]
-    public enum InterfaceOptions {
+    public enum InterfaceOptions
+    {
         None = 0,
         ProfileCollapse = 0x1,
     }
 
-    public class SavedWindow {
+    public class SavedWindow
+    {
         public int X { get; set; }
         public int Y { get; set; }
         public int W { get; set; }
@@ -65,12 +68,12 @@ namespace Iros.Workshop {
         public WindowState State { get; set; }
     }
 
-    public class Subscription {
+    public class Subscription
+    {
         public DateTime LastSuccessfulCheck { get; set; }
         public int FailureCount { get; set; }
         public string Url { get; set; }
         public string Name { get; set; }
-
     }
 
     public class ProgramLaunchInfo
@@ -79,18 +82,28 @@ namespace Iros.Workshop {
         public string ProgramArgs { get; set; }
     }
 
-    public class Settings {
-
-        public IEnumerable<string> VerifySettings() {
+    public class Settings
+    {
+        public IEnumerable<string> VerifySettings()
+        {
             bool validexe = System.IO.File.Exists(FF8Exe);
-            if (!validexe) yield return "FF8 Exe: " + FF8Exe + " not found";
-            foreach (var al in ProgramsToLaunchPrior.Where(s => !String.IsNullOrWhiteSpace(s.PathToProgram)))
-                if (!System.IO.File.Exists(al.PathToProgram)) yield return "AlsoLaunch: " + al.PathToProgram + " not found";
-            if (validexe) {
+            if (!validexe)
+                yield return "FF8 Exe: " + FF8Exe + " not found";
+            foreach (
+                var al in ProgramsToLaunchPrior.Where(s =>
+                    !String.IsNullOrWhiteSpace(s.PathToProgram)
+                )
+            )
+                if (!System.IO.File.Exists(al.PathToProgram))
+                    yield return "AlsoLaunch: " + al.PathToProgram + " not found";
+            if (validexe)
+            {
                 string ff8folder = System.IO.Path.GetDirectoryName(FF8Exe);
-                foreach (string extra in ExtraFolders.Where(s => !String.IsNullOrWhiteSpace(s))) {
+                foreach (string extra in ExtraFolders.Where(s => !String.IsNullOrWhiteSpace(s)))
+                {
                     string path = System.IO.Path.Combine(ff8folder, extra);
-                    if (!System.IO.Directory.Exists(path)) yield return "Extra Folder: " + path + " not found";
+                    if (!System.IO.Directory.Exists(path))
+                        yield return "Extra Folder: " + path + " not found";
                 }
             }
         }
@@ -99,18 +112,16 @@ namespace Iros.Workshop {
 
         public List<string> SubscribedUrls
         {
-            get
-            {
-                return Subscriptions?.Select(s => s.Url).ToList();
-            }
+            get { return Subscriptions?.Select(s => s.Url).ToList(); }
         }
 
         public List<string> ExtraFolders { get; set; }
         public List<Subscription> Subscriptions { get; set; }
 
         public string LibraryLocation { get; set; } = string.Empty;
-        
+
         public string FF8Exe { get; set; }
+
         [System.Xml.Serialization.XmlElement("AlsoLaunch")]
         public List<ProgramLaunchInfo> ProgramsToLaunchPrior { get; set; }
         public FF8Version FF8InstalledVersion { get; set; }
@@ -136,7 +147,8 @@ namespace Iros.Workshop {
 
         public ColumnSettings UserColumnSettings { get; set; }
 
-        public Settings() {
+        public Settings()
+        {
             ExtraFolders = new List<string>();
             ProgramsToLaunchPrior = new List<ProgramLaunchInfo>();
             Subscriptions = new List<Subscription>();
@@ -173,7 +185,14 @@ namespace Iros.Workshop {
             defaultSettings.Options.Add(GeneralOptions.OpenModFilesWithJ8);
             defaultSettings.Options.Add(GeneralOptions.CheckForUpdates);
 
-            defaultSettings.Subscriptions.Add(new Subscription() { Url = "iroj://Url/https$github.com/tsunamods-codes/Junction-VIII-Catalogs/releases/download/canary/tsunamods.xml", Name = "Tsunamods Catalog" });
+            defaultSettings.Subscriptions.Add(
+                new Subscription()
+                {
+                    Url =
+                        "iroj://Url/https$github.com/tsunamods-codes/Junction-VIII-Catalogs/releases/download/canary/tsunamods.xml",
+                    Name = "Tsunamods Catalog",
+                }
+            );
 
             defaultSettings.ExtraFolders.Add("ambient");
             defaultSettings.ExtraFolders.Add("direct");
@@ -212,14 +231,23 @@ namespace Iros.Workshop {
         {
             FF8Exe = Sys.Settings.FF8InstalledVersion switch
             {
-                FF8Version.Original2K or FF8Version.Remastered or FF8Version.GOG => Path.Combine(pathToFf8Install, "FF8.exe"),
-                _ => Path.Combine(pathToFf8Install, "ff8_en.exe")
+                FF8Version.Original2K or FF8Version.Remastered or FF8Version.GOG => Path.Combine(
+                    pathToFf8Install,
+                    "FF8.exe"
+                ),
+                _ => Path.Combine(pathToFf8Install, "ff8_en.exe"),
             };
 
             if (LibraryLocation == string.Empty)
             {
                 string appLibraryPath = Environment.GetEnvironmentVariable("APP_LIBRARY_PATH");
-                LibraryLocation = appLibraryPath != null ? appLibraryPath : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Junction VIII");
+                LibraryLocation =
+                    appLibraryPath != null
+                        ? appLibraryPath
+                        : Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                            @"Junction VIII"
+                        );
             }
 
             LogAndCreateFolderIfNotExists(LibraryLocation);
@@ -234,7 +262,12 @@ namespace Iros.Workshop {
         {
             if (!Directory.Exists(pathToFolder))
             {
-                Sys.Message(new WMessage($"directory missing. creating {pathToFolder}", WMessageLogLevel.LogOnly));
+                Sys.Message(
+                    new WMessage(
+                        $"directory missing. creating {pathToFolder}",
+                        WMessageLogLevel.LogOnly
+                    )
+                );
                 Directory.CreateDirectory(pathToFolder);
             }
         }

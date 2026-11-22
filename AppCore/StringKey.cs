@@ -666,6 +666,6 @@
         GameLanguageJapanese,
         GameLanguageHeader,
         ShowOnlyLanguageCompatibleItems,
-        SimplifiedChinese
+        SimplifiedChinese,
     }
 }

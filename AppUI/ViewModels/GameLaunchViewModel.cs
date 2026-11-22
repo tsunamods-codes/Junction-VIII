@@ -1,10 +1,10 @@
-﻿using Iros.Workshop;
-using AppUI.Classes;
-using AppUI;
-using AppUI.ViewModels;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using AppUI;
+using AppUI.Classes;
+using AppUI.ViewModels;
+using Iros.Workshop;
 
 namespace AppUI.ViewModels
 {
@@ -25,10 +25,7 @@ namespace AppUI.ViewModels
 
         public string StatusLog
         {
-            get
-            {
-                return _statusLog;
-            }
+            get { return _statusLog; }
             set
             {
                 _statusLog = value;
@@ -49,7 +46,14 @@ namespace AppUI.ViewModels
                 {
                     GameLauncher.Instance.ProgressChanged += LaunchGame_ProgressChanged;
 
-                    didLaunch = GameLauncher.LaunchGame(variableDump, debugLogging, IsLaunchingWithNoMods, IsLaunchingChocobo).Result;
+                    didLaunch = GameLauncher
+                        .LaunchGame(
+                            variableDump,
+                            debugLogging,
+                            IsLaunchingWithNoMods,
+                            IsLaunchingChocobo
+                        )
+                        .Result;
                 }
                 finally
                 {
@@ -79,10 +83,13 @@ namespace AppUI.ViewModels
             // invoke on UI thread to show message asap to user
             if (Sys.Settings.GameLaunchSettings.ShowLauncherWindow)
             {
-                App.Current.Dispatcher.Invoke(() =>
-                {
-                    StatusLog += $"{message}\n";
-                }, DispatcherPriority.Background);
+                App.Current.Dispatcher.Invoke(
+                    () =>
+                    {
+                        StatusLog += $"{message}\n";
+                    },
+                    DispatcherPriority.Background
+                );
             }
 
             App.ForceUpdateUI();

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ConfigSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
+<ConfigSpec
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
   <!-- GRAPHICS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Gráficos</Group>
@@ -83,14 +85,14 @@
       <Text>Alongar para preencher</Text>
       <Settings>aspect_ratio = 1</Settings>
     </Option>
-	<Option>
-		<Text>Widescreen (16:9)</Text>
-		<Settings>aspect_ratio = 2</Settings>
-	</Option>
-	<Option>
-		<Text>Widescreen (16:10)</Text>
-		<Settings>aspect_ratio = 3</Settings>
-	</Option>
+    <Option>
+      <Text>Widescreen (16:9)</Text>
+      <Settings>aspect_ratio = 2</Settings>
+    </Option>
+    <Option>
+      <Text>Widescreen (16:10)</Text>
+      <Settings>aspect_ratio = 3</Settings>
+    </Option>
   </Setting>
 
   <Setting xsi:type="DropDown">
@@ -307,5 +309,4 @@
       <Settings>internal_resolution_scale = 8</Settings>
     </Option>
   </Setting>
-
 </ConfigSpec>

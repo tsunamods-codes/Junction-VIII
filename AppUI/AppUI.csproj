@@ -26,8 +26,7 @@
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AllowedReferenceRelatedFileExtensions>
@@ -63,7 +62,10 @@
     <None Remove="Resources\Controls\[Default] Steam KB+PlayStation %28Stock%29.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="false" />
+    <RuntimeHostConfigurationOption
+      Include="System.Net.SocketsHttpHandler.Http3Support"
+      Value="false"
+    />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DS4WindowsCore">
@@ -72,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\PS_Xbox_Icons\Unknown.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\PS_Xbox_Icons\Home_Guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -306,6 +308,10 @@
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
   <Target Name="J8AfterBuild" AfterTargets="AfterBuild">
-    <Copy SourceFiles="../AppProxy/bin/$(Configuration)/$(TargetFramework)/AppProxy.runtimeconfig.json" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+    <Copy
+      SourceFiles="../AppProxy/bin/$(Configuration)/$(TargetFramework)/AppProxy.runtimeconfig.json"
+      DestinationFolder="$(OutputPath)"
+      ContinueOnError="false"
+    />
   </Target>
 </Project>

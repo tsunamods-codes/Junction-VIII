@@ -1,12 +1,4 @@
-﻿using AppCore;
-using GameFinder.RegistryUtils;
-using GameFinder.StoreHandlers.GOG;
-using GameFinder.StoreHandlers.Steam;
-using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
-using Iros.Workshop;
-using Microsoft.Win32;
-using NexusMods.Paths;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,6 +7,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AppCore;
+using GameFinder.RegistryUtils;
+using GameFinder.StoreHandlers.GOG;
+using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
+using Iros.Workshop;
+using Microsoft.Win32;
+using NexusMods.Paths;
 using ValveKeyValue;
 
 namespace AppUI.Classes
@@ -65,19 +65,23 @@ namespace AppUI.Classes
                     foreach (var result in gogHandler.FindAllGames())
                     {
                         // using the switch method
-                        result.Switch(game =>
-                        {
-                            if (game.Id == gogGameId)
-                                installPath = game.Path.GetFullPath().Replace("/", "\\");
-                        }, error =>
-                        {
-                            // Do nothing
-                        });
+                        result.Switch(
+                            game =>
+                            {
+                                if (game.Id == gogGameId)
+                                    installPath = game.Path.GetFullPath().Replace("/", "\\");
+                            },
+                            error =>
+                            {
+                                // Do nothing
+                            }
+                        );
                     }
                     break;
 
                 case FF8Version.Original2K:
-                    installPath = RegistryHelper.GetValue(FF8RegKey.FF8AppKeyPath, "Path", "") as string;
+                    installPath =
+                        RegistryHelper.GetValue(FF8RegKey.FF8AppKeyPath, "Path", "") as string;
                     break;
             }
 
@@ -94,14 +98,17 @@ namespace AppUI.Classes
             foreach (var result in steamHandler.FindAllGames())
             {
                 // using the switch method
-                result.Switch(game =>
-                {
-                    if (game.AppId == steamGameId)
-                        installPath = game.Path.GetFullPath().Replace("/", "\\");
-                }, error =>
-                {
-                    // Do nothing
-                });
+                result.Switch(
+                    game =>
+                    {
+                        if (game.AppId == steamGameId)
+                            installPath = game.Path.GetFullPath().Replace("/", "\\");
+                    },
+                    error =>
+                    {
+                        // Do nothing
+                    }
+                );
             }
 
             return installPath;
@@ -125,11 +132,14 @@ namespace AppUI.Classes
 
             try
             {
-                if (!Directory.Exists(InstallPath) || !File.Exists(installerPath)) return false;
-                if (File.Exists(targetPath)) return true;
+                if (!Directory.Exists(InstallPath) || !File.Exists(installerPath))
+                    return false;
+                if (File.Exists(targetPath))
+                    return true;
 
                 byte[] installerData = File.ReadAllBytes(installerPath);
-                if (!EaxUnifiedExtractor.TryExtract(installerData, out byte[] eaxData)) return false;
+                if (!EaxUnifiedExtractor.TryExtract(installerData, out byte[] eaxData))
+                    return false;
 
                 File.WriteAllBytes(targetPath, eaxData);
                 return true;
@@ -143,25 +153,35 @@ namespace AppUI.Classes
 
         public static string GetSteamPath()
         {
-            string ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath32Bit, "SteamPath") as string;
+            string ret =
+                RegistryHelper.GetValue(RegistryHelper.SteamKeyPath32Bit, "SteamPath") as string;
 
-            if (ret == null) ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "SteamPath") as string;
+            if (ret == null)
+                ret =
+                    RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "SteamPath")
+                    as string;
 
-            return ret != null ? ret.Replace("/","\\") : ret;
+            return ret != null ? ret.Replace("/", "\\") : ret;
         }
 
         public static string GetSteamExePath()
         {
-            string ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath32Bit, "SteamExe", "") as string;
+            string ret =
+                RegistryHelper.GetValue(RegistryHelper.SteamKeyPath32Bit, "SteamExe", "") as string;
 
-            if (ret == null) ret = RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "SteamExe", "") as string;
+            if (ret == null)
+                ret =
+                    RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "SteamExe", "")
+                    as string;
 
-            return ret.Replace("/","\\");
+            return ret.Replace("/", "\\");
         }
 
         public static string GetSteamFF8UserPath()
         {
-            string ret = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Square Enix\\FINAL FANTASY VIII Steam";
+            string ret =
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                + "\\Square Enix\\FINAL FANTASY VIII Steam";
 
             return ret;
         }
@@ -186,12 +206,17 @@ namespace AppUI.Classes
         {
             string storePath = GetRemasteredFF8StorePath();
 
-            if (!Directory.Exists(storePath)) return string.Empty;
+            if (!Directory.Exists(storePath))
+                return string.Empty;
 
             // the store user id is a numeric folder
-            string userPath = Directory.EnumerateDirectories(storePath).FirstOrDefault(d => ulong.TryParse(Path.GetFileName(d), out _));
+            string userPath = Directory
+                .EnumerateDirectories(storePath)
+                .FirstOrDefault(d => ulong.TryParse(Path.GetFileName(d), out _));
 
-            return userPath == null ? string.Empty : Path.Combine(userPath, "game_data", "user", "saves");
+            return userPath == null
+                ? string.Empty
+                : Path.Combine(userPath, "game_data", "user", "saves");
         }
 
         public bool IsGamePirated()
@@ -203,7 +228,11 @@ namespace AppUI.Classes
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(subfolder);
 
-                if (foldersToExclude.Any(f => dirInfo.Name.Equals(f, StringComparison.InvariantCultureIgnoreCase)))
+                if (
+                    foldersToExclude.Any(f =>
+                        dirInfo.Name.Equals(f, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                )
                 {
                     continue; // don't check these folders for signs of pirated files
                 }
@@ -226,49 +255,81 @@ namespace AppUI.Classes
             }
 
             // check if steam api is a genuine one
-            using (FileStream fs = new FileStream(Path.Combine(InstallPath, "FFNx_steam_api.dll"), FileMode.Open))
+            using (
+                FileStream fs = new FileStream(
+                    Path.Combine(InstallPath, "FFNx_steam_api.dll"),
+                    FileMode.Open
+                )
+            )
             {
                 byte[] currentHash = SHA1.HashData(fs);
-                if (!currentHash.SequenceEqual(Convert.FromHexString("772AFA31BD0D16A79DD1D0036BB9A9CB8F2EAF30"))) return true;
+                if (
+                    !currentHash.SequenceEqual(
+                        Convert.FromHexString("772AFA31BD0D16A79DD1D0036BB9A9CB8F2EAF30")
+                    )
+                )
+                    return true;
             }
 
             // check if given exe is a genuine one
             if (Sys.Settings.FF8InstalledVersion == FF8Version.Steam)
             {
-                byte[][] requiredHashes = {
+                byte[][] requiredHashes =
+                {
                     Convert.FromHexString("03230C11328F8A1F9635435096E1659D9BFD002D"), // Steam
                     Convert.FromHexString("269C12BC1E4A127F60ABFF47A525F87B503DE615"), // Steam 4GB NTCore
                     Convert.FromHexString("3E6B9D8D70BEB51C0208021CC3164AD804B7FA7F"), // Steam 4GB JunctionVIII auto-patch
                 };
-                using (FileStream fs = new FileStream(Path.Combine(InstallPath, "ff8_en.exe"), FileMode.Open))
+                using (
+                    FileStream fs = new FileStream(
+                        Path.Combine(InstallPath, "ff8_en.exe"),
+                        FileMode.Open
+                    )
+                )
                 {
                     bool matchesAtLeastOne = false;
                     byte[] currentHash = SHA1.HashData(fs);
                     foreach (byte[] hash in requiredHashes)
                     {
-                        if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
+                        if (currentHash.SequenceEqual(hash))
+                        {
+                            matchesAtLeastOne = true;
+                            break;
+                        }
                     }
 
-                    if (!matchesAtLeastOne) return true;
+                    if (!matchesAtLeastOne)
+                        return true;
                 }
             }
             else
             {
-                byte[][] requiredHashes = {
+                byte[][] requiredHashes =
+                {
                     Convert.FromHexString("3FE6964B842CEEF85BA8080AE5D9B706D237C6F9"), // 1.0
                     Convert.FromHexString("C3E1CDDADBA30C3577325696D3969EEB078AA153"), // 1.2 NV
                     Convert.FromHexString("EC0CF23BA0CE54F6DF1BD046B217E6A127F1C088"), // 1.2 NV 4GB
                 };
-                using (FileStream fs = new FileStream(Path.Combine(InstallPath, "ff8.exe"), FileMode.Open))
+                using (
+                    FileStream fs = new FileStream(
+                        Path.Combine(InstallPath, "ff8.exe"),
+                        FileMode.Open
+                    )
+                )
                 {
                     bool matchesAtLeastOne = false;
                     byte[] currentHash = SHA1.HashData(fs);
                     foreach (byte[] hash in requiredHashes)
                     {
-                        if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
+                        if (currentHash.SequenceEqual(hash))
+                        {
+                            matchesAtLeastOne = true;
+                            break;
+                        }
                     }
 
-                    if (!matchesAtLeastOne) return true;
+                    if (!matchesAtLeastOne)
+                        return true;
                 }
             }
 
@@ -285,21 +346,32 @@ namespace AppUI.Classes
             // Check if bink32 is from 1.02 ( fixes vertically flipped movies )
             bool patchApplied = false;
 
-            byte[][] requiredHashes = {
+            byte[][] requiredHashes =
+            {
                 Convert.FromHexString("66D81FEB880C218BA9FF2AFDA41747A794B30446"), // 1.02
             };
             try
             {
-                using (FileStream fs = new FileStream(Path.Combine(InstallPath, "binkw32.dll"), FileMode.Open))
+                using (
+                    FileStream fs = new FileStream(
+                        Path.Combine(InstallPath, "binkw32.dll"),
+                        FileMode.Open
+                    )
+                )
                 {
                     bool matchesAtLeastOne = false;
                     byte[] currentHash = SHA1.HashData(fs);
                     foreach (byte[] hash in requiredHashes)
                     {
-                        if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
+                        if (currentHash.SequenceEqual(hash))
+                        {
+                            matchesAtLeastOne = true;
+                            break;
+                        }
                     }
 
-                    if (matchesAtLeastOne) patchApplied = true;
+                    if (matchesAtLeastOne)
+                        patchApplied = true;
                 }
             }
             catch (Exception)
@@ -328,14 +400,23 @@ namespace AppUI.Classes
         /// <param name="folderPath"> folder to loop over and check </param>
         private bool DirectoryHasPirates(string folderPath)
         {
-
             string[] filesToAllow = new string[] { "00422 [F - Crackling fire, looped].ogg" };
 
-            foreach (string fileEntry in Directory.GetFileSystemEntries(folderPath, "*", SearchOption.AllDirectories))
+            foreach (
+                string fileEntry in Directory.GetFileSystemEntries(
+                    folderPath,
+                    "*",
+                    SearchOption.AllDirectories
+                )
+            )
             {
                 FileInfo info = new FileInfo(fileEntry);
 
-                if (filesToAllow.Any(f => info.Name.Equals(f, StringComparison.InvariantCultureIgnoreCase)))
+                if (
+                    filesToAllow.Any(f =>
+                        info.Name.Equals(f, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                )
                 {
                     continue; // this file has been marked as allowed by us so we skip the file
                 }
@@ -356,9 +437,21 @@ namespace AppUI.Classes
         /// </summary>
         private bool IsFileOrFolderAPirate(string pathToFileOrFolder)
         {
-            string[] pirateKeyWords = new string[] { "crack", "warez", "torrent", "skidrow", "goodies" }; // folders and keywords usually found in files when the game is pirated
-            string[] pirateExtensions = new string[] { ".nfo" };                                          // file extensions that indicate the game could be pirated
-            string[] pirateExactKeywords = new string[] { "ali213.ini", "rld.dll", "gameservices.dll" };  // files that indicate the game is pirated
+            string[] pirateKeyWords = new string[]
+            {
+                "crack",
+                "warez",
+                "torrent",
+                "skidrow",
+                "goodies",
+            }; // folders and keywords usually found in files when the game is pirated
+            string[] pirateExtensions = new string[] { ".nfo" }; // file extensions that indicate the game could be pirated
+            string[] pirateExactKeywords = new string[]
+            {
+                "ali213.ini",
+                "rld.dll",
+                "gameservices.dll",
+            }; // files that indicate the game is pirated
 
             string name;
             string ext;
@@ -374,8 +467,11 @@ namespace AppUI.Classes
                 ext = new FileInfo(pathToFileOrFolder).Extension;
             }
 
-
-            if (pirateExactKeywords.Any(s => s.Equals(name, StringComparison.InvariantCultureIgnoreCase)))
+            if (
+                pirateExactKeywords.Any(s =>
+                    s.Equals(name, StringComparison.InvariantCultureIgnoreCase)
+                )
+            )
             {
                 return true;
             }
@@ -385,7 +481,11 @@ namespace AppUI.Classes
                 return true;
             }
 
-            if (pirateKeyWords.Any(s => pathToFileOrFolder.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0))
+            if (
+                pirateKeyWords.Any(s =>
+                    pathToFileOrFolder.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0
+                )
+            )
             {
                 return true;
             }
@@ -475,31 +575,54 @@ namespace AppUI.Classes
             if (Environment.Is64BitOperatingSystem)
             {
                 // check which registry key exists for the steam release (could be in 32-bit or 64-bit area
-                if (RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "InstallLocation") != null)
+                if (
+                    RegistryHelper.GetValue(RegistryHelper.SteamKeyPath64Bit, "InstallLocation")
+                    != null
+                )
                 {
-                    RegistryHelper.ExportKey(RegistryHelper.SteamKeyPath64Bit, Path.Combine(pathToBackup, "FF8-01.reg"));
+                    RegistryHelper.ExportKey(
+                        RegistryHelper.SteamKeyPath64Bit,
+                        Path.Combine(pathToBackup, "FF8-01.reg")
+                    );
                 }
                 else
                 {
-                    RegistryHelper.ExportKey(RegistryHelper.SteamKeyPath32Bit, Path.Combine(pathToBackup, "FF8-01.reg"));
+                    RegistryHelper.ExportKey(
+                        RegistryHelper.SteamKeyPath32Bit,
+                        Path.Combine(pathToBackup, "FF8-01.reg")
+                    );
                 }
             }
 
-            RegistryHelper.ExportKey(RegistryHelper.GetKeyPath(FF8RegKey.FF8AppKeyPath), Path.Combine(pathToBackup, "FF8-03.reg"));
+            RegistryHelper.ExportKey(
+                RegistryHelper.GetKeyPath(FF8RegKey.FF8AppKeyPath),
+                Path.Combine(pathToBackup, "FF8-03.reg")
+            );
         }
 
         public void MoveOriginalConverterFilesToBackup(string pathToBackup)
         {
             Directory.CreateDirectory(pathToBackup);
 
-            List<string> foldersToMove = new List<string>() { "DLL_in", "Hext_in", "LOADR", "Multi_DLL", "FF8anyCDv2", "BackupGC" };
+            List<string> foldersToMove = new List<string>()
+            {
+                "DLL_in",
+                "Hext_in",
+                "LOADR",
+                "Multi_DLL",
+                "FF8anyCDv2",
+                "BackupGC",
+            };
 
             foreach (string folder in foldersToMove)
             {
                 string fullPath = Path.Combine(InstallPath, folder);
                 if (Directory.Exists(fullPath))
                 {
-                    FileUtils.MoveDirectoryRecursively(fullPath, Path.Combine(pathToBackup, folder));
+                    FileUtils.MoveDirectoryRecursively(
+                        fullPath,
+                        Path.Combine(pathToBackup, folder)
+                    );
                     Directory.Delete(fullPath, true);
                 }
             }
@@ -534,8 +657,6 @@ namespace AppUI.Classes
                 Logger.Error(ex);
                 return false;
             }
-
-
         }
 
         #endregion
@@ -588,7 +709,7 @@ namespace AppUI.Classes
                 "ff8_disc1",
                 "ff8_disc2",
                 "ff8_disc3",
-                "ff8_disc4"
+                "ff8_disc4",
             };
 
             foreach (string file in expectedFiles)
@@ -601,7 +722,10 @@ namespace AppUI.Classes
                     continue;
                 }
 
-                SendMessage($"...\t {file} {ResourceHelper.Get(StringKey.NotFoundScanningDiscsForFiles)}", NLog.LogLevel.Warn);
+                SendMessage(
+                    $"...\t {file} {ResourceHelper.Get(StringKey.NotFoundScanningDiscsForFiles)}",
+                    NLog.LogLevel.Warn
+                );
 
                 // search all drives for the file
                 bool foundFileOnDrive = false;
@@ -617,11 +741,12 @@ namespace AppUI.Classes
                             fullSourcePath = Path.Combine(driveLetter, "data", file); // ff8install disc has a different path then disc1-4
                         }
 
-
                         if (File.Exists(fullSourcePath))
                         {
                             foundFileOnDrive = true;
-                            SendMessage($"... \t {string.Format(ResourceHelper.Get(StringKey.FoundFileOnAtCopyingFile), label, driveLetter)}");
+                            SendMessage(
+                                $"... \t {string.Format(ResourceHelper.Get(StringKey.FoundFileOnAtCopyingFile), label, driveLetter)}"
+                            );
                             try
                             {
                                 Directory.CreateDirectory(Path.GetDirectoryName(fullTargetPath)); // ensure all subfolders are created
@@ -631,7 +756,10 @@ namespace AppUI.Classes
                             catch (Exception e)
                             {
                                 Logger.Error(e);
-                                SendMessage($"... \t\t {ResourceHelper.Get(StringKey.FailedToCopyErrorHasBeenLogged)}", NLog.LogLevel.Warn);
+                                SendMessage(
+                                    $"... \t\t {ResourceHelper.Get(StringKey.FailedToCopyErrorHasBeenLogged)}",
+                                    NLog.LogLevel.Warn
+                                );
                             }
                         }
                     }
@@ -645,7 +773,10 @@ namespace AppUI.Classes
                 // at this point if file not found/copied on any drive then failed verification
                 if (!foundFileOnDrive)
                 {
-                    SendMessage($"... \t {string.Format(ResourceHelper.Get(StringKey.FailedToFindOnAnyDisc), file)}", NLog.LogLevel.Warn);
+                    SendMessage(
+                        $"... \t {string.Format(ResourceHelper.Get(StringKey.FailedToFindOnAnyDisc), file)}",
+                        NLog.LogLevel.Warn
+                    );
                     foundAllFiles = false;
                 }
             }
@@ -660,10 +791,7 @@ namespace AppUI.Classes
         /// <returns></returns>
         internal bool VerifyAdditionalFilesExist()
         {
-            string[] expectedFiles = new string[]
-            {
-                @"field.fs",
-            };
+            string[] expectedFiles = new string[] { @"field.fs" };
 
             foreach (string file in expectedFiles)
             {
@@ -671,7 +799,10 @@ namespace AppUI.Classes
 
                 if (!File.Exists(fullTargetPath))
                 {
-                    SendMessage($"... \t{file} {ResourceHelper.Get(StringKey.FileNotFound)}", NLog.LogLevel.Warn);
+                    SendMessage(
+                        $"... \t{file} {ResourceHelper.Get(StringKey.FileNotFound)}",
+                        NLog.LogLevel.Warn
+                    );
                     return false;
                 }
             }
@@ -704,7 +835,9 @@ namespace AppUI.Classes
             {
                 if (!Directory.Exists(dir))
                 {
-                    Logger.Info($"\t{ResourceHelper.Get(StringKey.DirectoryMissingCreating)} {dir}");
+                    Logger.Info(
+                        $"\t{ResourceHelper.Get(StringKey.DirectoryMissingCreating)} {dir}"
+                    );
                     Directory.CreateDirectory(dir);
                 }
             }
@@ -743,7 +876,10 @@ namespace AppUI.Classes
             catch (Exception e)
             {
                 Logger.Error(e);
-                SendMessage($"{ResourceHelper.Get(StringKey.AnErrorOccurredStartingULGP)}", NLog.LogLevel.Error);
+                SendMessage(
+                    $"{ResourceHelper.Get(StringKey.AnErrorOccurredStartingULGP)}",
+                    NLog.LogLevel.Error
+                );
             }
         }
     }

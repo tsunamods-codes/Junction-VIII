@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ConfigSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
+<ConfigSpec
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
   <!-- GRAPHICS TAB -->
   <Setting xsi:type="DropDown">
     <Group>Grafik</Group>
@@ -196,7 +198,7 @@
     <Group>Cheats</Group>
     <Name>Stufen des Geschwindigkeitshacks:</Name>
     <Description>Multiplikator zur Änderung der Spielgeschwindigkeit.{0}Verwendung: "STRG+Oben/Unten" oder "L3, dann L1/R1" zum Ändern der Geschwindigkeit, "STRG+Links/Rechts" oder "L3, dann L2/R2" zum Ein- und Ausschalten.</Description>
-	<DefaultValue>speedhack_step = 0.5</DefaultValue>
+    <DefaultValue>speedhack_step = 0.5</DefaultValue>
     <Option>
       <Text>0.5</Text>
       <Settings>speedhack_step = 0.5</Settings>
@@ -247,7 +249,7 @@
     <Group>Erweitert</Group>
     <Name>Steam-Kompatibilität</Name>
     <Description>Aktiviert Steam-Funktionen (Spielaktivität, Controller und Errungenschaften). Erfordert, dass Steam bereits gestartet wurde.</Description>
-	  <DefaultValue>enable_steam_achievements = false</DefaultValue>
+    <DefaultValue>enable_steam_achievements = false</DefaultValue>
     <TrueSetting>enable_steam_achievements = true</TrueSetting>
     <FalseSetting>enable_steam_achievements = false</FalseSetting>
   </Setting>
@@ -287,12 +289,12 @@
     <TrueSetting>show_renderer_backend = true</TrueSetting>
     <FalseSetting>show_renderer_backend = false</FalseSetting>
   </Setting>
-	
+
   <Setting xsi:type="DropDown">
     <Group>Erweitert</Group>
     <Name>Interne Auflösungsskalierung</Name>
     <Description>Multipliziert die interne Auflösung von 640x480 mit einem der folgenden Beträge. Höhere Werte erfordern eine leistungsfähigere Grafikkarte, können jedoch Skalierungsartefakte entfernen. HINWEIS: Werte mit * sind ein optimaler Kompromiss zwischen Leistungseinbuße und Qualitätsteigerung.</Description>
-	<DefaultValue>internal_resolution_scale = 0</DefaultValue>
+    <DefaultValue>internal_resolution_scale = 0</DefaultValue>
     <Option>
       <Text>Automatisch</Text>
       <Settings>internal_resolution_scale = 0</Settings>
@@ -318,5 +320,4 @@
       <Settings>internal_resolution_scale = 8</Settings>
     </Option>
   </Setting>
-
 </ConfigSpec>

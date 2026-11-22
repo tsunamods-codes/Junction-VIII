@@ -1,12 +1,4 @@
-﻿using AppCore;
-using Iros;
-using Iros.Workshop;
-using Microsoft.Win32;
-using AppUI.Classes;
-using AppUI.Windows;
-using AppUI;
-using AppUI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -15,6 +7,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using AppCore;
+using AppUI;
+using AppUI.Classes;
+using AppUI.ViewModels;
+using AppUI.Windows;
+using Iros;
+using Iros.Workshop;
+using Microsoft.Win32;
 
 namespace AppUI.ViewModels
 {
@@ -56,10 +56,7 @@ namespace AppUI.ViewModels
 
         public string FF8ExePathInput
         {
-            get
-            {
-                return _fF7ExePathInput;
-            }
+            get { return _fF7ExePathInput; }
             set
             {
                 _fF7ExePathInput = value;
@@ -69,10 +66,7 @@ namespace AppUI.ViewModels
 
         public string LibraryPathInput
         {
-            get
-            {
-                return _libraryPathInput;
-            }
+            get { return _libraryPathInput; }
             set
             {
                 _libraryPathInput = value;
@@ -82,10 +76,7 @@ namespace AppUI.ViewModels
 
         public string StatusMessage
         {
-            get
-            {
-                return _statusMessage;
-            }
+            get { return _statusMessage; }
             set
             {
                 _statusMessage = value;
@@ -95,10 +86,7 @@ namespace AppUI.ViewModels
 
         public FFNxUpdateChannelOptions FFNxUpdateChannel
         {
-            get
-            {
-                return _ffnxUpdateChannel;
-            }
+            get { return _ffnxUpdateChannel; }
             set
             {
                 _ffnxUpdateChannel = value;
@@ -108,10 +96,7 @@ namespace AppUI.ViewModels
 
         public AppUpdateChannelOptions AppUpdateChannel
         {
-            get
-            {
-                return _appUpdateChannel;
-            }
+            get { return _appUpdateChannel; }
             set
             {
                 _appUpdateChannel = value;
@@ -121,10 +106,7 @@ namespace AppUI.ViewModels
 
         public bool AutoSortModsByDefault
         {
-            get
-            {
-                return _autoSortModsByDefault;
-            }
+            get { return _autoSortModsByDefault; }
             set
             {
                 _autoSortModsByDefault = value;
@@ -134,10 +116,7 @@ namespace AppUI.ViewModels
 
         public bool AutoUpdateModsByDefault
         {
-            get
-            {
-                return _autoUpdateModsByDefault;
-            }
+            get { return _autoUpdateModsByDefault; }
             set
             {
                 _autoUpdateModsByDefault = value;
@@ -147,10 +126,7 @@ namespace AppUI.ViewModels
 
         public bool ActivateInstalledModsAuto
         {
-            get
-            {
-                return _activateInstalledModsAuto;
-            }
+            get { return _activateInstalledModsAuto; }
             set
             {
                 _activateInstalledModsAuto = value;
@@ -160,10 +136,7 @@ namespace AppUI.ViewModels
 
         public bool ImportLibraryFolderAuto
         {
-            get
-            {
-                return _importLibraryFolderAuto;
-            }
+            get { return _importLibraryFolderAuto; }
             set
             {
                 _importLibraryFolderAuto = value;
@@ -173,10 +146,7 @@ namespace AppUI.ViewModels
 
         public bool CheckForUpdatesAuto
         {
-            get
-            {
-                return _checkForUpdatesAuto;
-            }
+            get { return _checkForUpdatesAuto; }
             set
             {
                 _checkForUpdatesAuto = value;
@@ -186,10 +156,7 @@ namespace AppUI.ViewModels
 
         public bool BypassCompatibilityLocks
         {
-            get
-            {
-                return _bypassCompatibilityLocks;
-            }
+            get { return _bypassCompatibilityLocks; }
             set
             {
                 _bypassCompatibilityLocks = value;
@@ -199,10 +166,7 @@ namespace AppUI.ViewModels
 
         public bool OpenIrosLinks
         {
-            get
-            {
-                return _openIrosLinks;
-            }
+            get { return _openIrosLinks; }
             set
             {
                 _openIrosLinks = value;
@@ -212,10 +176,7 @@ namespace AppUI.ViewModels
 
         public bool OpenModFilesWithJ8
         {
-            get
-            {
-                return _openModFilesWithJ8;
-            }
+            get { return _openModFilesWithJ8; }
             set
             {
                 _openModFilesWithJ8 = value;
@@ -225,10 +186,7 @@ namespace AppUI.ViewModels
 
         public bool ShowContextMenuInExplorer
         {
-            get
-            {
-                return _showContextMenuInExplorer;
-            }
+            get { return _showContextMenuInExplorer; }
             set
             {
                 _showContextMenuInExplorer = value;
@@ -254,10 +212,7 @@ namespace AppUI.ViewModels
 
         public bool IsSubscriptionPopupOpen
         {
-            get
-            {
-                return _isSubscriptionPopupOpen;
-            }
+            get { return _isSubscriptionPopupOpen; }
             set
             {
                 _isSubscriptionPopupOpen = value;
@@ -287,10 +242,7 @@ namespace AppUI.ViewModels
 
         public string SubscriptionNameHintText
         {
-            get
-            {
-                return _subscriptionNameHintText;
-            }
+            get { return _subscriptionNameHintText; }
             set
             {
                 _subscriptionNameHintText = value;
@@ -300,10 +252,7 @@ namespace AppUI.ViewModels
 
         public bool SubscriptionNameTextBoxIsEnabled
         {
-            get
-            {
-                return _subscriptionNameTextBoxIsEnabled;
-            }
+            get { return _subscriptionNameTextBoxIsEnabled; }
             set
             {
                 _subscriptionNameTextBoxIsEnabled = value;
@@ -313,10 +262,7 @@ namespace AppUI.ViewModels
 
         public bool IsResolvingName
         {
-            get
-            {
-                return _isResolvingName;
-            }
+            get { return _isResolvingName; }
             set
             {
                 _isResolvingName = value;
@@ -327,18 +273,12 @@ namespace AppUI.ViewModels
 
         public bool IsNotResolvingName
         {
-            get
-            {
-                return !IsResolvingName;
-            }
+            get { return !IsResolvingName; }
         }
 
         public string NewUrlText
         {
-            get
-            {
-                return _newUrlText;
-            }
+            get { return _newUrlText; }
             set
             {
                 _newUrlText = value.Trim(new char[] { '\n', ' ', '\r' });
@@ -348,10 +288,7 @@ namespace AppUI.ViewModels
 
         public string NewNameText
         {
-            get
-            {
-                return _newNameText;
-            }
+            get { return _newNameText; }
             set
             {
                 _newNameText = value.Trim(new char[] { '\n', ' ', '\r' });
@@ -381,7 +318,9 @@ namespace AppUI.ViewModels
         {
             AutoDetectSystemPaths(settings);
 
-            SubscriptionList = new ObservableCollection<SubscriptionSettingViewModel>(settings.Subscriptions.Select(s => new SubscriptionSettingViewModel(s.Url, s.Name)));
+            SubscriptionList = new ObservableCollection<SubscriptionSettingViewModel>(
+                settings.Subscriptions.Select(s => new SubscriptionSettingViewModel(s.Url, s.Name))
+            );
             ExtraFolderList = new ObservableCollection<string>(settings.ExtraFolders.ToList());
 
             FF8ExePathInput = settings.FF8Exe;
@@ -398,17 +337,26 @@ namespace AppUI.ViewModels
             BypassCompatibilityLocks = settings.HasOption(GeneralOptions.BypassCompatibility);
             OpenIrosLinks = settings.HasOption(GeneralOptions.OpenIrosLinksWithJ8);
             OpenModFilesWithJ8 = settings.HasOption(GeneralOptions.OpenModFilesWithJ8);
-            ShowContextMenuInExplorer = settings.HasOption(GeneralOptions.ShowJ8InFileExplorerContextMenu);
+            ShowContextMenuInExplorer = settings.HasOption(
+                GeneralOptions.ShowJ8InFileExplorerContextMenu
+            );
         }
 
         public static void AutoDetectSystemPaths(Settings settings)
         {
             string ff8 = null;
-            bool isRunningInWine = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WINELOADER"));
+            bool isRunningInWine = !string.IsNullOrEmpty(
+                Environment.GetEnvironmentVariable("WINELOADER")
+            );
 
-            if (string.IsNullOrEmpty(settings.FF8Exe) || !File.Exists(settings.FF8Exe) && !isRunningInWine)
+            if (
+                string.IsNullOrEmpty(settings.FF8Exe)
+                || !File.Exists(settings.FF8Exe) && !isRunningInWine
+            )
             {
-                Logger.Info("FF8 Exe path is empty or ff8.exe is missing. Auto detecting paths ...");
+                Logger.Info(
+                    "FF8 Exe path is empty or ff8.exe is missing. Auto detecting paths ..."
+                );
 
                 try
                 {
@@ -419,40 +367,54 @@ namespace AppUI.ViewModels
                     if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
                     {
                         ff8 = GameConverter.GetInstallLocation(FF8Version.Remastered);
-                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.Remastered : FF8Version.Unknown;
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8)
+                            ? FF8Version.Remastered
+                            : FF8Version.Unknown;
                     }
 
                     // If no Steam version detected, attempt to detect the GOG release
                     if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
                     {
                         ff8 = GameConverter.GetInstallLocation(FF8Version.GOG);
-                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.GOG : FF8Version.Unknown;
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8)
+                            ? FF8Version.GOG
+                            : FF8Version.Unknown;
                     }
 
                     // Then try to autodetect the Steam installation if any
                     if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
                     {
                         ff8 = GameConverter.GetInstallLocation(FF8Version.Steam);
-                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.Steam : FF8Version.Unknown;
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8)
+                            ? FF8Version.Steam
+                            : FF8Version.Unknown;
                     }
 
                     // Finally as a last attempt try to autodetect the 2000 release
                     if (Sys.Settings.FF8InstalledVersion == FF8Version.Unknown)
                     {
                         // Try to detect 2000 game or a "converted" game from the old J8 game converter
-                        string registry_path = $"{RegistryHelper.GetKeyPath(FF8RegKey.SquareSoftKeyPath)}\\Final Fantasy VIII\\1.00";
+                        string registry_path =
+                            $"{RegistryHelper.GetKeyPath(FF8RegKey.SquareSoftKeyPath)}\\Final Fantasy VIII\\1.00";
                         ff8 = (string)Registry.GetValue(registry_path, "AppPath", null);
-                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8) ? FF8Version.Original2K : FF8Version.Unknown;
+                        Sys.Settings.FF8InstalledVersion = !string.IsNullOrWhiteSpace(ff8)
+                            ? FF8Version.Original2K
+                            : FF8Version.Unknown;
 
                         if (!Directory.Exists(ff8))
                         {
-                            Logger.Warn($"Deleting invalid 'AppPath' registry key since path does not exist: {ff8}");
-                            RegistryHelper.DeleteValueFromKey(registry_path, "AppPath"); // delete old paths set 
+                            Logger.Warn(
+                                $"Deleting invalid 'AppPath' registry key since path does not exist: {ff8}"
+                            );
+                            RegistryHelper.DeleteValueFromKey(registry_path, "AppPath"); // delete old paths set
                             Sys.Settings.FF8InstalledVersion = FF8Version.Unknown; // set back to Unknown to check other registry keys
                         }
                     }
 
-                    string versionStr = Sys.Settings.FF8InstalledVersion == FF8Version.Original2K ? $"{Sys.Settings.FF8InstalledVersion.ToString()} (or Game Converted)" : Sys.Settings.FF8InstalledVersion.ToString();
+                    string versionStr =
+                        Sys.Settings.FF8InstalledVersion == FF8Version.Original2K
+                            ? $"{Sys.Settings.FF8InstalledVersion.ToString()} (or Game Converted)"
+                            : Sys.Settings.FF8InstalledVersion.ToString();
 
                     Logger.Info($"FF8Version Detected: {versionStr} with installation path: {ff8}");
 
@@ -461,7 +423,6 @@ namespace AppUI.ViewModels
                         Logger.Warn("Found installation path does not exist. Ignoring...");
                         return;
                     }
-
                 }
                 catch
                 {
@@ -478,26 +439,43 @@ namespace AppUI.ViewModels
             {
                 if (settings.FF8Exe.ToLower().EndsWith("ffviii.exe"))
                 {
-                    string goggame = Path.Combine(Path.GetDirectoryName(settings.FF8Exe), $"goggame-{GameConverter.RemasteredGogGameId}.info");
+                    string goggame = Path.Combine(
+                        Path.GetDirectoryName(settings.FF8Exe),
+                        $"goggame-{GameConverter.RemasteredGogGameId}.info"
+                    );
 
                     // FFVIII.exe only identifies the Remastered release, the game is then run through ff8.exe
-                    Sys.Settings.FF8InstalledVersion = File.Exists(goggame) ? FF8Version.GOG : FF8Version.Remastered;
-                    settings.FF8Exe = Path.Combine(Path.GetDirectoryName(settings.FF8Exe), "ff8.exe");
+                    Sys.Settings.FF8InstalledVersion = File.Exists(goggame)
+                        ? FF8Version.GOG
+                        : FF8Version.Remastered;
+                    settings.FF8Exe = Path.Combine(
+                        Path.GetDirectoryName(settings.FF8Exe),
+                        "ff8.exe"
+                    );
                 }
                 else if (settings.FF8Exe.ToLower().EndsWith("ff8_en.exe"))
                 {
-                    string ff8Launcher = Path.Combine(Path.GetDirectoryName(settings.FF8Exe), "FF8_Launcher.exe");
+                    string ff8Launcher = Path.Combine(
+                        Path.GetDirectoryName(settings.FF8Exe),
+                        "FF8_Launcher.exe"
+                    );
 
-                    if (File.Exists(ff8Launcher)) Sys.Settings.FF8InstalledVersion = FF8Version.Steam;
+                    if (File.Exists(ff8Launcher))
+                        Sys.Settings.FF8InstalledVersion = FF8Version.Steam;
                 }
-                else if(settings.FF8Exe.ToLower().EndsWith("ff8.exe"))
+                else if (settings.FF8Exe.ToLower().EndsWith("ff8.exe"))
                 {
                     string ff8Folder = Path.GetDirectoryName(settings.FF8Exe);
                     string ffviiiExe = Path.Combine(ff8Folder, "FFVIII.exe");
-                    string goggame = Path.Combine(ff8Folder, $"goggame-{GameConverter.RemasteredGogGameId}.info");
+                    string goggame = Path.Combine(
+                        ff8Folder,
+                        $"goggame-{GameConverter.RemasteredGogGameId}.info"
+                    );
 
                     if (File.Exists(ffviiiExe))
-                        Sys.Settings.FF8InstalledVersion = File.Exists(goggame) ? FF8Version.GOG : FF8Version.Remastered;
+                        Sys.Settings.FF8InstalledVersion = File.Exists(goggame)
+                            ? FF8Version.GOG
+                            : FF8Version.Remastered;
                     else
                         // No previously converted edition detected, looks like a genuine 2000 edition
                         Sys.Settings.FF8InstalledVersion = FF8Version.Original2K;
@@ -516,42 +494,82 @@ namespace AppUI.ViewModels
             Sys.Settings.ExtraFolders = ExtraFolderList.Distinct().ToList();
 
             // ensure required folders are always in ExtraFolders list
-            if (!Sys.Settings.ExtraFolders.Contains("ambient", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "ambient",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("ambient");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("direct", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "direct",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("direct");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("override", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "override",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("override");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("save", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "save",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("save");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("sfx", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "sfx",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("sfx");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("voice", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "voice",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("voice");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("widescreen", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "widescreen",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("widescreen");
             }
 
-            if (!Sys.Settings.ExtraFolders.Contains("shaders", StringComparer.InvariantCultureIgnoreCase))
+            if (
+                !Sys.Settings.ExtraFolders.Contains(
+                    "shaders",
+                    StringComparer.InvariantCultureIgnoreCase
+                )
+            )
             {
                 Sys.Settings.ExtraFolders.Add("shaders");
             }
@@ -573,29 +591,44 @@ namespace AppUI.ViewModels
 
             Directory.CreateDirectory(Sys.Settings.LibraryLocation);
 
-            if (!string.IsNullOrWhiteSpace(oldLibraryLocation) &&
-                !oldLibraryLocation.Equals(newLibraryLocation, StringComparison.OrdinalIgnoreCase) &&
-                Directory.Exists(oldLibraryLocation) &&
-                Directory.EnumerateFileSystemEntries(oldLibraryLocation).Any())
+            if (
+                !string.IsNullOrWhiteSpace(oldLibraryLocation)
+                && !oldLibraryLocation.Equals(
+                    newLibraryLocation,
+                    StringComparison.OrdinalIgnoreCase
+                )
+                && Directory.Exists(oldLibraryLocation)
+                && Directory.EnumerateFileSystemEntries(oldLibraryLocation).Any()
+            )
             {
                 var dialogResult = MessageDialogWindow.Show(
                     ResourceHelper.Get(StringKey.PromptMoveModsToNewLibrary),
                     "Library Location Changed",
                     MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
+                    MessageBoxImage.Question
+                );
 
                 if (dialogResult.Result == MessageBoxResult.Yes)
                 {
                     try
                     {
                         FileUtils.MoveDirectoryRecursively(oldLibraryLocation, newLibraryLocation);
-                        Sys.Message(new WMessage(ResourceHelper.Get(StringKey.MovedModsToNewLibrary)));
+                        Sys.Message(
+                            new WMessage(ResourceHelper.Get(StringKey.MovedModsToNewLibrary))
+                        );
                     }
                     catch (Exception ex)
                     {
                         Logger.Error(ex);
-                        Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToMoveModsToNewLibrary)));
-                        MessageDialogWindow.Show(ResourceHelper.Get(StringKey.FailedToMoveModsToNewLibrary), ResourceHelper.Get(StringKey.Error), MessageBoxButton.OK, MessageBoxImage.Error);
+                        Sys.Message(
+                            new WMessage(ResourceHelper.Get(StringKey.FailedToMoveModsToNewLibrary))
+                        );
+                        MessageDialogWindow.Show(
+                            ResourceHelper.Get(StringKey.FailedToMoveModsToNewLibrary),
+                            ResourceHelper.Get(StringKey.Error),
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
                     }
                 }
             }
@@ -608,12 +641,20 @@ namespace AppUI.ViewModels
                 {
                     FFNxDriverUpdater updater = new FFNxDriverUpdater();
 
-                    Sys.Message(new WMessage($"Downloading and extracting the latest FFNx {Sys.Settings.FFNxUpdateChannel} version to {Sys.InstallPath}..."));
+                    Sys.Message(
+                        new WMessage(
+                            $"Downloading and extracting the latest FFNx {Sys.Settings.FFNxUpdateChannel} version to {Sys.InstallPath}..."
+                        )
+                    );
                     updater.DownloadAndExtractLatestVersion(Sys.Settings.FFNxUpdateChannel);
                 }
                 catch (Exception ex)
                 {
-                    Sys.Message(new WMessage($"Something went wrong while attempting to install FFNx. See logs."));
+                    Sys.Message(
+                        new WMessage(
+                            $"Something went wrong while attempting to install FFNx. See logs."
+                        )
+                    );
                     Logger.Error(ex);
                     return false;
                 }
@@ -666,7 +707,10 @@ namespace AppUI.ViewModels
             RegistryHelper.CommitTransaction();
 
             // ensure only applying option if it has changed
-            if (Sys.Settings.HasOption(GeneralOptions.AutoUpdateMods) && Sys.Library.DefaultUpdate == UpdateType.Notify)
+            if (
+                Sys.Settings.HasOption(GeneralOptions.AutoUpdateMods)
+                && Sys.Library.DefaultUpdate == UpdateType.Notify
+            )
             {
                 HasChangedInstalledModUpdateTypes = true;
                 Sys.Library.DefaultUpdate = UpdateType.Install;
@@ -675,9 +719,11 @@ namespace AppUI.ViewModels
                 {
                     item.UpdateType = UpdateType.Install;
                 }
-
             }
-            else if (!Sys.Settings.HasOption(GeneralOptions.AutoUpdateMods) && Sys.Library.DefaultUpdate == UpdateType.Install)
+            else if (
+                !Sys.Settings.HasOption(GeneralOptions.AutoUpdateMods)
+                && Sys.Library.DefaultUpdate == UpdateType.Install
+            )
             {
                 HasChangedInstalledModUpdateTypes = true;
                 Sys.Library.DefaultUpdate = UpdateType.Notify;
@@ -722,7 +768,6 @@ namespace AppUI.ViewModels
 
             if (ShowContextMenuInExplorer)
                 newOptions.Add(GeneralOptions.ShowJ8InFileExplorerContextMenu);
-
 
             return newOptions;
         }
@@ -770,7 +815,10 @@ namespace AppUI.ViewModels
                 isValid = false;
             }
 
-            if ((Path.GetDirectoryName(FF8ExePathInput) == LibraryPathInput) || Sys._J8Folder == LibraryPathInput)
+            if (
+                (Path.GetDirectoryName(FF8ExePathInput) == LibraryPathInput)
+                || Sys._J8Folder == LibraryPathInput
+            )
             {
                 validationMessage = ResourceHelper.Get(StringKey.LibraryPathCannotBeGameOrApp);
                 isValid = false;
@@ -778,14 +826,24 @@ namespace AppUI.ViewModels
 
             if (showMessage && !isValid)
             {
-                MessageDialogWindow.Show(validationMessage, ResourceHelper.Get(StringKey.SettingsNotValid), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageDialogWindow.Show(
+                    validationMessage,
+                    ResourceHelper.Get(StringKey.SettingsNotValid),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
 
             return isValid;
         }
 
         [DllImport("shell32.dll")]
-        public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        public static extern void SHChangeNotify(
+            uint wEventId,
+            uint uFlags,
+            IntPtr dwItem1,
+            IntPtr dwItem2
+        );
 
         /// <summary>
         /// Update Registry to associate .iroj mod files with J8
@@ -797,14 +855,38 @@ namespace AppUI.ViewModels
             try
             {
                 //Associate .iroj mod files with J8's Prog_ID- .iroj extension
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj", "", $"JunctionVIIIIROJ");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj\\DefaultIcon", "", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.iroj\\shell\\open\\command", "", $"\"{Sys._J8Exe}\" /OPENIRO:\"%1\"");
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\.iroj",
+                    "",
+                    $"JunctionVIIIIROJ"
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\.iroj\\DefaultIcon",
+                    "",
+                    $"\"{Sys._J8Exe}\""
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\.iroj\\shell\\open\\command",
+                    "",
+                    $"\"{Sys._J8Exe}\" /OPENIRO:\"%1\""
+                );
 
                 // create registry keys to assocaite .irojp files
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp", "", $"JunctionVIIIIROJP");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp\\DefaultIcon", "", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\.irojp\\shell\\open\\command", "", $"\"{Sys._J8Exe}\" /OPENIROP:\"%1\"");
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\.irojp",
+                    "",
+                    $"JunctionVIIIIROJP"
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\.irojp\\DefaultIcon",
+                    "",
+                    $"\"{Sys._J8Exe}\""
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\.irojp\\shell\\open\\command",
+                    "",
+                    $"\"{Sys._J8Exe}\" /OPENIROP:\"%1\""
+                );
 
                 //Refresh Shell/Explorer so icon cache updates
                 //do this now because we don't care so much about assoc. URL if it fails
@@ -815,7 +897,11 @@ namespace AppUI.ViewModels
             catch (Exception e)
             {
                 Logger.Error(e);
-                Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToRegisterIroModFilesWithJunctionVIII)));
+                Sys.Message(
+                    new WMessage(
+                        ResourceHelper.Get(StringKey.FailedToRegisterIroModFilesWithJunctionVIII)
+                    )
+                );
                 return false;
             }
         }
@@ -840,7 +926,11 @@ namespace AppUI.ViewModels
             catch (Exception e)
             {
                 Logger.Error(e);
-                Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToUnregisterIroModFilesWithJunctionVIII)));
+                Sys.Message(
+                    new WMessage(
+                        ResourceHelper.Get(StringKey.FailedToUnregisterIroModFilesWithJunctionVIII)
+                    )
+                );
                 return false;
             }
         }
@@ -854,10 +944,22 @@ namespace AppUI.ViewModels
         {
             try
             {
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\iroj", "", $"J8 Catalog Subscription");
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\iroj",
+                    "",
+                    $"J8 Catalog Subscription"
+                );
                 RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\iroj", "URL Protocol", $"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\iroj\\DefaultIcon", "", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\iroj\\shell\\open\\command", "", $"\"{Sys._J8Exe}\" \"%1\"");
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\iroj\\DefaultIcon",
+                    "",
+                    $"\"{Sys._J8Exe}\""
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\iroj\\shell\\open\\command",
+                    "",
+                    $"\"{Sys._J8Exe}\" \"%1\""
+                );
 
                 //Refresh Shell/Explorer so icon cache updates
                 //do this now because we don't care so much about assoc. URL if it fails
@@ -868,7 +970,11 @@ namespace AppUI.ViewModels
             catch (Exception e)
             {
                 Logger.Error(e);
-                Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToRegisterIrosLinksWithJunctionVIII)));
+                Sys.Message(
+                    new WMessage(
+                        ResourceHelper.Get(StringKey.FailedToRegisterIrosLinksWithJunctionVIII)
+                    )
+                );
                 return false;
             }
         }
@@ -893,7 +999,11 @@ namespace AppUI.ViewModels
             catch (Exception e)
             {
                 Logger.Error(e);
-                Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToUnregisterIrosLinksWithJunctionVIII)));
+                Sys.Message(
+                    new WMessage(
+                        ResourceHelper.Get(StringKey.FailedToUnregisterIrosLinksWithJunctionVIII)
+                    )
+                );
                 return false;
             }
         }
@@ -908,12 +1018,28 @@ namespace AppUI.ViewModels
             try
             {
                 // create registry keys for 'Pack IRO' for folders
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\Directory\\shell\\Pack into IROJ", "Icon", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\Directory\\shell\\Pack into IROJ\\command", "", $"\"{Sys._J8Exe}\" /PACKIRO:\"%1\"");
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\Directory\\shell\\Pack into IROJ",
+                    "Icon",
+                    $"\"{Sys._J8Exe}\""
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\Directory\\shell\\Pack into IROJ\\command",
+                    "",
+                    $"\"{Sys._J8Exe}\" /PACKIRO:\"%1\""
+                );
 
                 // create registry keys for 'Unpack IROJ' for files
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ", "Icon", $"\"{Sys._J8Exe}\"");
-                RegistryHelper.SetValueIfChanged("HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ\\command", "", $"\"{Sys._J8Exe}\" /UNPACKIRO:\"%1\"");
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ",
+                    "Icon",
+                    $"\"{Sys._J8Exe}\""
+                );
+                RegistryHelper.SetValueIfChanged(
+                    "HKEY_CLASSES_ROOT\\JunctionVIIIIROJ\\shell\\Unpack IROJ\\command",
+                    "",
+                    $"\"{Sys._J8Exe}\" /UNPACKIRO:\"%1\""
+                );
 
                 SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
 
@@ -922,7 +1048,13 @@ namespace AppUI.ViewModels
             catch (Exception e)
             {
                 Logger.Error(e);
-                Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToCreateJunctionVIIIContextMenuEntries), WMessageLogLevel.Error, e));
+                Sys.Message(
+                    new WMessage(
+                        ResourceHelper.Get(StringKey.FailedToCreateJunctionVIIIContextMenuEntries),
+                        WMessageLogLevel.Error,
+                        e
+                    )
+                );
                 return false;
             }
         }
@@ -946,7 +1078,13 @@ namespace AppUI.ViewModels
             catch (Exception e)
             {
                 Logger.Error(e);
-                Sys.Message(new WMessage(ResourceHelper.Get(StringKey.FailedToRemoveJunctionVIIIContextMenuEntries), WMessageLogLevel.Error, e));
+                Sys.Message(
+                    new WMessage(
+                        ResourceHelper.Get(StringKey.FailedToRemoveJunctionVIIIContextMenuEntries),
+                        WMessageLogLevel.Error,
+                        e
+                    )
+                );
                 return false;
             }
         }
@@ -963,7 +1101,9 @@ namespace AppUI.ViewModels
         {
             IsEditingSubscription = false;
             SubscriptionNameTextBoxIsEnabled = false;
-            SubscriptionNameHintText = ResourceHelper.Get(StringKey.CatalogNameWillAutoResolveOnSave);
+            SubscriptionNameHintText = ResourceHelper.Get(
+                StringKey.CatalogNameWillAutoResolveOnSave
+            );
             IsSubscriptionPopupOpen = true;
             string clipboardContent = "";
 
@@ -972,7 +1112,10 @@ namespace AppUI.ViewModels
                 clipboardContent = Clipboard.GetText(TextDataFormat.Text);
             }
 
-            if (!string.IsNullOrWhiteSpace(clipboardContent) && clipboardContent.StartsWith("iroj://"))
+            if (
+                !string.IsNullOrWhiteSpace(clipboardContent)
+                && clipboardContent.StartsWith("iroj://")
+            )
             {
                 NewUrlText = clipboardContent;
             }
@@ -998,7 +1141,9 @@ namespace AppUI.ViewModels
                     NewNameText = resolvedName;
                     App.Current.Dispatcher.Invoke(() =>
                     {
-                        SubscriptionList.Add(new SubscriptionSettingViewModel(NewUrlText, NewNameText));
+                        SubscriptionList.Add(
+                            new SubscriptionSettingViewModel(NewUrlText, NewNameText)
+                        );
                         CloseSubscriptionPopup();
                         IsResolvingName = false;
                         ListDataChanged?.Invoke();
@@ -1007,7 +1152,9 @@ namespace AppUI.ViewModels
             }
             else if (IsEditingSubscription)
             {
-                SubscriptionSettingViewModel toEdit = SubscriptionList.FirstOrDefault(s => s.Url == NewUrlText);
+                SubscriptionSettingViewModel toEdit = SubscriptionList.FirstOrDefault(s =>
+                    s.Url == NewUrlText
+                );
                 toEdit.Name = NewNameText;
                 CloseSubscriptionPopup();
                 ListDataChanged?.Invoke();
@@ -1062,7 +1209,7 @@ namespace AppUI.ViewModels
         }
 
         /// <summary>
-        /// Downloads catalog.xml to temp file and gets Name of the catalog. 
+        /// Downloads catalog.xml to temp file and gets Name of the catalog.
         /// resolved name gets passed to delegate method that is called after download
         /// </summary>
         /// <param name="catalogUrl"></param>
@@ -1090,31 +1237,32 @@ namespace AppUI.ViewModels
                 callback("");
             };
 
-            Install.InstallProcedureCallback downloadCallback = new Install.InstallProcedureCallback(e =>
-            {
-                bool success = (e.Error == null && e.Cancelled == false);
-
-                if (success)
+            Install.InstallProcedureCallback downloadCallback =
+                new Install.InstallProcedureCallback(e =>
                 {
-                    try
-                    {
-                        Catalog c = Util.Deserialize<Catalog>(path);
-                        name = c.Name ?? "";
+                    bool success = (e.Error == null && e.Cancelled == false);
 
-                        // delete temp file if it exists
-                        if (File.Exists(path))
+                    if (success)
+                    {
+                        try
                         {
-                            File.Delete(path);
+                            Catalog c = Util.Deserialize<Catalog>(path);
+                            name = c.Name ?? "";
+
+                            // delete temp file if it exists
+                            if (File.Exists(path))
+                            {
+                                File.Delete(path);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Warn($"Failed to deserialize catalog - {ex.Message}");
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.Warn($"Failed to deserialize catalog - {ex.Message}");
-                    }
-                }
 
-                callback(name);
-            });
+                    callback(name);
+                });
             downloadCallback.Error = onError;
 
             DownloadItem download = new DownloadItem()
@@ -1124,7 +1272,7 @@ namespace AppUI.ViewModels
                 Category = DownloadCategory.Catalog,
                 ItemName = $"{ResourceHelper.Get(StringKey.ResolvingCatalogNameFor)} {catalogUrl}",
                 IProc = downloadCallback,
-                OnCancel = onCancel
+                OnCancel = onCancel,
             };
 
             Sys.Downloads.AddToDownloadQueue(download);
@@ -1132,7 +1280,9 @@ namespace AppUI.ViewModels
 
         internal void AddExtraFolder()
         {
-            string initialDir = File.Exists(FF8ExePathInput) ? Path.GetDirectoryName(FF8ExePathInput) : "";
+            string initialDir = File.Exists(FF8ExePathInput)
+                ? Path.GetDirectoryName(FF8ExePathInput)
+                : "";
             string pathToFolder = FileDialogHelper.BrowseForFolder("", initialDir);
 
             if (!string.IsNullOrWhiteSpace(pathToFolder))

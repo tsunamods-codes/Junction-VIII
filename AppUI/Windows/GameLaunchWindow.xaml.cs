@@ -1,12 +1,12 @@
-﻿using AppCore;
-using Iros.Workshop;
-using AppUI.Classes;
-using AppUI.ViewModels;
-using AppUI;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using AppCore;
+using AppUI;
+using AppUI.Classes;
+using AppUI.ViewModels;
+using Iros.Workshop;
 
 namespace AppUI.Windows
 {
@@ -19,7 +19,6 @@ namespace AppUI.Windows
 
         public GameLaunchViewModel ViewModel { get; set; }
 
-
         public GameLaunchWindow(bool variableDump, bool debugLogging)
         {
             InitializeComponent();
@@ -31,7 +30,12 @@ namespace AppUI.Windows
             txtLog.MaxLines = int.MaxValue;
         }
 
-        public static GameLaunchViewModel Show(bool variableDump, bool debugLogging, bool noMods = false, bool runChocobo = false)
+        public static GameLaunchViewModel Show(
+            bool variableDump,
+            bool debugLogging,
+            bool noMods = false,
+            bool runChocobo = false
+        )
         {
             GameLaunchWindow launchWindow = new GameLaunchWindow(variableDump, debugLogging);
             launchWindow.ViewModel.IsLaunchingWithNoMods = noMods;
@@ -41,12 +45,12 @@ namespace AppUI.Windows
             {
                 launchWindow.Visibility = Visibility.Hidden;
                 launchWindow.ShowInTaskbar = false;
-                
+
                 GameLauncher.Instance.ProgressChanged += LauncherInstance_ProgressChanged;
                 launchWindow.Show();
             }
-            else 
-            { 
+            else
+            {
                 launchWindow.ShowDialog();
             }
 
@@ -63,7 +67,9 @@ namespace AppUI.Windows
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.LogStatus($"### {ResourceHelper.Get(StringKey.LaunchingFinalFantasyVII)} ###");
+            ViewModel.LogStatus(
+                $"### {ResourceHelper.Get(StringKey.LaunchingFinalFantasyVII)} ###"
+            );
             App.ForceUpdateUI();
 
             // Wait 1 second before starting actual launch process so the window is fully loaded
@@ -72,10 +78,12 @@ namespace AppUI.Windows
                 Thread.Sleep(1000);
             });
 
-            sleepTask.ContinueWith((result) =>
-            {
-                StartGameLaunchProcessAsync();
-            });
+            sleepTask.ContinueWith(
+                (result) =>
+                {
+                    StartGameLaunchProcessAsync();
+                }
+            );
         }
 
         /// <summary>
@@ -86,36 +94,46 @@ namespace AppUI.Windows
             Task<bool> task = ViewModel.BeginLaunchProcessAsync();
 
             // setup async task to closing window after completion or keeping window open after error
-            task.ContinueWith((taskResult) =>
-            {
-                if (taskResult.IsFaulted)
+            task.ContinueWith(
+                (taskResult) =>
                 {
-                    Logger.Error(taskResult.Exception);
-                    ViewModel.LogStatus($"{ResourceHelper.Get(StringKey.UnknownErrorWhenLaunchingGame)}: {taskResult.Exception.GetBaseException().Message}");
-                    ShowOkButton();
-                    return;
-                }
-
-                if (taskResult.IsCanceled)
-                {
-                    ViewModel.LogStatus(ResourceHelper.Get(StringKey.GameLaunchProcessCanceled));
-                    return;
-                }
-
-                if (!taskResult.Result)
-                {
-                    ViewModel.LogStatus(ResourceHelper.Get(StringKey.FailedToLaunchFf8ViewLogForDetails));
-                    ShowOkButton();
-                }
-                else
-                {
-                    Sys.Message(new WMessage(ResourceHelper.Get(StringKey.SuccessfullyLaunchedFf8)));
-                    App.Current.Dispatcher.Invoke(() =>
+                    if (taskResult.IsFaulted)
                     {
-                        this.Close();
-                    });
+                        Logger.Error(taskResult.Exception);
+                        ViewModel.LogStatus(
+                            $"{ResourceHelper.Get(StringKey.UnknownErrorWhenLaunchingGame)}: {taskResult.Exception.GetBaseException().Message}"
+                        );
+                        ShowOkButton();
+                        return;
+                    }
+
+                    if (taskResult.IsCanceled)
+                    {
+                        ViewModel.LogStatus(
+                            ResourceHelper.Get(StringKey.GameLaunchProcessCanceled)
+                        );
+                        return;
+                    }
+
+                    if (!taskResult.Result)
+                    {
+                        ViewModel.LogStatus(
+                            ResourceHelper.Get(StringKey.FailedToLaunchFf8ViewLogForDetails)
+                        );
+                        ShowOkButton();
+                    }
+                    else
+                    {
+                        Sys.Message(
+                            new WMessage(ResourceHelper.Get(StringKey.SuccessfullyLaunchedFf8))
+                        );
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            this.Close();
+                        });
+                    }
                 }
-            });
+            );
 
             return task;
         }
@@ -143,7 +161,10 @@ namespace AppUI.Windows
         /// <summary>
         /// Scrolls the textbox to the end when text changes
         /// </summary>
-        private void txtLog_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void txtLog_TextChanged(
+            object sender,
+            System.Windows.Controls.TextChangedEventArgs e
+        )
         {
             txtLog.ScrollToEnd();
             App.ForceUpdateUI();

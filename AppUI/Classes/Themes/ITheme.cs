@@ -7,7 +7,7 @@ namespace AppUI.Classes.Themes
     {
         Custom,
         Tsunamods,
-        JunctionVIIITheme
+        JunctionVIIITheme,
     }
 
     public interface ITheme
@@ -28,6 +28,5 @@ namespace AppUI.Classes.Themes
         HorizontalAlignment BackgroundHorizontalAlignment { get; }
         VerticalAlignment BackgroundVerticalAlignment { get; }
         Stretch BackgroundStretch { get; }
-
     }
 }
