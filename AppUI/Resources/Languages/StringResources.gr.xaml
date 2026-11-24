@@ -991,6 +991,9 @@ Once done, do close the game and the launcher, and finally retry to click Play h
     >Η τροποποίηση {0} δεν είναι συμβατή με την έκδοση της τροποποίησης {1} που έχετε εγκαταστήσει. Δοκιμάστε να την ενημερώσετε.</system:String>
   <system:String x:Key="ModIsNotCompatibleWithYouWillNeedToDisableIt"
     >Η τροποποίηση {0} δεν είναι συμβατή με την τροποίηση {1}. Θα χρειαστεί να την απενεργοποιήσετε.</system:String>
+  <system:String x:Key="ModVersionOrLater">{0} ή νεότερη</system:String>
+  <system:String x:Key="ModVersionOrEarlier">{0} ή παλαιότερη</system:String>
+  <system:String x:Key="ModVersionFromTo">{0} έως {1}</system:String>
   <system:String x:Key="ModIsNotCompatibleAnotherModVariableUsed"
     >Η τροποποίηση {0} δεν είναι συμβατή με την τροποίηση {1} καθώς η μεταβλητή "{2}" ορίζεται και στα δύο. Θα πρέπει να απενεργοποιήσετε ένα από αυτά</system:String>
 

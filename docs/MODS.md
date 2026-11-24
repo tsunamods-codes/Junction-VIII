@@ -258,6 +258,23 @@ Replace the example address and game path with values verified for the supported
 
 `Versions` is optional and comma-separated. With no versions, `Require` accepts any version and `Forbid` conflicts with every version. With versions supplied, the rule applies only to the listed versions.
 
+Exact versions break each time the other mod is updated. To name a range instead, use `MinVersion` and/or `MaxVersion`. Both bounds are inclusive, and either can be left out:
+
+```xml
+<Compatibility>
+  <!-- Needs version 1.3 or later of the companion mod -->
+  <Require ModID="11111111-2222-3333-4444-555555555555"
+           MinVersion="1.3">Required companion mod</Require>
+  <!-- Conflicts with versions 2.0 to 2.4 of this mod -->
+  <Forbid ModID="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+          MinVersion="2.0" MaxVersion="2.4">Conflicts with these releases</Forbid>
+</Compatibility>
+```
+
+Range versions are compared part by part, as numbers separated by dots: `1.10` comes after `1.9`, and `1`, `1.0` and `1.00` are the same version. Write versions the same way the other mod writes its own `<Version>` (`1.25` is read as minor version 25, which comes after `1.3`). A bound that is not a number, such as `1.3b`, is ignored.
+
+`Versions` can be combined with a range; the rule then applies to the listed versions and to every version in the range. A `Require` is met when the installed version of the other mod is in the list or in the range. A `Forbid` blocks only the versions in the list or in the range. When a rule is not met, Junction VIII names the versions it needs, for example "Companion mod (1.3 or later)".
+
 `<Setting>` expresses constraints between configuration options in two mods:
 
 ```xml

@@ -962,6 +962,9 @@ Junction VIII pode reparar isto para você automaticamente. Apenas insira um dos
     >Mod {0} não é compatível com a versão de {1} que você tem instalada. Tente atualizar?</system:String>
   <system:String x:Key="ModIsNotCompatibleWithYouWillNeedToDisableIt"
     >Mod {0} não é compatível com {1}. Você terá que desativá-lo.</system:String>
+  <system:String x:Key="ModVersionOrLater">{0} ou posterior</system:String>
+  <system:String x:Key="ModVersionOrEarlier">{0} ou anterior</system:String>
+  <system:String x:Key="ModVersionFromTo">de {0} a {1}</system:String>
   <system:String x:Key="ModIsNotCompatibleAnotherModVariableUsed"
     >Mod {0} não é compatível com {1} porque a variável '{2}' é definida em ambos. Você precisará desativar um deles.</system:String>
 

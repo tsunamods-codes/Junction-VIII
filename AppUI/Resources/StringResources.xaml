@@ -939,6 +939,9 @@ Junction VIII can repair this for you automatically. Simply insert one of your g
     >Mod {0} is not compatible with the version of {1} you have installed. Try updating it?</system:String>
   <system:String x:Key="ModIsNotCompatibleWithYouWillNeedToDisableIt"
     >Mod {0} is not compatible with {1}. You will need to disable it.</system:String>
+  <system:String x:Key="ModVersionOrLater">{0} or later</system:String>
+  <system:String x:Key="ModVersionOrEarlier">{0} or earlier</system:String>
+  <system:String x:Key="ModVersionFromTo">{0} to {1}</system:String>
   <system:String x:Key="ModIsNotCompatibleAnotherModVariableUsed"
     >Mod {0} is not compatible with {1} mod as the variable '{2}' is defined in both. You will need to disable one of them.</system:String>
 

@@ -1342,10 +1342,7 @@ namespace AppUI.Classes
                         );
                         return false;
                     }
-                    else if (
-                        req.Versions.Any()
-                        && !req.Versions.Contains(rInst.LatestInstalled.VersionDetails.Version)
-                    )
+                    else if (!req.AppliesTo(rInst.LatestInstalled.VersionDetails.Version))
                     {
                         MessageDialogWindow.Show(
                             string.Format(
@@ -1353,7 +1350,7 @@ namespace AppUI.Classes
                                     StringKey.ModRequiresYouToActivateButYouDoNotHaveCompatibleVersionInstalled
                                 ),
                                 item.CachedDetails.Name,
-                                rInst.CachedDetails.Name
+                                ResourceHelper.NameWithVersionRules(rInst.CachedDetails.Name, req)
                             ),
                             ResourceHelper.Get(StringKey.UnsupportedModVersion)
                         );
@@ -1369,10 +1366,12 @@ namespace AppUI.Classes
                         continue; //good!
                     }
 
-                    if (
-                        forbid.Versions.Any()
-                        && forbid.Versions.Contains(rInst.LatestInstalled.VersionDetails.Version)
-                    )
+                    if (!forbid.AppliesTo(rInst.LatestInstalled.VersionDetails.Version))
+                    {
+                        continue; // the installed version is not one this mod forbids
+                    }
+
+                    if (forbid.HasVersionRules)
                     {
                         MessageDialogWindow.Show(
                             string.Format(
@@ -1380,7 +1379,10 @@ namespace AppUI.Classes
                                     StringKey.ModIsNotCompatibleWithTheVersionYouHaveInstalled
                                 ),
                                 item.CachedDetails.Name,
-                                rInst.CachedDetails.Name
+                                ResourceHelper.NameWithVersionRules(
+                                    rInst.CachedDetails.Name,
+                                    forbid
+                                )
                             ),
                             ResourceHelper.Get(StringKey.IncompatibleMod)
                         );

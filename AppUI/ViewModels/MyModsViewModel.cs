@@ -585,7 +585,7 @@ namespace AppUI.ViewModels
                 List<InstalledItem> pulledIn = new List<InstalledItem>();
                 List<ProfileItem> remove = new List<ProfileItem>();
                 List<string> missing = new List<string>();
-                List<InstalledItem> badVersion = new List<InstalledItem>();
+                List<string> badVersion = new List<string>();
                 Stack<InstalledItem> toExamine = new Stack<InstalledItem>();
 
                 // verify the mod in the profile still exists in the library.
@@ -624,13 +624,13 @@ namespace AppUI.ViewModels
                             var inst = Sys.Library.GetItem(req.ModID);
                             if (inst == null)
                                 missing.Add(req.Description);
-                            else if (
-                                req.Versions.Any()
-                                && !req.Versions.Contains(
-                                    inst.Versions.Last().VersionDetails.Version
-                                )
-                            )
-                                badVersion.Add(inst);
+                            else if (!req.AppliesTo(inst.Versions.Last().VersionDetails.Version))
+                                badVersion.Add(
+                                    ResourceHelper.NameWithVersionRules(
+                                        inst.CachedDetails.Name,
+                                        req
+                                    )
+                                );
                             else
                             {
                                 if (
@@ -655,8 +655,7 @@ namespace AppUI.ViewModels
                             if (pItem != null)
                             {
                                 if (
-                                    !forbid.Versions.Any()
-                                    || forbid.Versions.Contains(
+                                    forbid.AppliesTo(
                                         Sys.Library.GetItem(
                                             pItem.ModID
                                         ).LatestInstalled.VersionDetails.Version
@@ -687,8 +686,7 @@ namespace AppUI.ViewModels
                             }
 
                             if (
-                                !forbid.Versions.Any()
-                                || forbid.Versions.Contains(
+                                forbid.AppliesTo(
                                     Sys.Library.GetItem(mID).LatestInstalled.VersionDetails.Version
                                 )
                             )
@@ -735,7 +733,7 @@ namespace AppUI.ViewModels
                     MessageDialogWindow.Show(
                         String.Format(
                             ResourceHelper.Get(StringKey.UnsupportedModVersionsWarning),
-                            String.Join("\n", badVersion.Select(ii => ii.CachedDetails.Name))
+                            String.Join("\n", badVersion)
                         ),
                         ResourceHelper.Get(StringKey.UnsupportedVersion)
                     );
