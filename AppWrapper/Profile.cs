@@ -1041,8 +1041,43 @@ namespace AppWrapper
             }
         }
 
+        /// <summary>Lowest accepted version, inclusive (for example 1.3). Null when not set.</summary>
+        [XmlAttribute]
+        public string MinVersion { get; set; }
+
+        /// <summary>Highest accepted version, inclusive (for example 2.0). Null when not set.</summary>
+        [XmlAttribute]
+        public string MaxVersion { get; set; }
+
+        [XmlIgnore]
+        public bool HasVersionRange =>
+            ModVersionComparer.TryParse(MinVersion, out _)
+            || ModVersionComparer.TryParse(MaxVersion, out _);
+
+        [XmlIgnore]
+        public bool HasVersionRules => (Versions?.Count ?? 0) > 0 || HasVersionRange;
+
+        /// <summary>
+        /// True when this entry applies to the given version of the other mod: the version is in
+        /// <see cref="Versions"/> or between <see cref="MinVersion"/> and <see cref="MaxVersion"/>.
+        /// An entry with no version rules applies to every version. For a Require this means the
+        /// version is accepted; for a Forbid it means the version conflicts.
+        /// </summary>
+        public bool AppliesTo(decimal version)
+        {
+            if (!HasVersionRules)
+                return true;
+
+            if (Versions != null && Versions.Contains(version))
+                return true;
+
+            return HasVersionRange && ModVersionComparer.IsWithin(version, MinVersion, MaxVersion);
+        }
+
         public CompatEntry(XmlNode n)
         {
+            MinVersion = ReadVersionAttribute(n, "MinVersion");
+            MaxVersion = ReadVersionAttribute(n, "MaxVersion");
             Description = n.InnerText;
             ModID = Guid.Parse(n.Attributes["ModID"].Value);
             if (n.Attributes["Versions"] != null)
@@ -1061,6 +1096,12 @@ namespace AppWrapper
                     .ToList();
             else
                 Versions = new List<decimal>();
+        }
+
+        private static string ReadVersionAttribute(XmlNode n, string name)
+        {
+            string value = n.Attributes[name]?.Value?.Trim().Replace(',', '.');
+            return string.IsNullOrEmpty(value) ? null : value;
         }
 
         public CompatEntry() { }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AppCore;
 using AppUI;
 
@@ -17,6 +18,38 @@ namespace AppUI.Classes
             {
                 return "";
             }
+        }
+
+        /// <summary>
+        /// Mod name followed by the versions a compatibility rule names, for example
+        /// "Archeology (1.3 or later)" or "Archeology (1.0, 1.3 to 2.0)".
+        /// Just the name when the rule names no versions.
+        /// </summary>
+        public static string NameWithVersionRules(string modName, AppWrapper.CompatEntry entry)
+        {
+            var parts = new List<string>();
+            if (entry.Versions != null)
+                parts.AddRange(entry.Versions.Select(AppWrapper.ModVersionComparer.ToText));
+
+            bool hasMin = AppWrapper.ModVersionComparer.TryParse(entry.MinVersion, out _);
+            bool hasMax = AppWrapper.ModVersionComparer.TryParse(entry.MaxVersion, out _);
+            if (hasMin && hasMax)
+                parts.Add(
+                    string.Format(
+                        Get(StringKey.ModVersionFromTo),
+                        entry.MinVersion,
+                        entry.MaxVersion
+                    )
+                );
+            else if (hasMin)
+                parts.Add(string.Format(Get(StringKey.ModVersionOrLater), entry.MinVersion));
+            else if (hasMax)
+                parts.Add(string.Format(Get(StringKey.ModVersionOrEarlier), entry.MaxVersion));
+
+            if (parts.Count == 0)
+                return modName;
+
+            return $"{modName} ({string.Join(", ", parts)})";
         }
 
         /// <summary>

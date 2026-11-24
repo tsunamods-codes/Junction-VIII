@@ -892,6 +892,9 @@ Junction VIII 可以自动修复此问题。只需插入一张游戏光盘并重
     >模组 {0} 不兼容你所安装的 {1} 的版本。尝试更新该模组？</system:String>
   <system:String x:Key="ModIsNotCompatibleWithYouWillNeedToDisableIt"
     >模组 {0} 不兼容 {1}。你需要禁用它。</system:String>
+  <system:String x:Key="ModVersionOrLater">{0} 或更高版本</system:String>
+  <system:String x:Key="ModVersionOrEarlier">{0} 或更低版本</system:String>
+  <system:String x:Key="ModVersionFromTo">{0} 至 {1}</system:String>
   <system:String x:Key="ModIsNotCompatibleAnotherModVariableUsed"
     >模组 {0} 不兼容 {1}，因为变量'{2}'在两个模组中同时存在。你需要禁用其中一个。</system:String>
 
